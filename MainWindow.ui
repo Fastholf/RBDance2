@@ -1,24 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>548</width>
+    <height>203</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QLabel" name="dance_label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>34</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dance:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="robotName1_label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>46</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Robot1</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="connect1_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>50</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>connect</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DCOn1_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>50</y>
+      <width>41</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DC On</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="basicPosture1_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>50</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Basic Posture</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DCOff1_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>50</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DC Off</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="disconnect1_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>50</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Disconnect</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fileName1_label">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>50</y>
+      <width>18</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>file:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="fileName1_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>50</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="music_checkBox">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>10</y>
+      <width>49</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Music</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="basicPosture2_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>80</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Basic Posture</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fileName2_label">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>80</y>
+      <width>18</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>file:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="disconnect2_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>80</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Disconnect</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DCOff2_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>80</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DC Off</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="fileName2_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>80</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="robotName2_label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>46</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Robot2</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="connect2_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>80</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>connect</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DCOn2_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>80</y>
+      <width>41</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DC On</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="basicPosture3_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>110</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Basic Posture</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fileName3_label">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>110</y>
+      <width>18</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>file:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="disconnect3_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>110</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Disconnect</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DCOff3_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>110</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DC Off</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="fileName3_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>110</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="robotName3_label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>46</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Robot3</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="connect3_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>110</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>connect</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DCOn3_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>110</y>
+      <width>41</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DC On</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="dance_horizontalSlider">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>521</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="start_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>170</y>
+      <width>41</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pause_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>170</y>
+      <width>51</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pause</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stop_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>170</y>
+      <width>41</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="dance_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>10</y>
+      <width>431</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <zorder>dance_label</zorder>
+   <zorder>dance_comboBox</zorder>
+   <zorder>dance_comboBox</zorder>
+   <zorder>robotName1_label</zorder>
+   <zorder>connect1_pushButton</zorder>
+   <zorder>DCOn1_pushButton</zorder>
+   <zorder>basicPosture1_pushButton</zorder>
+   <zorder>DCOff1_pushButton</zorder>
+   <zorder>disconnect1_pushButton</zorder>
+   <zorder>fileName1_label</zorder>
+   <zorder>fileName1_comboBox</zorder>
+   <zorder>music_checkBox</zorder>
+   <zorder>basicPosture2_pushButton</zorder>
+   <zorder>fileName2_label</zorder>
+   <zorder>disconnect2_pushButton</zorder>
+   <zorder>DCOff2_pushButton</zorder>
+   <zorder>fileName2_comboBox</zorder>
+   <zorder>robotName2_label</zorder>
+   <zorder>connect2_pushButton</zorder>
+   <zorder>DCOn2_pushButton</zorder>
+   <zorder>basicPosture3_pushButton</zorder>
+   <zorder>fileName3_label</zorder>
+   <zorder>disconnect3_pushButton</zorder>
+   <zorder>DCOff3_pushButton</zorder>
+   <zorder>fileName3_comboBox</zorder>
+   <zorder>robotName3_label</zorder>
+   <zorder>connect3_pushButton</zorder>
+   <zorder>DCOn3_pushButton</zorder>
+   <zorder>dance_horizontalSlider</zorder>
+   <zorder>start_pushButton</zorder>
+   <zorder>pause_pushButton</zorder>
+   <zorder>stop_pushButton</zorder>
+  </widget>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>
