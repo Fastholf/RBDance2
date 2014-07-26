@@ -12,9 +12,14 @@ TARGET = RBDance2
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        MainWindow.cpp
+SOURCES +=\
+        MainWindow.cpp \
+    Controller.cpp \
+    Main.cpp \
+    Robot.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    Controller.h \
+    Robot.h
 
 FORMS    += MainWindow.ui
