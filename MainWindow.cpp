@@ -8,8 +8,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     controller = new Controller();
-    connect(controller, SIGNAL(robotLoaded(int, QString, int)), this, SLOT(updateRobotLabel(int, QString, int)));
-    FileLoadError error = controller->LoadRobotsFromFile();
+
+    connect(controller, SIGNAL(robotLoaded(int, QString, int)),
+            this, SLOT(updateRobotLabel(int, QString, int)));
+    FileLoadError error = controller->loadRobotsFromFile();
+    if (error != FileLoadErrorNo) {
+
+    }
+
+    connect(controller, SIGNAL(scenarioListLoaded(QVector<QString>)),
+            this, SLOT(updateDanceComboBox(QVector<QString>)));
+    error = controller->loadScenarioListFromFile();
     if (error != FileLoadErrorNo) {
 
     }
@@ -29,4 +38,13 @@ void MainWindow::updateRobotLabel(int index, QString robotName, int portNum)
         case 2: robotLabel = ui->robotName3_label; break;
     }
     robotLabel->setText(robotName + " " + QString::number(portNum));
+}
+
+void MainWindow::updateDanceComboBox(QVector<QString> scenarioPaths)
+{
+    ui->dance_comboBox->clear();
+    ui->dance_comboBox->addItem("None");
+    for (int i = 0; i < scenarioPaths.count(); ++i) {
+        ui->dance_comboBox->addItem(scenarioPaths[i]);
+    }
 }

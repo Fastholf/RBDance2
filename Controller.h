@@ -18,13 +18,17 @@ class Controller : public QObject
 
 private:
     QString robotsFileName;
+    QString scenarioListFileName;
     QVector<Robot> robots;
+    QVector<QString> scenarioPaths;
 
 public:
     explicit Controller();
-    FileLoadError LoadRobotsFromFile();
+    FileLoadError loadRobotsFromFile();
+    FileLoadError loadScenarioListFromFile();
 signals:
     void robotLoaded(int index, QString name, int port);
+    void scenarioListLoaded(QVector<QString> scenarioPaths);
 };
 
 #endif // CONTROLLER_H

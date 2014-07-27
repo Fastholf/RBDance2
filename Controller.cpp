@@ -7,9 +7,10 @@
 Controller::Controller()
 {
     robotsFileName = "dancers.txt";
+    scenarioListFileName = "scenarios.txt";
 }
 
-FileLoadError Controller::LoadRobotsFromFile()
+FileLoadError Controller::loadRobotsFromFile()
 {
     QFile robotsFile(robotsFileName);
     if (!robotsFile.open(QIODevice::ReadOnly)) {
@@ -27,7 +28,8 @@ FileLoadError Controller::LoadRobotsFromFile()
         QStringList items = line.split(" ");
         if (items.size() < 4) {
             result = FileLoadErrorWrongFormat;
-            qCritical() << "File with robots description has wrong format. Not enough items in the line.";
+            qCritical() << "File with robots description has wrong format. \
+                           Not enough items in the line.";
             break;
         }
         QString robotName = items[0];
@@ -36,7 +38,8 @@ FileLoadError Controller::LoadRobotsFromFile()
         int portNum = sPortNum.toInt(&ok);
         if (!ok) {
             result = FileLoadErrorWrongFormat;
-            qCritical() << "File with robots description has wrong format. Port num is not integer.";
+            qCritical() << "File with robots description has wrong format. \
+                           Port num is not integer.";
             break;
         }
         Robot newRobot = Robot(portNum, robotName);
@@ -45,6 +48,27 @@ FileLoadError Controller::LoadRobotsFromFile()
         ++i;
     }
     robotsFile.close();
+
+    return result;
+}
+
+FileLoadError Controller::loadScenarioListFromFile()
+{
+    QFile scenarioListFile(scenarioListFileName);
+    if (!scenarioListFile.open(QIODevice::ReadOnly)) {
+        qCritical() << "File with the list of scenarios was not found.";
+        return FileLoadErrorNotFound;
+    }
+    FileLoadError result = FileLoadErrorNo;
+    QTextStream in(&scenarioListFile);
+
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        scenarioPaths.push_back(line);
+    }
+    scenarioListFile.close();
+
+    scenarioListLoaded(scenarioPaths);
 
     return result;
 }

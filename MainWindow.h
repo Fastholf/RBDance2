@@ -22,6 +22,7 @@ private:
 
 private slots:
     void updateRobotLabel(int index, QString robotName, int portNum);
+    void updateDanceComboBox(QVector<QString> scenarioPaths);
 };
 
 #endif // MAINWINDOW_H
