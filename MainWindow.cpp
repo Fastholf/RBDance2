@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,11 +23,23 @@ MainWindow::MainWindow(QWidget *parent) :
     if (error != FileLoadErrorNo) {
 
     }
+
+    connect(controller, SIGNAL(scenarioLoaded(QVector<QString>,
+                                              QVector<Role>)),
+            this, SLOT(updateFileNameComboBoxes(QVector<QString>,
+                                                QVector<Role>)));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::clearFileNameComboboxes()
+{
+    ui->fileName1_comboBox->clear();
+    ui->fileName2_comboBox->clear();
+    ui->fileName3_comboBox->clear();
 }
 
 void MainWindow::updateRobotLabel(int index, QString robotName, int portNum)
@@ -46,5 +59,36 @@ void MainWindow::updateDanceComboBox(QVector<QString> scenarioPaths)
     ui->dance_comboBox->addItem("None");
     for (int i = 0; i < scenarioPaths.count(); ++i) {
         ui->dance_comboBox->addItem(scenarioPaths[i]);
+    }
+}
+
+void MainWindow::updateFileNameComboBoxes(QVector<QString> danceFileNames,
+                                          QVector<Role> roles)
+{
+    QVector<QComboBox*> comboBoxes;
+    comboBoxes.push_back(ui->fileName1_comboBox);
+    comboBoxes.push_back(ui->fileName2_comboBox);
+    comboBoxes.push_back(ui->fileName3_comboBox);
+    for (int i = 0; i < comboBoxes.count(); ++i) {
+        comboBoxes[i]->clear();
+        comboBoxes[i]->addItem("None");
+        for (int j = 0; j < danceFileNames.count(); ++j) {
+            comboBoxes[i]->addItem(danceFileNames[j]);
+        }
+        for (int j = 0; j < roles.count(); ++j) {
+            if (roles[j].robotNum == i) {
+                comboBoxes[i]->setCurrentIndex(roles[j].danceNum + 1);
+            }
+        }
+    }
+}
+
+void MainWindow::on_dance_comboBox_currentIndexChanged(int index)
+{
+    if (index > 0) {
+        controller->loadScenarioFromFile(index - 1);
+    }
+    else {
+
     }
 }

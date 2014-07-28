@@ -72,3 +72,77 @@ FileLoadError Controller::loadScenarioListFromFile()
 
     return result;
 }
+
+FileLoadError Controller::loadScenarioFromFile(int scenarioIndex)
+{
+    QFile scenarioFile(scenarioPaths[scenarioIndex]);
+    if (!scenarioFile.open(QIODevice::ReadOnly)) {
+        qCritical() << "Scenario file was not found.";
+        return FileLoadErrorNotFound;
+    }
+    FileLoadError result = FileLoadErrorNo;
+    QTextStream in(&scenarioFile);
+
+    /** Assume three type of line in file:
+     * file <dance file path>
+     * music <music file path>
+     * role <robot number> <dance number> */
+    scenario = new Scenario();
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (line[0] == '#') {
+            continue;
+        }
+        QStringList items = line.split(" ");
+        if (items.size() < 2) {
+            result = FileLoadErrorWrongFormat;
+            qCritical() << "Scenario file has wrong format. \
+                           Not enough items in the line.";
+            break;
+        }
+        if (items.size() > 3) {
+            result = FileLoadErrorWrongFormat;
+            qCritical() << "Scenario file has wrong format. \
+                           Too many items in the line.";
+            break;
+        }
+        QString command = items[0];
+        if (command == "file") {
+            scenario->addDanceFile(items[1]);
+        }
+        else if (command == "role") {
+            /** Assume following format of command
+             * role <robot number> <file number> */
+            bool ok;
+            int robotNum = items[1].toInt(&ok);
+            if (!ok) {
+                result = FileLoadErrorWrongFormat;
+                qCritical() << "Scenario file has wrong format. \
+                               Robot num is not integer.";
+                break;
+            }
+            int danceNum = items[2].toInt(&ok);
+            if (!ok) {
+                result = FileLoadErrorWrongFormat;
+                qCritical() << "Scenario file has wrong format. \
+                               Dance num is not integer.";
+                break;
+            }
+            scenario->addRole(robotNum, danceNum);
+        }
+        else if (command == "music") {
+            scenario->setMusic(items[1]);
+        }
+        else {
+            result = FileLoadErrorWrongFormat;
+            qCritical() << "Scenario file has wrong format. \
+                           Unknown command.";
+            break;
+        }
+    }
+    scenarioFile.close();
+
+    scenarioLoaded(scenario->getDanceFileNames(), scenario->getRoles());
+
+    return result;
+}

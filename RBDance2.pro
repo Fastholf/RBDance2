@@ -16,10 +16,12 @@ SOURCES +=\
         MainWindow.cpp \
     Controller.cpp \
     Main.cpp \
-    Robot.cpp
+    Robot.cpp \
+    Scenario.cpp
 
 HEADERS  += MainWindow.h \
     Controller.h \
-    Robot.h
+    Robot.h \
+    Scenario.h
 
 FORMS    += MainWindow.ui

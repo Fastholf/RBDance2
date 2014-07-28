@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QObject>
 #include "Robot.h"
+#include "Scenario.h"
 
 enum FileLoadError {
     FileLoadErrorNo = 0,
@@ -21,14 +22,19 @@ private:
     QString scenarioListFileName;
     QVector<Robot> robots;
     QVector<QString> scenarioPaths;
+    Scenario *scenario;
 
 public:
     explicit Controller();
     FileLoadError loadRobotsFromFile();
     FileLoadError loadScenarioListFromFile();
+    FileLoadError loadScenarioFromFile(int scenarioIndex);
+
 signals:
     void robotLoaded(int index, QString name, int port);
     void scenarioListLoaded(QVector<QString> scenarioPaths);
+    void scenarioLoaded(QVector<QString> danceFileNames, QVector<Role> roles);
+
 };
 
 #endif // CONTROLLER_H
