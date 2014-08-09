@@ -2,12 +2,17 @@
 #define ROBOT_H
 
 #include <QString>
+#include <QtSerialPort/QtSerialPort>
+#include "RBController.h"
 
 class Robot
 {
 private:
     int portNum;
     QString name;
+    QSerialPort *serialPort;
+    bool connected;
+    RBController *rbController;
 
 public:
     Robot();
@@ -17,6 +22,8 @@ public:
     void turnDCOn();
     void turnDCOff();
     void disconnect();
+
+    bool isConnected();
 };
 
 #endif // ROBOT_H

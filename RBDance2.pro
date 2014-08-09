@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets serialport
 
 TARGET = RBDance2
 TEMPLATE = app
@@ -17,11 +17,13 @@ SOURCES +=\
     Controller.cpp \
     Main.cpp \
     Robot.cpp \
-    Scenario.cpp
+    Scenario.cpp \
+    RBController.cpp
 
 HEADERS  += MainWindow.h \
     Controller.h \
     Robot.h \
-    Scenario.h
+    Scenario.h \
+    RBController.h
 
 FORMS    += MainWindow.ui
