@@ -90,7 +90,7 @@ FileLoadError Controller::loadScenarioFromFile(int scenarioIndex)
     scenario = new Scenario();
     while (!in.atEnd()) {
         QString line = in.readLine();
-        if (line[0] == '#') {
+        if (line[0] == '#') { // Comment
             continue;
         }
         QStringList items = line.split(" ");
@@ -145,4 +145,68 @@ FileLoadError Controller::loadScenarioFromFile(int scenarioIndex)
     scenarioLoaded(scenario->getDanceFileNames(), scenario->getRoles());
 
     return result;
+}
+
+bool Controller::isRobotIndexOk(int index, QString methodName)
+{
+    if (index < 0 || index > robots.count()) {
+        qWarning() << methodName << ": Robot index out of bounds.";
+        return false;
+    }
+    return true;
+}
+
+void Controller::connectRobot(int index)
+{
+    if (isRobotIndexOk(index, "Controller::connectRobot")) {
+        robots[index].connect();
+    }
+}
+
+void Controller::robotBasicPosture(int index)
+{
+    if (isRobotIndexOk(index, "Controller::robotBasicPosture")) {
+        robots[index].basicPosture();
+    }
+}
+
+void Controller::robotTurnDCOn(int index)
+{
+    if (isRobotIndexOk(index, "Controller::robotTurnDCOn")) {
+        robots[index].turnDCOn();
+    }
+}
+
+void Controller::robotTurnDCOff(int index)
+{
+    if (isRobotIndexOk(index, "Controller::robotTurnDCOff")) {
+        robots[index].turnDCOff();
+    }
+}
+
+void Controller::robotDisconnect(int index)
+{
+    if (isRobotIndexOk(index, "Controller::robotDisconnect")) {
+        robots[index].disconnect();
+    }
+}
+
+bool Controller::isDanceReady()
+{
+    return true;
+}
+
+void Controller::danceStart()
+{
+
+}
+
+void Controller::dancePause()
+{
+
+}
+
+void Controller::danceStop()
+{
+
 }

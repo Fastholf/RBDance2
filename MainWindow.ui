@@ -66,6 +66,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="DCOn1_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -79,6 +82,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="basicPosture1_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -92,6 +98,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="DCOff1_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -105,6 +114,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="disconnect1_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -152,8 +164,14 @@
     <property name="text">
      <string>Music</string>
     </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="basicPosture2_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -180,6 +198,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="disconnect2_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -193,6 +214,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="DCOff2_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -242,6 +266,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="DCOn2_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -255,6 +282,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="basicPosture3_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -281,6 +311,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="disconnect3_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -294,6 +327,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="DCOff3_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -343,6 +379,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="DCOn3_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -382,6 +421,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="pause_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -395,6 +437,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="stop_pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -418,7 +463,6 @@
     </property>
    </widget>
    <zorder>dance_label</zorder>
-   <zorder>dance_comboBox</zorder>
    <zorder>dance_comboBox</zorder>
    <zorder>robotName1_label</zorder>
    <zorder>connect1_pushButton</zorder>

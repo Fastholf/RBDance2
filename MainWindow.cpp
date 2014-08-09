@@ -89,6 +89,98 @@ void MainWindow::on_dance_comboBox_currentIndexChanged(int index)
         controller->loadScenarioFromFile(index - 1);
     }
     else {
-
+        clearFileNameComboboxes();
     }
+}
+
+void MainWindow::on_connect1_pushButton_clicked()
+{
+    controller->connectRobot(0);
+}
+
+void MainWindow::on_connect2_pushButton_clicked()
+{
+    controller->connectRobot(1);
+}
+
+void MainWindow::on_connect3_pushButton_clicked()
+{
+    controller->connectRobot(2);
+}
+
+void MainWindow::on_basicPosture1_pushButton_clicked()
+{
+    controller->robotBasicPosture(0);
+}
+
+void MainWindow::on_basicPosture2_pushButton_clicked()
+{
+    controller->robotBasicPosture(1);
+}
+
+void MainWindow::on_basicPosture3_pushButton_clicked()
+{
+    controller->robotBasicPosture(2);
+}
+
+void MainWindow::on_DCOn1_pushButton_clicked()
+{
+    controller->robotTurnDCOn(0);
+}
+
+void MainWindow::on_DCOn2_pushButton_clicked()
+{
+    controller->robotTurnDCOn(1);
+}
+
+void MainWindow::on_DCOn3_pushButton_clicked()
+{
+    controller->robotTurnDCOn(2);
+}
+
+void MainWindow::on_DCOff1_pushButton_clicked()
+{
+    controller->robotTurnDCOff(0);
+}
+
+void MainWindow::on_DCOff2_pushButton_clicked()
+{
+    controller->robotTurnDCOff(1);
+}
+
+void MainWindow::on_DCOff3_pushButton_clicked()
+{
+    controller->robotTurnDCOff(2);
+}
+
+void MainWindow::on_disconnect1_pushButton_clicked()
+{
+    controller->robotDisconnect(0);
+}
+
+void MainWindow::on_disconnect2_pushButton_clicked()
+{
+    controller->robotDisconnect(1);
+}
+
+void MainWindow::on_disconnect3_pushButton_clicked()
+{
+    controller->robotDisconnect(2);
+}
+
+void MainWindow::on_start_pushButton_clicked()
+{
+    if (controller->isDanceReady()) {
+        controller->danceStart();
+    }
+}
+
+void MainWindow::on_pause_pushButton_clicked()
+{
+    controller->dancePause();
+}
+
+void MainWindow::on_stop_pushButton_clicked()
+{
+    controller->danceStop();
 }

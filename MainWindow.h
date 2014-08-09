@@ -27,6 +27,24 @@ private slots:
     void updateFileNameComboBoxes(QVector<QString> danceFileNames,
                                   QVector<Role> roles);
     void on_dance_comboBox_currentIndexChanged(int index);
+    void on_connect1_pushButton_clicked();
+    void on_connect2_pushButton_clicked();
+    void on_connect3_pushButton_clicked();
+    void on_basicPosture1_pushButton_clicked();
+    void on_basicPosture2_pushButton_clicked();
+    void on_basicPosture3_pushButton_clicked();
+    void on_DCOn1_pushButton_clicked();
+    void on_DCOn2_pushButton_clicked();
+    void on_DCOn3_pushButton_clicked();
+    void on_DCOff1_pushButton_clicked();
+    void on_DCOff2_pushButton_clicked();
+    void on_DCOff3_pushButton_clicked();
+    void on_disconnect1_pushButton_clicked();
+    void on_disconnect2_pushButton_clicked();
+    void on_disconnect3_pushButton_clicked();
+    void on_start_pushButton_clicked();
+    void on_pause_pushButton_clicked();
+    void on_stop_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H

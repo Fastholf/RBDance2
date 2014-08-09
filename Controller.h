@@ -24,11 +24,22 @@ private:
     QVector<QString> scenarioPaths;
     Scenario *scenario;
 
+    bool isRobotIndexOk(int index, QString methodName);
+
 public:
     explicit Controller();
     FileLoadError loadRobotsFromFile();
     FileLoadError loadScenarioListFromFile();
     FileLoadError loadScenarioFromFile(int scenarioIndex);
+    void connectRobot(int index);
+    void robotBasicPosture(int index);
+    void robotTurnDCOn(int index);
+    void robotTurnDCOff(int index);
+    void robotDisconnect(int index);
+    bool isDanceReady();
+    void danceStart();
+    void dancePause();
+    void danceStop();
 
 signals:
     void robotLoaded(int index, QString name, int port);
