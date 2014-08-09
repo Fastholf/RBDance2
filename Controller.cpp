@@ -87,7 +87,7 @@ FileLoadError Controller::loadScenarioFromFile(int scenarioIndex)
      * file <dance file path>
      * music <music file path>
      * role <robot number> <dance number> */
-    scenario = new Scenario();
+    scenario = new Scenario(robots.count());
     while (!in.atEnd()) {
         QString line = in.readLine();
         if (line[0] == '#') { // Comment
@@ -128,7 +128,7 @@ FileLoadError Controller::loadScenarioFromFile(int scenarioIndex)
                                Dance num is not integer.";
                 break;
             }
-            scenario->addRole(robotNum, danceNum);
+            scenario->setRole(robotNum, danceNum);
         }
         else if (command == "music") {
             scenario->setMusic(items[1]);
@@ -145,6 +145,11 @@ FileLoadError Controller::loadScenarioFromFile(int scenarioIndex)
     scenarioLoaded(scenario->getDanceFileNames(), scenario->getRoles());
 
     return result;
+}
+
+void Controller::setRobotRole(int robotNum, int danceNum)
+{
+    scenario->setRole(robotNum, danceNum);
 }
 
 bool Controller::isRobotIndexOk(int index, QString methodName)

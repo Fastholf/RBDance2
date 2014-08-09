@@ -22,12 +22,13 @@ private:
     QVector<QString> danceFilePaths;
     QVector<Role> roles;
     QString musicFilePath;
+    int robotCount;
 
 public:
-    Scenario();
+    Scenario(int t_robotCount);
     void addDanceFile(QString danceFilePath);
     void setMusic(QString t_musicFilePath);
-    void addRole(int robotNum, int danceNum);
+    void setRole(int robotNum, int danceNum);
 
     QVector<QString> getDanceFilePaths();
     QVector<QString> getDanceFileNames();

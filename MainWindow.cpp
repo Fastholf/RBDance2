@@ -184,3 +184,18 @@ void MainWindow::on_stop_pushButton_clicked()
 {
     controller->danceStop();
 }
+
+void MainWindow::on_fileName1_comboBox_currentIndexChanged(int index)
+{
+    controller->setRobotRole(0, index - 1);
+}
+
+void MainWindow::on_fileName2_comboBox_currentIndexChanged(int index)
+{
+    controller->setRobotRole(1, index - 1);
+}
+
+void MainWindow::on_fileName3_comboBox_currentIndexChanged(int index)
+{
+    controller->setRobotRole(2, index - 1);
+}

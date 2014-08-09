@@ -28,9 +28,13 @@ private:
 
 public:
     explicit Controller();
+
     FileLoadError loadRobotsFromFile();
     FileLoadError loadScenarioListFromFile();
     FileLoadError loadScenarioFromFile(int scenarioIndex);
+
+    void setRobotRole(int robotNum, int danceNum);
+
     void connectRobot(int index);
     void robotBasicPosture(int index);
     void robotTurnDCOn(int index);

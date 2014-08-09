@@ -2,9 +2,12 @@
 #include <QFile>
 #include <QFileInfo>
 
-Scenario::Scenario()
+Scenario::Scenario(int t_robotCount)
 {
-
+    robotCount = t_robotCount;
+    for (int i = 0; i < robotCount; ++i) {
+        roles.push_back(Role(i, -1));
+    }
 }
 
 void Scenario::addDanceFile(QString danceFilePath)
@@ -17,9 +20,13 @@ void Scenario::setMusic(QString t_musicFilePath)
     musicFilePath = t_musicFilePath;
 }
 
-void Scenario::addRole(int robotNum, int danceNum)
+void Scenario::setRole(int robotNum, int danceNum)
 {
-    roles.push_back(Role(robotNum, danceNum));
+    for (int i = 0; i < roles.count(); ++i) {
+        if (roles[i].robotNum == robotNum) {
+            roles[i].danceNum = danceNum;
+        }
+    }
 }
 
 QVector<QString> Scenario::getDanceFilePaths()
