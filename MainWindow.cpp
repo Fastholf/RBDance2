@@ -8,23 +8,23 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    controller = new Controller();
+    appManager = new AppManager();
 
-    connect(controller, SIGNAL(robotLoaded(int, QString, int)),
+    connect(appManager, SIGNAL(robotLoaded(int, QString, int)),
             this, SLOT(updateRobotLabel(int, QString, int)));
-    FileLoadError error = controller->loadRobotsFromFile();
+    FileLoadError error = appManager->loadRobotsFromFile();
     if (error != FileLoadErrorNo) {
 
     }
 
-    connect(controller, SIGNAL(scenarioListLoaded(QVector<QString>)),
+    connect(appManager, SIGNAL(scenarioListLoaded(QVector<QString>)),
             this, SLOT(updateDanceComboBox(QVector<QString>)));
-    error = controller->loadScenarioListFromFile();
+    error = appManager->loadScenarioListFromFile();
     if (error != FileLoadErrorNo) {
 
     }
 
-    connect(controller, SIGNAL(scenarioLoaded(QVector<QString>,
+    connect(appManager, SIGNAL(scenarioLoaded(QVector<QString>,
                                               QVector<Role>)),
             this, SLOT(updateFileNameComboBoxes(QVector<QString>,
                                                 QVector<Role>)));
@@ -86,7 +86,7 @@ void MainWindow::updateFileNameComboBoxes(QVector<QString> danceFileNames,
 void MainWindow::on_dance_comboBox_currentIndexChanged(int index)
 {
     if (index > 0) {
-        controller->loadScenarioFromFile(index - 1);
+        appManager->loadScenarioFromFile(index - 1);
     }
     else {
         clearFileNameComboboxes();
@@ -95,107 +95,107 @@ void MainWindow::on_dance_comboBox_currentIndexChanged(int index)
 
 void MainWindow::on_connect1_pushButton_clicked()
 {
-    controller->connectRobot(0);
+    appManager->connectRobot(0);
 }
 
 void MainWindow::on_connect2_pushButton_clicked()
 {
-    controller->connectRobot(1);
+    appManager->connectRobot(1);
 }
 
 void MainWindow::on_connect3_pushButton_clicked()
 {
-    controller->connectRobot(2);
+    appManager->connectRobot(2);
 }
 
 void MainWindow::on_basicPosture1_pushButton_clicked()
 {
-    controller->robotBasicPosture(0);
+    appManager->robotBasicPosture(0);
 }
 
 void MainWindow::on_basicPosture2_pushButton_clicked()
 {
-    controller->robotBasicPosture(1);
+    appManager->robotBasicPosture(1);
 }
 
 void MainWindow::on_basicPosture3_pushButton_clicked()
 {
-    controller->robotBasicPosture(2);
+    appManager->robotBasicPosture(2);
 }
 
 void MainWindow::on_DCOn1_pushButton_clicked()
 {
-    controller->robotTurnDCOn(0);
+    appManager->robotTurnDCOn(0);
 }
 
 void MainWindow::on_DCOn2_pushButton_clicked()
 {
-    controller->robotTurnDCOn(1);
+    appManager->robotTurnDCOn(1);
 }
 
 void MainWindow::on_DCOn3_pushButton_clicked()
 {
-    controller->robotTurnDCOn(2);
+    appManager->robotTurnDCOn(2);
 }
 
 void MainWindow::on_DCOff1_pushButton_clicked()
 {
-    controller->robotTurnDCOff(0);
+    appManager->robotTurnDCOff(0);
 }
 
 void MainWindow::on_DCOff2_pushButton_clicked()
 {
-    controller->robotTurnDCOff(1);
+    appManager->robotTurnDCOff(1);
 }
 
 void MainWindow::on_DCOff3_pushButton_clicked()
 {
-    controller->robotTurnDCOff(2);
+    appManager->robotTurnDCOff(2);
 }
 
 void MainWindow::on_disconnect1_pushButton_clicked()
 {
-    controller->robotDisconnect(0);
+    appManager->robotDisconnect(0);
 }
 
 void MainWindow::on_disconnect2_pushButton_clicked()
 {
-    controller->robotDisconnect(1);
+    appManager->robotDisconnect(1);
 }
 
 void MainWindow::on_disconnect3_pushButton_clicked()
 {
-    controller->robotDisconnect(2);
+    appManager->robotDisconnect(2);
 }
 
 void MainWindow::on_start_pushButton_clicked()
 {
-    if (controller->isDanceReady()) {
-        controller->danceStart();
+    if (appManager->isDanceReady()) {
+        appManager->danceStart();
     }
 }
 
 void MainWindow::on_pause_pushButton_clicked()
 {
-    controller->dancePause();
+    appManager->dancePause();
 }
 
 void MainWindow::on_stop_pushButton_clicked()
 {
-    controller->danceStop();
+    appManager->danceStop();
 }
 
 void MainWindow::on_fileName1_comboBox_currentIndexChanged(int index)
 {
-    controller->setRobotRole(0, index - 1);
+    appManager->setRobotRole(0, index - 1);
 }
 
 void MainWindow::on_fileName2_comboBox_currentIndexChanged(int index)
 {
-    controller->setRobotRole(1, index - 1);
+    appManager->setRobotRole(1, index - 1);
 }
 
 void MainWindow::on_fileName3_comboBox_currentIndexChanged(int index)
 {
-    controller->setRobotRole(2, index - 1);
+    appManager->setRobotRole(2, index - 1);
 }

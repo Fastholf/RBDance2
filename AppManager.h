@@ -13,7 +13,7 @@ enum FileLoadError {
     FileLoadErrorWrongFormat,
 };
 
-class Controller : public QObject
+class AppManager : public QObject
 {
     Q_OBJECT
 
@@ -27,7 +27,7 @@ private:
     bool isRobotIndexOk(int index, QString methodName);
 
 public:
-    explicit Controller();
+    explicit AppManager();
 
     FileLoadError loadRobotsFromFile();
     FileLoadError loadScenarioListFromFile();

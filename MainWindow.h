@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "Controller.h"
+#include "AppManager.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +18,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Controller *controller;
+    AppManager *appManager;
     void clearFileNameComboboxes();
 
 private slots:

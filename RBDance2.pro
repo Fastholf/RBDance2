@@ -14,16 +14,16 @@ TEMPLATE = app
 
 SOURCES +=\
         MainWindow.cpp \
-    Controller.cpp \
     Main.cpp \
     Robot.cpp \
     Scenario.cpp \
-    RBController.cpp
+    RBController.cpp \
+    AppManager.cpp
 
 HEADERS  += MainWindow.h \
-    Controller.h \
     Robot.h \
     Scenario.h \
-    RBController.h
+    RBController.h \
+    AppManager.h
 
 FORMS    += MainWindow.ui

@@ -1,16 +1,16 @@
-#include "Controller.h"
+#include "AppManager.h"
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
 #include "MainWindow.h"
 
-Controller::Controller()
+AppManager::AppManager()
 {
     robotsFileName = "dancers.txt";
     scenarioListFileName = "scenarios.txt";
 }
 
-FileLoadError Controller::loadRobotsFromFile()
+FileLoadError AppManager::loadRobotsFromFile()
 {
     QFile robotsFile(robotsFileName);
     if (!robotsFile.open(QIODevice::ReadOnly)) {
@@ -52,7 +52,7 @@ FileLoadError Controller::loadRobotsFromFile()
     return result;
 }
 
-FileLoadError Controller::loadScenarioListFromFile()
+FileLoadError AppManager::loadScenarioListFromFile()
 {
     QFile scenarioListFile(scenarioListFileName);
     if (!scenarioListFile.open(QIODevice::ReadOnly)) {
@@ -73,7 +73,7 @@ FileLoadError Controller::loadScenarioListFromFile()
     return result;
 }
 
-FileLoadError Controller::loadScenarioFromFile(int scenarioIndex)
+FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
 {
     QFile scenarioFile(scenarioPaths[scenarioIndex]);
     if (!scenarioFile.open(QIODevice::ReadOnly)) {
@@ -147,12 +147,12 @@ FileLoadError Controller::loadScenarioFromFile(int scenarioIndex)
     return result;
 }
 
-void Controller::setRobotRole(int robotNum, int danceNum)
+void AppManager::setRobotRole(int robotNum, int danceNum)
 {
     scenario->setRole(robotNum, danceNum);
 }
 
-bool Controller::isRobotIndexOk(int index, QString methodName)
+bool AppManager::isRobotIndexOk(int index, QString methodName)
 {
     if (index < 0 || index > robots.count()) {
         qWarning() << methodName << ": Robot index out of bounds.";
@@ -161,57 +161,57 @@ bool Controller::isRobotIndexOk(int index, QString methodName)
     return true;
 }
 
-void Controller::connectRobot(int index)
+void AppManager::connectRobot(int index)
 {
     if (isRobotIndexOk(index, "Controller::connectRobot")) {
         robots[index].connect();
     }
 }
 
-void Controller::robotBasicPosture(int index)
+void AppManager::robotBasicPosture(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotBasicPosture")) {
         robots[index].basicPosture();
     }
 }
 
-void Controller::robotTurnDCOn(int index)
+void AppManager::robotTurnDCOn(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotTurnDCOn")) {
         robots[index].turnDCOn();
     }
 }
 
-void Controller::robotTurnDCOff(int index)
+void AppManager::robotTurnDCOff(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotTurnDCOff")) {
         robots[index].turnDCOff();
     }
 }
 
-void Controller::robotDisconnect(int index)
+void AppManager::robotDisconnect(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotDisconnect")) {
         robots[index].disconnect();
     }
 }
 
-bool Controller::isDanceReady()
+bool AppManager::isDanceReady()
 {
     return true;
 }
 
-void Controller::danceStart()
+void AppManager::danceStart()
 {
 
 }
 
-void Controller::dancePause()
+void AppManager::dancePause()
 {
 
 }
 
-void Controller::danceStop()
+void AppManager::danceStop()
 {
 
 }
