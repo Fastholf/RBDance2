@@ -12,6 +12,7 @@ private:
     QString name;
     QSerialPort *serialPort;
     bool connected;
+    bool DCModeOn;
     RBController *rbController;
 
 public:
@@ -24,6 +25,7 @@ public:
     void disconnect();
 
     bool isConnected();
+    bool isDCModeOn();
 };
 
 #endif // ROBOT_H

@@ -42,12 +42,12 @@ private slots:
     void on_disconnect1_pushButton_clicked();
     void on_disconnect2_pushButton_clicked();
     void on_disconnect3_pushButton_clicked();
-    void on_start_pushButton_clicked();
-    void on_pause_pushButton_clicked();
-    void on_stop_pushButton_clicked();
     void on_fileName1_comboBox_currentIndexChanged(int index);
     void on_fileName2_comboBox_currentIndexChanged(int index);
     void on_fileName3_comboBox_currentIndexChanged(int index);
+    void on_start_pushButton_clicked();
+    void on_pause_pushButton_clicked();
+    void on_stop_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H

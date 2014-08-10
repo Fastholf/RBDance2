@@ -168,6 +168,21 @@ void MainWindow::on_disconnect3_pushButton_clicked()
     appManager->robotDisconnect(2);
 }
 
+void MainWindow::on_fileName1_comboBox_currentIndexChanged(int index)
+{
+    appManager->setRobotRole(0, index - 1);
+}
+
+void MainWindow::on_fileName2_comboBox_currentIndexChanged(int index)
+{
+    appManager->setRobotRole(1, index - 1);
+}
+
+void MainWindow::on_fileName3_comboBox_currentIndexChanged(int index)
+{
+    appManager->setRobotRole(2, index - 1);
+}
+
 void MainWindow::on_start_pushButton_clicked()
 {
     if (appManager->isDanceReady()) {
@@ -183,19 +198,4 @@ void MainWindow::on_pause_pushButton_clicked()
 void MainWindow::on_stop_pushButton_clicked()
 {
     appManager->danceStop();
-}
-
-void MainWindow::on_fileName1_comboBox_currentIndexChanged(int index)
-{
-    appManager->setRobotRole(0, index - 1);
-}
-
-void MainWindow::on_fileName2_comboBox_currentIndexChanged(int index)
-{
-    appManager->setRobotRole(1, index - 1);
-}
-
-void MainWindow::on_fileName3_comboBox_currentIndexChanged(int index)
-{
-    appManager->setRobotRole(2, index - 1);
 }
