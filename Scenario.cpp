@@ -8,6 +8,9 @@ Scenario::Scenario(int t_robotCount)
     for (int i = 0; i < robotCount; ++i) {
         roles.push_back(Role(i, -1));
     }
+    for (int i = 0; i < robotCount; ++i) {
+        danceScripts.push_back(DanceScript());
+    }
 }
 
 void Scenario::addDanceFile(QString danceFilePath)
@@ -27,6 +30,27 @@ void Scenario::setRole(int robotNum, int danceNum)
             roles[i].danceNum = danceNum;
         }
     }
+}
+
+bool Scenario::loadDanceScripts()
+{
+    for (int i = 0; i < danceFilePaths.count(); ++i) {
+        danceScripts[i].clear();
+        bool used = false;
+        for (int j = 0; j < roles.count(); ++j) {
+            if (roles[j].danceNum == i)  {
+                used = true;
+                break;
+            }
+        }
+        if (!used) {
+            continue;
+        }
+        if (!danceScripts[i].loadFromMotionBuilderFile(danceFilePaths[i])) {
+            return false;
+        }
+    }
+    return true;
 }
 
 QVector<QString> Scenario::getDanceFilePaths()

@@ -8,6 +8,7 @@ AppManager::AppManager()
 {
     robotsFileName = "dancers.txt";
     scenarioListFileName = "scenarios.txt";
+    scenario = NULL;
 }
 
 FileLoadError AppManager::loadRobotsFromFile()
@@ -83,7 +84,7 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
     FileLoadError result = FileLoadErrorNo;
     QTextStream in(&scenarioFile);
 
-    /** Assume three type of line in file:
+    /** Assume three types of line in file:
      * file <dance file path>
      * music <music file path>
      * role <robot number> <dance number> */
@@ -198,6 +199,12 @@ void AppManager::robotDisconnect(int index)
 
 bool AppManager::isDanceReady()
 {
+    if (scenario == NULL) {
+        return false;
+    }
+    if (!scenario->loadDanceScripts()) {
+        return false;
+    }
     return true;
 }
 

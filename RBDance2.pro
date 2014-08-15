@@ -18,12 +18,14 @@ SOURCES +=\
     Robot.cpp \
     Scenario.cpp \
     RBController.cpp \
-    AppManager.cpp
+    AppManager.cpp \
+    DanceScript.cpp
 
 HEADERS  += MainWindow.h \
     Robot.h \
     Scenario.h \
     RBController.h \
-    AppManager.h
+    AppManager.h \
+    DanceScript.h
 
 FORMS    += MainWindow.ui

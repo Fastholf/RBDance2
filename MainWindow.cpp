@@ -49,6 +49,7 @@ void MainWindow::updateRobotLabel(int index, QString robotName, int portNum)
         case 0: robotLabel = ui->robotName1_label; break;
         case 1: robotLabel = ui->robotName2_label; break;
         case 2: robotLabel = ui->robotName3_label; break;
+    default: return;
     }
     robotLabel->setText(robotName + " " + QString::number(portNum));
 }

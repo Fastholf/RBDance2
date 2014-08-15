@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QString>
+#include "DanceScript.h"
 
 class Role
 {
@@ -20,6 +21,7 @@ class Scenario
 {
 private:
     QVector<QString> danceFilePaths;
+    QVector<DanceScript> danceScripts;
     QVector<Role> roles;
     QString musicFilePath;
     int robotCount;
@@ -29,6 +31,7 @@ public:
     void addDanceFile(QString danceFilePath);
     void setMusic(QString t_musicFilePath);
     void setRole(int robotNum, int danceNum);
+    bool loadDanceScripts();
 
     QVector<QString> getDanceFilePaths();
     QVector<QString> getDanceFileNames();
