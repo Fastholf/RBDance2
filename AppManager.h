@@ -18,8 +18,10 @@ class AppManager : public QObject
     Q_OBJECT
 
 private:
-    QString robotsFileName;
-    QString scenarioListFileName;
+    QString robotsFilePath;
+    QString scenarioListFilePath;
+    QString settingsFilePath;
+    QString rootPath;
     QVector<Robot> robots;
     QVector<QString> scenarioPaths;
     Scenario *scenario;

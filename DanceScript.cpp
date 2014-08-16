@@ -53,6 +53,108 @@ QVector<int> DanceScript::parseStringToInts(QString buffer)
     return result;
 }
 
+bool DanceScript::loadPoseStepCounts(QTextStream *in)
+{
+    if (!skipLinesWithString(in, 5, "};")) {
+        return false;
+    }
+    QString line = in->readLine();
+    QString buffer = "";
+    while (true) {
+        if (in->atEnd()) {
+            return false;
+        }
+        line = in->readLine();
+        if (line == "};") {
+            break;
+        }
+        buffer += line;
+    }
+    poseStepCounts = parseStringToInts(buffer);
+
+    return true;
+}
+
+bool DanceScript::loadPoseDurations(QTextStream *in)
+{
+    QString line = in->readLine();
+    QString buffer = "";
+    while (true) {
+        if (in->atEnd()) {
+            return false;
+        }
+        line = in->readLine();
+        if (line == "};") {
+            break;
+        }
+        buffer += line;
+    }
+    poseDurations = parseStringToInts(buffer);
+
+    return true;
+}
+
+bool DanceScript::loadPoseServoAngles(QTextStream *in)
+{
+    if (!skipNLines(in, 3)) {
+        return false;
+    }
+    while (true) {
+        if (in->atEnd()) {
+            return false;
+        }
+        QString line = in->readLine();
+        if (line == "};") {
+            break;
+        }
+        QRegExp rx("[}].*");
+        line = line.replace(rx, "");
+        QVector<int> scene = parseStringToInts(line);
+        poseServoAngles.push_back(scene);
+    }
+
+    return true;
+}
+
+void DanceScript::precountFrames()
+{
+    int poseCount = poseStepCounts.count();
+    int currentTime = 0;
+    frames.push_back(Frame(poseServoAngles[0], currentTime));
+
+    for (int i = 1; i < poseCount; ++i)
+    {
+        int sleepBetweenSteps = poseDurations[i] / poseStepCounts[i];
+        int servoCount = poseServoAngles[i].count();
+        for (int j = 0; j < poseStepCounts[i]; ++j)
+        {
+            frames.push_back(Frame());
+            int k = frames.count() - 1;
+            frames[k].fireTime = currentTime + sleepBetweenSteps * (j + 1);
+            for (int s = 0; s < servoCount; ++s)
+            {
+                frames[k].servoAngles.push_back(
+                        interpolatedAngle(poseServoAngles[i - 1][s],
+                                          poseServoAngles[i][s],
+                                          poseStepCounts[i],
+                                          j + 1)
+                );
+            }
+
+        }
+    }
+}
+
+int DanceScript::interpolatedAngle(int startAngle,
+                                   int endAngle,
+                                   int stepCount,
+                                   int stepNum)
+{
+    int distance = endAngle - startAngle;
+    double step = (double)distance / (double)stepCount;
+    return startAngle + step * (double)stepNum;
+}
+
 DanceScript::DanceScript()
 {
     clear();
@@ -61,9 +163,10 @@ DanceScript::DanceScript()
 void DanceScript::clear()
 {
     filePath = "";
+    poseStepCounts.clear();
+    poseDurations.clear();
+    poseServoAngles.clear();
     frames.clear();
-    times.clear();
-    positions.clear();
 }
 
 bool DanceScript::loadFromMotionBuilderFile(QString t_filePath)
@@ -76,56 +179,21 @@ bool DanceScript::loadFromMotionBuilderFile(QString t_filePath)
                     << " with dance script was not found.";
         return false;
     }
-
     QTextStream in(&scripFile);
-    if (!skipLinesWithString(&in, 5, "};")) {
+
+    if (!loadPoseStepCounts(&in)) {
         return false;
     }
-    QString line = in.readLine();
-    QString buffer = "";
-    while (true) {
-        if (in.atEnd()) {
-            return false;
-        }
-        line = in.readLine();
-        if (line == "};") {
-            break;
-        }
-        buffer += line;
-    }
-    frames = parseStringToInts(buffer);
 
-    line = in.readLine();
-    buffer = "";
-    while (true) {
-        if (in.atEnd()) {
-            return false;
-        }
-        line = in.readLine();
-        if (line == "};") {
-            break;
-        }
-        buffer += line;
-    }
-    times = parseStringToInts(buffer);
-
-    if (!skipNLines(&in, 3)) {
+    if (!loadPoseDurations(&in)) {
         return false;
     }
-    while (true) {
-        if (in.atEnd()) {
-            return false;
-        }
-        line = in.readLine();
-        if (line == "};") {
-            break;
-        }
-        QRegExp rx("[}].*");
-        line = line.replace(rx, "");
-        QVector<int> scene = parseStringToInts(line);
-        positions.push_back(scene);
+
+    if (!loadPoseServoAngles(&in)) {
+        return false;
     }
-    qDebug() << positions;
+
+    precountFrames();
 
     return true;
 }

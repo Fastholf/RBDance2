@@ -6,14 +6,25 @@
 
 AppManager::AppManager()
 {
-    robotsFileName = "dancers.txt";
-    scenarioListFileName = "scenarios.txt";
+    settingsFilePath = "settings.txt";
+    QFile settingsFile(settingsFilePath);
+    if (!settingsFile.open(QIODevice::ReadOnly)) {
+        qCritical() << "Settings file was not found.";
+        return;
+    }
+    QTextStream in(&settingsFile);
+
+    rootPath = in.readLine();
+    robotsFilePath = rootPath + in.readLine();
+    scenarioListFilePath = rootPath + in.readLine();
+
+
     scenario = NULL;
 }
 
 FileLoadError AppManager::loadRobotsFromFile()
 {
-    QFile robotsFile(robotsFileName);
+    QFile robotsFile(robotsFilePath);
     if (!robotsFile.open(QIODevice::ReadOnly)) {
         qCritical() << "File with robots description was not found.";
         return FileLoadErrorNotFound;
@@ -55,7 +66,7 @@ FileLoadError AppManager::loadRobotsFromFile()
 
 FileLoadError AppManager::loadScenarioListFromFile()
 {
-    QFile scenarioListFile(scenarioListFileName);
+    QFile scenarioListFile(scenarioListFilePath);
     if (!scenarioListFile.open(QIODevice::ReadOnly)) {
         qCritical() << "File with the list of scenarios was not found.";
         return FileLoadErrorNotFound;
@@ -76,7 +87,7 @@ FileLoadError AppManager::loadScenarioListFromFile()
 
 FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
 {
-    QFile scenarioFile(scenarioPaths[scenarioIndex]);
+    QFile scenarioFile(rootPath + scenarioPaths[scenarioIndex]);
     if (!scenarioFile.open(QIODevice::ReadOnly)) {
         qCritical() << "Scenario file was not found.";
         return FileLoadErrorNotFound;
