@@ -55,6 +55,7 @@ void Choreographer::dancing()
             ++currentTime;
         }
     }
+    danceFinished();
 }
 
 Choreographer::Choreographer()

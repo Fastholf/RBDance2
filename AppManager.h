@@ -39,9 +39,9 @@ public:
 
     void setRobotRole(int robotNum, int danceNum);
 
-    void connectRobot(int index);
+    bool connectRobot(int index);
     void robotBasicPosture(int index);
-    void robotTurnDCOn(int index);
+    bool robotTurnDCOn(int index);
     void robotTurnDCOff(int index);
     void robotDisconnect(int index);
     bool isDanceReady();
@@ -49,11 +49,14 @@ public:
     void dancePause();
     void danceStop();
 
+private slots:
+    void onDanceFinished();
+
 signals:
     void robotLoaded(int index, QString name, int port);
     void scenarioListLoaded(QVector<QString> scenarioPaths);
     void scenarioLoaded(QVector<QString> danceFileNames, QVector<Role> roles);
-
+    void danceFinished();
 };
 
 #endif // CONTROLLER_H

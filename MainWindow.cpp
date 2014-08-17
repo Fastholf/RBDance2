@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    fillUIArrays();
+
     appManager = new AppManager();
 
     connect(appManager, SIGNAL(robotLoaded(int, QString, int)),
@@ -28,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
                                               QVector<Role>)),
             this, SLOT(updateFileNameComboBoxes(QVector<QString>,
                                                 QVector<Role>)));
+
+    connect(appManager, SIGNAL(danceFinished()),
+            this, SLOT(onDanceFinished()));
 }
 
 MainWindow::~MainWindow()
@@ -35,11 +40,112 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::fillUIArrays()
+{
+    connectButtons.push_back(ui->connect1_pushButton);
+    connectButtons.push_back(ui->connect2_pushButton);
+    connectButtons.push_back(ui->connect3_pushButton);
+
+    basicPustureButtons.push_back(ui->basicPosture1_pushButton);
+    basicPustureButtons.push_back(ui->basicPosture2_pushButton);
+    basicPustureButtons.push_back(ui->basicPosture3_pushButton);
+
+    dcOnButtons.push_back(ui->DCOn1_pushButton);
+    dcOnButtons.push_back(ui->DCOn2_pushButton);
+    dcOnButtons.push_back(ui->DCOn3_pushButton);
+
+    dcOffButtons.push_back(ui->DCOff1_pushButton);
+    dcOffButtons.push_back(ui->DCOff2_pushButton);
+    dcOffButtons.push_back(ui->DCOff3_pushButton);
+
+    disconnectButtons.push_back(ui->disconnect1_pushButton);
+    disconnectButtons.push_back(ui->disconnect2_pushButton);
+    disconnectButtons.push_back(ui->disconnect3_pushButton);
+}
+
 void MainWindow::clearFileNameComboboxes()
 {
     ui->fileName1_comboBox->clear();
     ui->fileName2_comboBox->clear();
     ui->fileName3_comboBox->clear();
+}
+
+void MainWindow::onRobotConnected(int index)
+{
+    connectButtons[index]->setEnabled(false);
+    basicPustureButtons[index]->setEnabled(true);
+    dcOnButtons[index]->setEnabled(true);
+    disconnectButtons[index]->setEnabled(true);
+}
+
+void MainWindow::onDCModeTurnedOn(int index)
+{
+    basicPustureButtons[index]->setEnabled(false);
+    dcOnButtons[index]->setEnabled(false);
+    dcOffButtons[index]->setEnabled(true);
+}
+
+void MainWindow::onDCModeTurnedOff(int index)
+{
+    basicPustureButtons[index]->setEnabled(true);
+    dcOnButtons[index]->setEnabled(true);
+    dcOffButtons[index]->setEnabled(false);
+}
+
+void MainWindow::onRobotDisconnected(int index)
+{
+    connectButtons[index]->setEnabled(true);
+    basicPustureButtons[index]->setEnabled(false);
+    dcOnButtons[index]->setEnabled(false);
+    dcOffButtons[index]->setEnabled(false);
+    disconnectButtons[index]->setEnabled(false);
+}
+
+void MainWindow::onDanceStarted()
+{
+    ui->dance_prepare_widget->setEnabled(false);
+    ui->start_pushButton->setEnabled(false);
+    ui->pause_pushButton->setEnabled(true);
+    ui->stop_pushButton->setEnabled(true);
+}
+
+void MainWindow::onDancePaused()
+{
+
+}
+
+void MainWindow::onDanceStopped()
+{
+    ui->dance_prepare_widget->setEnabled(true);
+    ui->start_pushButton->setEnabled(true);
+    ui->pause_pushButton->setEnabled(false);
+    ui->stop_pushButton->setEnabled(false);
+}
+
+void MainWindow::connectRobot(int index)
+{
+    if (appManager->connectRobot(index)) {
+        onRobotConnected(index);
+    }
+}
+
+void MainWindow::turnDCOn(int index)
+{
+    if (appManager->robotTurnDCOn(index)) {
+        onDCModeTurnedOn(index);
+    }
+}
+
+void MainWindow::turnDCOff(int index)
+{
+    appManager->robotTurnDCOff(index);
+    onDCModeTurnedOff(index);
+}
+
+void MainWindow::disconnectRobot(int index)
+{
+    appManager->robotDisconnect(index);
+    onRobotDisconnected(index);
 }
 
 void MainWindow::updateRobotLabel(int index, QString robotName, int portNum)
@@ -84,6 +190,11 @@ void MainWindow::updateFileNameComboBoxes(QVector<QString> danceFileNames,
     }
 }
 
+void MainWindow::onDanceFinished()
+{
+    onDanceStopped();
+}
+
 void MainWindow::on_dance_comboBox_currentIndexChanged(int index)
 {
     if (index > 0) {
@@ -96,17 +207,17 @@ void MainWindow::on_dance_comboBox_currentIndexChanged(int index)
 
 void MainWindow::on_connect1_pushButton_clicked()
 {
-    appManager->connectRobot(0);
+    connectRobot(0);
 }
 
 void MainWindow::on_connect2_pushButton_clicked()
 {
-    appManager->connectRobot(1);
+    connectRobot(1);
 }
 
 void MainWindow::on_connect3_pushButton_clicked()
 {
-    appManager->connectRobot(2);
+    connectRobot(2);
 }
 
 void MainWindow::on_basicPosture1_pushButton_clicked()
@@ -126,47 +237,47 @@ void MainWindow::on_basicPosture3_pushButton_clicked()
 
 void MainWindow::on_DCOn1_pushButton_clicked()
 {
-    appManager->robotTurnDCOn(0);
+    turnDCOn(0);
 }
 
 void MainWindow::on_DCOn2_pushButton_clicked()
 {
-    appManager->robotTurnDCOn(1);
+    turnDCOn(1);
 }
 
 void MainWindow::on_DCOn3_pushButton_clicked()
 {
-    appManager->robotTurnDCOn(2);
+    turnDCOn(2);
 }
 
 void MainWindow::on_DCOff1_pushButton_clicked()
 {
-    appManager->robotTurnDCOff(0);
+    turnDCOff(0);
 }
 
 void MainWindow::on_DCOff2_pushButton_clicked()
 {
-    appManager->robotTurnDCOff(1);
+    turnDCOff(1);
 }
 
 void MainWindow::on_DCOff3_pushButton_clicked()
 {
-    appManager->robotTurnDCOff(2);
+    turnDCOff(2);
 }
 
 void MainWindow::on_disconnect1_pushButton_clicked()
 {
-    appManager->robotDisconnect(0);
+    disconnectRobot(0);
 }
 
 void MainWindow::on_disconnect2_pushButton_clicked()
 {
-    appManager->robotDisconnect(1);
+    disconnectRobot(1);
 }
 
 void MainWindow::on_disconnect3_pushButton_clicked()
 {
-    appManager->robotDisconnect(2);
+    disconnectRobot(2);
 }
 
 void MainWindow::on_fileName1_comboBox_currentIndexChanged(int index)
@@ -188,15 +299,18 @@ void MainWindow::on_start_pushButton_clicked()
 {
     if (appManager->isDanceReady()) {
         appManager->danceStart();
+        onDanceStarted();
     }
 }
 
 void MainWindow::on_pause_pushButton_clicked()
 {
     appManager->dancePause();
+    onDancePaused();
 }
 
 void MainWindow::on_stop_pushButton_clicked()
 {
     appManager->danceStop();
+    onDanceStopped();
 }

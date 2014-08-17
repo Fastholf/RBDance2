@@ -25,6 +25,9 @@ public:
     void startDance(QVector<Robot> t_robots, Scenario *t_scenario);
     void pauseDance();
     void stopDance();
+
+signals:
+    void danceFinished();
 };
 
 #endif // CHOREOGRAPHER_H

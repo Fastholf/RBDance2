@@ -174,10 +174,13 @@ bool AppManager::isRobotIndexOk(int index, QString methodName)
     return true;
 }
 
-void AppManager::connectRobot(int index)
+bool AppManager::connectRobot(int index)
 {
     if (isRobotIndexOk(index, "Controller::connectRobot")) {
-        robots[index].connect();
+        return robots[index].connect();
+    }
+    else {
+        return false;
     }
 }
 
@@ -188,10 +191,13 @@ void AppManager::robotBasicPosture(int index)
     }
 }
 
-void AppManager::robotTurnDCOn(int index)
+bool AppManager::robotTurnDCOn(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotTurnDCOn")) {
-        robots[index].turnDCOn();
+        return robots[index].turnDCOn();
+    }
+    else {
+        return false;
     }
 }
 
@@ -230,6 +236,8 @@ bool AppManager::isDanceReady()
 void AppManager::danceStart()
 {
     choreographer = new Choreographer();
+    connect(choreographer, SIGNAL(danceFinished()),
+            this, SLOT(onDanceFinished()));
     choreographer->startDance(robots, scenario);
 }
 
@@ -250,4 +258,14 @@ void AppManager::danceStop()
     choreographer->wait();
     delete choreographer;
     choreographer = NULL;
+}
+
+void AppManager::onDanceFinished()
+{
+    if (choreographer != NULL) {
+        choreographer->wait();
+        delete choreographer;
+        choreographer = NULL;
+    }
+    danceFinished();
 }

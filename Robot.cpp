@@ -15,11 +15,11 @@ Robot::Robot(int t_portNum, QString t_name)
     DCModeOn = false;
 }
 
-void Robot::connect()
+bool Robot::connect()
 {
     if (portNum == -1) {
         qWarning() << "Robot::connect: port num is not specified.";
-        return;
+        return false;
     }
 
     serialPort = new QSerialPort();
@@ -29,9 +29,11 @@ void Robot::connect()
         connected = true;
         rbController = new RBController(serialPort);
         qDebug() << "Robot " << name << " connected.";
+        return true;
     }
     else {
         qDebug() << "Connection on port " << portNum << " failed.";
+        return false;
     }
 }
 
@@ -42,11 +44,13 @@ void Robot::basicPosture()
     }
 }
 
-void Robot::turnDCOn()
+bool Robot::turnDCOn()
 {
-    if (isConnected() && rbController->turnDirectControlModeOn(10)) {
-        DCModeOn = true;
+    if (isConnected()) {
+        DCModeOn = rbController->turnDirectControlModeOn(10);
     }
+
+    return DCModeOn;
 }
 
 void Robot::turnDCOff()
