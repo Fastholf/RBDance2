@@ -197,3 +197,28 @@ bool DanceScript::loadFromMotionBuilderFile(QString t_filePath)
 
     return true;
 }
+
+void DanceScript::reset()
+{
+    curIndex = 0;
+}
+
+int DanceScript::getCurrentFireTime()
+{
+    return frames[curIndex].fireTime;
+}
+
+Frame DanceScript::getCurrentFrame()
+{
+    return frames[curIndex];
+}
+
+bool DanceScript::isFinished()
+{
+    return curIndex == frames.count();
+}
+
+void DanceScript::goToNextFrame()
+{
+    ++curIndex;
+}

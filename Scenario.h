@@ -37,7 +37,9 @@ public:
     QVector<QString> getDanceFileNames();
     QString getMusicFilePath();
     QVector<Role> getRoles();
+    QVector<DanceScript> getDanceScripts();
 
+    int minFireTime();
 };
 
 #endif // SCENARIO_H

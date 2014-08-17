@@ -1,6 +1,8 @@
 #include "Scenario.h"
 #include <QFile>
 #include <QFileInfo>
+#include <limits>
+#include <algorithm>    // std::min
 
 Scenario::Scenario(int t_robotCount)
 {
@@ -78,4 +80,22 @@ QString Scenario::getMusicFilePath()
 QVector<Role> Scenario::getRoles()
 {
     return roles;
+}
+
+QVector<DanceScript> Scenario::getDanceScripts()
+{
+    return danceScripts;
+}
+
+int Scenario::minFireTime()
+{
+    int result = std::numeric_limits<int>::max();
+    for (int i = 0; i < roles.count(); ++i) {
+        if (roles[i].danceNum != -1) {
+            int time = danceScripts[roles[i].danceNum].getCurrentFireTime();
+            result = std::min(result, time);
+        }
+    }
+
+    return result;
 }

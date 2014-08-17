@@ -8,6 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets serialport
 
+VERSION = 0.1.0
 TARGET = RBDance2
 TEMPLATE = app
 
@@ -19,13 +20,15 @@ SOURCES +=\
     Scenario.cpp \
     RBController.cpp \
     AppManager.cpp \
-    DanceScript.cpp
+    DanceScript.cpp \
+    Choreographer.cpp
 
 HEADERS  += MainWindow.h \
     Robot.h \
     Scenario.h \
     RBController.h \
     AppManager.h \
-    DanceScript.h
+    DanceScript.h \
+    Choreographer.h
 
 FORMS    += MainWindow.ui

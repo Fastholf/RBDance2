@@ -26,6 +26,7 @@ private:
     QVector<int> poseDurations;
     QVector< QVector<int> > poseServoAngles;
     QVector<Frame> frames;
+    int curIndex;
 
     bool skipLinesWithString(QTextStream *in,
                              int linesCount,
@@ -45,6 +46,11 @@ public:
     DanceScript();
     void clear();
     bool loadFromMotionBuilderFile(QString t_filePath);
+    void reset();
+    int getCurrentFireTime();
+    Frame getCurrentFrame();
+    bool isFinished();
+    void goToNextFrame();
 };
 
 #endif // DANCESCRIPT_H
