@@ -6,6 +6,7 @@
 #include <QObject>
 #include "Robot.h"
 #include "Scenario.h"
+#include "Choreographer.h"
 
 enum FileLoadError {
     FileLoadErrorNo = 0,
@@ -25,6 +26,7 @@ private:
     QVector<Robot> robots;
     QVector<QString> scenarioPaths;
     Scenario *scenario;
+    Choreographer *choreographer;
 
     bool isRobotIndexOk(int index, QString methodName);
 

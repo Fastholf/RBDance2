@@ -1,57 +1,71 @@
 #include "Choreographer.h"
 #include <limits>
 #include "DanceScript.h"
-#include <QThread>
+#include <QDebug>
 
-Choreographer::Choreographer()
+void Choreographer::run()
 {
+    dancing();
 }
 
-void Choreographer::startDance(QVector<Robot> robots, Scenario scenario)
+void Choreographer::dancing()
 {
     finished = false;
     paused = false;
     int currentTime = 0;
 
-    while (!finished)
-    {
-        while (paused) {
+    while (!finished) {
 
+        while (paused) {
+            QThread::msleep(1);
         }
 
-        QVector<Role> roles = scenario.getRoles();
-        int closestFireTime = scenario.minFireTime();
-        bool hasWorkToDo = false;
-        for (int i = 0; i < roles.count(); ++i)
-        {
+        QVector<Role> roles = scenario->getRoles();
+        bool haveWorkToDo = false;
+        for (int i = 0; i < roles.count(); ++i) {
+
             int danceNum = roles[i].danceNum;
             if (danceNum == -1) {
                 continue;
             }
 
-            QVector<DanceScript> scripts = scenario.getDanceScripts();
+            QVector<DanceScript> scripts = scenario->getDanceScripts();
             if (scripts[danceNum].isFinished()) {
                 continue;
             }
 
-            hasWorkToDo = true;
-
             int robotNum = roles[i].robotNum;
             if (scripts[danceNum].getCurrentFireTime()
-                    == closestFireTime) {
+                    == currentTime) {
                 Frame curFrame = scripts[danceNum].getCurrentFrame();
-                QVector<int> servoAngles = curFrame.servoAngles;
-                robots[robotNum].setPose(servoAngles);
+                robots[robotNum].setPose(curFrame.servoAngles);
                 scripts[danceNum].goToNextFrame();
             }
-        }
-        finished = hasWorkToDo;
 
+            haveWorkToDo |= scripts[danceNum].isFinished();
+        }
+        finished |= !haveWorkToDo;
+        if (finished) {
+            break;
+        }
+
+        int closestFireTime = scenario->minFireTime();
         while (currentTime < closestFireTime) {
             QThread::msleep(1);
             ++currentTime;
         }
     }
+}
+
+Choreographer::Choreographer()
+{
+}
+
+void Choreographer::startDance(QVector<Robot> t_robots, Scenario *t_scenario)
+{
+    robots = t_robots;
+    scenario = t_scenario;
+    start();
 }
 
 void Choreographer::pauseDance()

@@ -20,6 +20,7 @@ AppManager::AppManager()
 
 
     scenario = NULL;
+    choreographer = NULL;
 }
 
 FileLoadError AppManager::loadRobotsFromFile()
@@ -221,15 +222,25 @@ bool AppManager::isDanceReady()
 
 void AppManager::danceStart()
 {
-
+    choreographer = new Choreographer();
+    choreographer->startDance(robots, scenario);
 }
 
 void AppManager::dancePause()
 {
-
+    if (choreographer == NULL) {
+        return;
+    }
+    choreographer->pauseDance();
 }
 
 void AppManager::danceStop()
 {
-
+    if (choreographer == NULL) {
+        return;
+    }
+    choreographer->stopDance();
+    choreographer->wait();
+    delete choreographer;
+    choreographer = NULL;
 }
