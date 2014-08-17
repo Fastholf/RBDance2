@@ -40,6 +40,7 @@ public:
     QVector<DanceScript> getDanceScripts();
 
     int minFireTime();
+    QVector<int> involvedRobotNums();
 };
 
 #endif // SCENARIO_H

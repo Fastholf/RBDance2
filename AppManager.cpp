@@ -217,6 +217,13 @@ bool AppManager::isDanceReady()
     if (!scenario->loadDanceScripts()) {
         return false;
     }
+    QVector<int> involvedRobotNums = scenario->involvedRobotNums();
+    for (int i = 0; i < involvedRobotNums.count(); ++i) {
+        int rNum = involvedRobotNums[i];
+        if (!robots[rNum].isConnected() || !robots[rNum].isDCModeOn()) {
+            return false;
+        }
+    }
     return true;
 }
 

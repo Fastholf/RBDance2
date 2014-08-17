@@ -99,3 +99,14 @@ int Scenario::minFireTime()
 
     return result;
 }
+
+QVector<int> Scenario::involvedRobotNums()
+{
+    QVector<int> result;
+    for (int i = 0; i < roles.count(); ++i) {
+        if (roles[i].danceNum != -1) {
+            result.append(roles[i].robotNum);
+        }
+    }
+    return result;
+}
