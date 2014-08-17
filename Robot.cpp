@@ -74,3 +74,8 @@ bool Robot::isDCModeOn()
 {
     return DCModeOn;
 }
+
+void Robot::setPose(QVector<int> servoAngles)
+{
+    rbController->setDirectPose(servoAngles);
+}

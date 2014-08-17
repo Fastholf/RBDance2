@@ -1,4 +1,5 @@
 #include "RBController.h"
+#include "inttypes.h"
 
 RBController::RBController(QSerialPort *t_serialPort)
 {
@@ -45,7 +46,48 @@ bool RBController::turnDirectControlModeOn(int attemptCount)
 
 void RBController::turnDirectControlModeOff()
 {
+    if (!serialPort->isOpen()) {
+        return;
+    }
 
+    QByteArray command;
+    command.append((char)0xFF);
+    command.append((char)0xE0);
+    command.append((char)0xFB);
+    command.append((char)0x1);
+    command.append((char)0x00);
+    command.append((char)0x1A);
+
+    if (serialPort->write(command) != -1) {
+        return;
+    } else {
+        qWarning() << "RBController::turnDirectControlModeOff: Can't write to port.";
+    }
+}
+
+void RBController::setDirectPose(QVector<int> servoAngles)
+{
+    int servoCount = servoAngles.count();
+    QByteArray command;
+
+    command.append((char)0xFF);                 //header;
+    command.append((char)((4 << 5) | 0x1f));    // speed [0 ,4] | 31
+    command.append(servoCount + 1);             // lastID + 1
+
+    uint8_t checkSum = 0;
+    for (int i = 0; i < servoCount; ++i)
+    {
+        command.append(servoAngles[i]);
+        checkSum ^= (uint8_t)servoAngles[i];
+    }
+    checkSum = (uint8_t)(checkSum & 0x7f);
+    command.append(checkSum);
+
+    if (serialPort->write(command) != -1) {
+        return;
+    } else {
+        qWarning() << "RBController::setDirectPose: Can't write to port.";
+    }
 }
 
 bool RBController::sendCommand(qint8 type, qint8 commandContents)

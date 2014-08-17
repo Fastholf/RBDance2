@@ -2,6 +2,7 @@
 #define ROBOT_H
 
 #include <QString>
+#include <QVector>
 #include <QtSerialPort/QtSerialPort>
 #include "RBController.h"
 
@@ -26,6 +27,8 @@ public:
 
     bool isConnected();
     bool isDCModeOn();
+
+    void setPose(QVector<int> servoAngles);
 };
 
 #endif // ROBOT_H

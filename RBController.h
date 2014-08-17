@@ -2,6 +2,7 @@
 #define RBCONTROLLER_H
 
 #include <QtSerialPort/QtSerialPort>
+#include <QVector>
 
 class RBController
 {
@@ -16,6 +17,7 @@ public:
     void runBasicPosture();
     bool turnDirectControlModeOn(int attemptCount);
     void turnDirectControlModeOff();
+    void setDirectPose(QVector<int> servoAngles);
 };
 
 #endif // RBCONTROLLER_H
