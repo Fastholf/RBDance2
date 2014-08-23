@@ -32,6 +32,7 @@ private:
 
 public:
     explicit AppManager();
+    bool init();
 
     FileLoadError loadRobotsFromFile();
     FileLoadError loadScenarioListFromFile();
@@ -57,6 +58,7 @@ signals:
     void scenarioListLoaded(QVector<QString> scenarioPaths);
     void scenarioLoaded(QVector<QString> danceFileNames, QVector<Role> roles);
     void danceFinished();
+    void showMessage(QString message);
 };
 
 #endif // CONTROLLER_H

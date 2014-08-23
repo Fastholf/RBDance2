@@ -34,7 +34,7 @@ void Scenario::setRole(int robotNum, int danceNum)
     }
 }
 
-bool Scenario::loadDanceScripts()
+bool Scenario::loadDanceScripts(QString *errorMessage)
 {
     for (int i = 0; i < danceFilePaths.count(); ++i) {
         danceScripts[i].clear();
@@ -49,6 +49,7 @@ bool Scenario::loadDanceScripts()
             continue;
         }
         if (!danceScripts[i].loadFromMotionBuilderFile(danceFilePaths[i])) {
+            *errorMessage = "Can not load file " + danceFilePaths[i];
             return false;
         }
     }

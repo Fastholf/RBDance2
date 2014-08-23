@@ -19,6 +19,7 @@ private:
 public:
     Robot();
     Robot(int t_portNum, QString t_name);
+    QString getName();
     bool connect();
     void basicPosture();
     bool turnDCOn();

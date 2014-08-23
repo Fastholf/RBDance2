@@ -6,11 +6,17 @@
 
 AppManager::AppManager()
 {
+
+}
+
+bool AppManager::init()
+{
     settingsFilePath = "settings.txt";
     QFile settingsFile(settingsFilePath);
     if (!settingsFile.open(QIODevice::ReadOnly)) {
         qCritical() << "Settings file was not found.";
-        return;
+        showMessage("Settings file was not found.");
+        return false;
     }
     QTextStream in(&settingsFile);
 
@@ -18,9 +24,20 @@ AppManager::AppManager()
     robotsFilePath = rootPath + in.readLine();
     scenarioListFilePath = rootPath + in.readLine();
 
-
     scenario = NULL;
     choreographer = NULL;
+
+    FileLoadError error = loadRobotsFromFile();
+    if (error != FileLoadErrorNo) {
+        return false;
+    }
+
+    error = loadScenarioListFromFile();
+    if (error != FileLoadErrorNo) {
+        return false;
+    }
+
+    return true;
 }
 
 FileLoadError AppManager::loadRobotsFromFile()
@@ -28,6 +45,7 @@ FileLoadError AppManager::loadRobotsFromFile()
     QFile robotsFile(robotsFilePath);
     if (!robotsFile.open(QIODevice::ReadOnly)) {
         qCritical() << "File with robots description was not found.";
+        showMessage("File with robots description was not found.");
         return FileLoadErrorNotFound;
     }
     FileLoadError result = FileLoadErrorNo;
@@ -43,6 +61,7 @@ FileLoadError AppManager::loadRobotsFromFile()
             result = FileLoadErrorWrongFormat;
             qCritical() << "File with robots description has wrong format. \
                            Not enough items in the line.";
+            showMessage("File with robots description has wrong format.");
             break;
         }
         QString robotName = items[0];
@@ -53,6 +72,7 @@ FileLoadError AppManager::loadRobotsFromFile()
             result = FileLoadErrorWrongFormat;
             qCritical() << "File with robots description has wrong format. \
                            Port num is not integer.";
+            showMessage("File with robots description has wrong format.");
             break;
         }
         Robot newRobot = Robot(portNum, robotName);
@@ -70,6 +90,7 @@ FileLoadError AppManager::loadScenarioListFromFile()
     QFile scenarioListFile(scenarioListFilePath);
     if (!scenarioListFile.open(QIODevice::ReadOnly)) {
         qCritical() << "File with the list of scenarios was not found.";
+        showMessage("File with the list of scenarios was not found.");
         return FileLoadErrorNotFound;
     }
     FileLoadError result = FileLoadErrorNo;
@@ -91,6 +112,7 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
     QFile scenarioFile(rootPath + scenarioPaths[scenarioIndex]);
     if (!scenarioFile.open(QIODevice::ReadOnly)) {
         qCritical() << "Scenario file was not found.";
+        showMessage("Scenario file was not found.");
         return FileLoadErrorNotFound;
     }
     FileLoadError result = FileLoadErrorNo;
@@ -111,12 +133,14 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
             result = FileLoadErrorWrongFormat;
             qCritical() << "Scenario file has wrong format. \
                            Not enough items in the line.";
+            showMessage("Scenario file has wrong format.");
             break;
         }
         if (items.size() > 3) {
             result = FileLoadErrorWrongFormat;
             qCritical() << "Scenario file has wrong format. \
                            Too many items in the line.";
+            showMessage("Scenario file has wrong format.");
             break;
         }
         QString command = items[0];
@@ -139,6 +163,7 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
                 result = FileLoadErrorWrongFormat;
                 qCritical() << "Scenario file has wrong format. \
                                Dance num is not integer.";
+            showMessage("Scenario file has wrong format.");
                 break;
             }
             scenario->setRole(robotNum, danceNum);
@@ -150,6 +175,7 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
             result = FileLoadErrorWrongFormat;
             qCritical() << "Scenario file has wrong format. \
                            Unknown command.";
+            showMessage("Scenario file has wrong format.");
             break;
         }
     }
@@ -218,15 +244,31 @@ void AppManager::robotDisconnect(int index)
 bool AppManager::isDanceReady()
 {
     if (scenario == NULL) {
+        qWarning() << "isDanceReady: Scenario is not loaded";
+        showMessage("Dance was not chosen.");
         return false;
     }
-    if (!scenario->loadDanceScripts()) {
+    QString errorMessage = NULL;
+    if (!scenario->loadDanceScripts(&errorMessage)) {
+        qWarning() << "isDanceReady: " + errorMessage;
+        showMessage(errorMessage);
         return false;
     }
     QVector<int> involvedRobotNums = scenario->involvedRobotNums();
     for (int i = 0; i < involvedRobotNums.count(); ++i) {
         int rNum = involvedRobotNums[i];
-        if (!robots[rNum].isConnected() || !robots[rNum].isDCModeOn()) {
+        if (!robots[rNum].isConnected()) {
+            qWarning() << "isDanceReady: robot " + robots[rNum].getName() +
+                          " is not connected!";
+            showMessage("Robot " + robots[rNum].getName() +
+                        " is not connected!");
+            return false;
+        }
+        if (!robots[rNum].isDCModeOn()) {
+            qWarning() << "isDanceReady: robot " + robots[rNum].getName() +
+                          " is not in DC mode!";
+            showMessage("Robot " + robots[rNum].getName() +
+                        " is not DC mode!");
             return false;
         }
     }

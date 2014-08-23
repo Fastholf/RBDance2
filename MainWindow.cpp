@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QDebug>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,17 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(appManager, SIGNAL(robotLoaded(int, QString, int)),
             this, SLOT(updateRobotLabel(int, QString, int)));
-    FileLoadError error = appManager->loadRobotsFromFile();
-    if (error != FileLoadErrorNo) {
-
-    }
 
     connect(appManager, SIGNAL(scenarioListLoaded(QVector<QString>)),
             this, SLOT(updateDanceComboBox(QVector<QString>)));
-    error = appManager->loadScenarioListFromFile();
-    if (error != FileLoadErrorNo) {
-
-    }
 
     connect(appManager, SIGNAL(scenarioLoaded(QVector<QString>,
                                               QVector<Role>)),
@@ -33,6 +26,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(appManager, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
+
+    connect(appManager, SIGNAL(showMessage(QString)),
+            this, SLOT(showMessage(QString)));
+
+    if (!appManager->init()) {
+        ui->dance_prepare_widget->setEnabled(false);
+        ui->start_pushButton->setEnabled(false);
+        ui->pause_pushButton->setEnabled(false);
+        ui->stop_pushButton->setEnabled(false);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -195,10 +198,18 @@ void MainWindow::onDanceFinished()
     onDanceStopped();
 }
 
+void MainWindow::showMessage(QString message)
+{
+    QMessageBox::warning(this, "Error", message);
+}
+
 void MainWindow::on_dance_comboBox_currentIndexChanged(int index)
 {
     if (index > 0) {
-        appManager->loadScenarioFromFile(index - 1);
+        FileLoadError error = appManager->loadScenarioFromFile(index - 1);
+        if (error != FileLoadErrorNo) {
+            clearFileNameComboboxes();
+        }
     }
     else {
         clearFileNameComboboxes();

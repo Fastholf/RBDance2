@@ -31,7 +31,7 @@ public:
     void addDanceFile(QString danceFilePath);
     void setMusic(QString t_musicFilePath);
     void setRole(int robotNum, int danceNum);
-    bool loadDanceScripts();
+    bool loadDanceScripts(QString *errorMessage);
 
     QVector<QString> getDanceFilePaths();
     QVector<QString> getDanceFileNames();

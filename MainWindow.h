@@ -49,6 +49,8 @@ private slots:
                                   QVector<Role> roles);
     void onDanceFinished();
 
+    void showMessage(QString message);
+
     void on_dance_comboBox_currentIndexChanged(int index);
     void on_connect1_pushButton_clicked();
     void on_connect2_pushButton_clicked();

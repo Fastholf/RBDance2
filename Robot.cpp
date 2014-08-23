@@ -15,6 +15,11 @@ Robot::Robot(int t_portNum, QString t_name)
     DCModeOn = false;
 }
 
+QString Robot::getName()
+{
+    return name;
+}
+
 bool Robot::connect()
 {
     if (portNum == -1) {
