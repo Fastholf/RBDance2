@@ -5,6 +5,7 @@
 #include <QThread>
 #include "Robot.h"
 #include "Scenario.h"
+#include "MusicPlayer.h"
 
 class Choreographer : public QThread
 {
@@ -18,6 +19,7 @@ private:
     bool paused;
     QVector<Robot> robots;
     Scenario *scenario;
+    MusicPlayer *musicPlayer;
     void dancing();
 
 public:

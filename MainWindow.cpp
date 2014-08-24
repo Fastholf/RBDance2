@@ -325,3 +325,8 @@ void MainWindow::on_stop_pushButton_clicked()
     appManager->danceStop();
     onDanceStopped();
 }
+
+void MainWindow::on_music_checkBox_stateChanged(int arg1)
+{
+    appManager->setMusicPlaying(arg1);
+}

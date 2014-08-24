@@ -26,6 +26,7 @@ bool AppManager::init()
 
     scenario = NULL;
     choreographer = NULL;
+    musicPlaying = true;
 
     FileLoadError error = loadRobotsFromFile();
     if (error != FileLoadErrorNo) {
@@ -179,6 +180,7 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
             break;
         }
     }
+    scenario->setMusicPlaying(musicPlaying);
     scenarioFile.close();
 
     scenarioLoaded(scenario->getDanceFileNames(), scenario->getRoles());
@@ -189,6 +191,14 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
 void AppManager::setRobotRole(int robotNum, int danceNum)
 {
     scenario->setRole(robotNum, danceNum);
+}
+
+void AppManager::setMusicPlaying(bool t_musicPlaying)
+{
+    if (scenario != NULL) {
+        scenario->setMusicPlaying(t_musicPlaying);
+    }
+    musicPlaying = t_musicPlaying;
 }
 
 bool AppManager::isRobotIndexOk(int index, QString methodName)
@@ -244,28 +254,33 @@ void AppManager::robotDisconnect(int index)
 bool AppManager::isDanceReady()
 {
     if (scenario == NULL) {
-        qWarning() << "isDanceReady: Scenario is not loaded";
+        qWarning() << "Scenario is not loaded";
         showMessage("Dance was not chosen.");
         return false;
     }
     QString errorMessage = NULL;
     if (!scenario->loadDanceScripts(&errorMessage)) {
-        qWarning() << "isDanceReady: " + errorMessage;
+        qWarning() << errorMessage;
         showMessage(errorMessage);
+        return false;
+    }
+    if (!scenario->isMusicReady()) {
+        qWarning() << "Music file was not found.";
+        showMessage("Music file was not found.");
         return false;
     }
     QVector<int> involvedRobotNums = scenario->involvedRobotNums();
     for (int i = 0; i < involvedRobotNums.count(); ++i) {
         int rNum = involvedRobotNums[i];
         if (!robots[rNum].isConnected()) {
-            qWarning() << "isDanceReady: robot " + robots[rNum].getName() +
+            qWarning() << "Robot " + robots[rNum].getName() +
                           " is not connected!";
             showMessage("Robot " + robots[rNum].getName() +
                         " is not connected!");
             return false;
         }
         if (!robots[rNum].isDCModeOn()) {
-            qWarning() << "isDanceReady: robot " + robots[rNum].getName() +
+            qWarning() << "Robot " + robots[rNum].getName() +
                           " is not in DC mode!";
             showMessage("Robot " + robots[rNum].getName() +
                         " is not DC mode!");

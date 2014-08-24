@@ -73,6 +73,7 @@ private slots:
     void on_start_pushButton_clicked();
     void on_pause_pushButton_clicked();
     void on_stop_pushButton_clicked();
+    void on_music_checkBox_stateChanged(int arg1);
 };
 
 #endif // MAINWINDOW_H

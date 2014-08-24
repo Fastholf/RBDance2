@@ -6,6 +6,7 @@
 void Choreographer::run()
 {
     dancing();
+    musicPlayer = NULL;
 }
 
 void Choreographer::dancing()
@@ -13,6 +14,10 @@ void Choreographer::dancing()
     finished = false;
     paused = false;
     int currentTime = 0;
+    if (scenario->isMusicPlaying()) {
+        musicPlayer = new MusicPlayer(scenario->getMusicFilePath());
+        musicPlayer->start();
+    }
 
     while (!finished) {
 
@@ -72,9 +77,17 @@ void Choreographer::startDance(QVector<Robot> t_robots, Scenario *t_scenario)
 void Choreographer::pauseDance()
 {
     paused = !paused;
+    if (musicPlayer != NULL) {
+        musicPlayer->pause();
+    }
 }
 
 void Choreographer::stopDance()
 {
     finished = true;
+    if (musicPlayer != NULL) {
+        musicPlayer->stop();
+        delete musicPlayer;
+        musicPlayer = NULL;
+    }
 }

@@ -25,6 +25,11 @@ void Scenario::setMusic(QString t_musicFilePath)
     musicFilePath = t_musicFilePath;
 }
 
+void Scenario::setMusicPlaying(bool t_musicPlaying)
+{
+    musicPlaying = t_musicPlaying;
+}
+
 void Scenario::setRole(int robotNum, int danceNum)
 {
     for (int i = 0; i < roles.count(); ++i) {
@@ -54,6 +59,11 @@ bool Scenario::loadDanceScripts(QString *errorMessage)
         }
     }
     return true;
+}
+
+bool Scenario::isMusicPlaying()
+{
+    return musicPlaying;
 }
 
 QVector<QString> Scenario::getDanceFilePaths()
@@ -110,4 +120,14 @@ QVector<int> Scenario::involvedRobotNums()
         }
     }
     return result;
+}
+
+bool Scenario::isMusicReady()
+{
+    if (!musicPlaying) {
+        return true;
+    }
+
+    QFile musicFile(musicFilePath);
+    return musicFile.exists();
 }

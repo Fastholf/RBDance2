@@ -25,6 +25,7 @@ private:
     QString rootPath;
     QVector<Robot> robots;
     QVector<QString> scenarioPaths;
+    bool musicPlaying;
     Scenario *scenario;
     Choreographer *choreographer;
 
@@ -39,6 +40,7 @@ public:
     FileLoadError loadScenarioFromFile(int scenarioIndex);
 
     void setRobotRole(int robotNum, int danceNum);
+    void setMusicPlaying(bool t_musicPlaying);
 
     bool connectRobot(int index);
     void robotBasicPosture(int index);
