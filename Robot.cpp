@@ -71,6 +71,7 @@ void Robot::disconnect()
     if (isConnected()) {
         serialPort->close();
         connected = false;
+        qDebug() << "Robot " << name << " disconnected.";
     }
 }
 

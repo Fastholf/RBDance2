@@ -28,14 +28,17 @@ bool RBController::turnDirectControlModeOn(int attemptCount)
 
     for (int i = 0; i < attemptCount; ++i) {
         if (!sendCommand(0x10, 0x01)) {
+            qWarning() << "Failed to send command on port.";
             return false;
         }
 
         QByteArray response;
         if (!getResponse(&response)) {
+            qWarning() << "Failed to get response.";
             return false;
         }
 
+        qDebug() << "Response:  " << response;
         if (response.at(14) == 0x01 && response.at(8) == 0x10) {
             return true;
         }
@@ -61,7 +64,7 @@ void RBController::turnDirectControlModeOff()
     if (serialPort->write(command) != -1) {
         return;
     } else {
-        qWarning() << "RBController::turnDirectControlModeOff: Can't write to port.";
+        qWarning() << "Can't write to port.";
     }
 }
 
@@ -86,7 +89,7 @@ void RBController::setDirectPose(QVector<int> servoAngles)
     if (serialPort->write(command) != -1) {
         return;
     } else {
-        qWarning() << "RBController::setDirectPose: Can't write to port.";
+        qWarning() << "Can't write to port.";
     }
 }
 
@@ -107,11 +110,12 @@ bool RBController::sendCommand(qint8 type, qint8 commandContents)
 
     command.append(commandContents); // checkSum
 
+    qDebug() << "Command:  " << command;
     if (serialPort->write(header) != -1 &&
             serialPort->write(command) != -1) {
         return true;
     } else {
-        qWarning() << "RBController::sendCommand: Can't write to port.";
+        qWarning() << "Can't write to port.";
     }
 
     return false;
@@ -133,6 +137,7 @@ bool RBController::getResponse(QByteArray *response)
         if (b < header.count() && response->at(b) != header.at(b)) {
             b = 0;
             response->clear();
+            qDebug() << "Restart reading due to wrong byte in header";
             continue;
         }
 
