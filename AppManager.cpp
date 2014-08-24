@@ -21,8 +21,13 @@ bool AppManager::init()
     QTextStream in(&settingsFile);
 
     rootPath = in.readLine();
-    robotsFilePath = rootPath + in.readLine();
-    scenarioListFilePath = rootPath + in.readLine();
+    robotsFilePath = QDir::cleanPath(rootPath +
+                                     QDir::separator() +
+                                     in.readLine());
+
+    scenarioListFilePath = QDir::cleanPath(rootPath +
+                                           QDir::separator() +
+                                           in.readLine());
 
     scenario = NULL;
     choreographer = NULL;
@@ -110,7 +115,10 @@ FileLoadError AppManager::loadScenarioListFromFile()
 
 FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
 {
-    QFile scenarioFile(rootPath + scenarioPaths[scenarioIndex]);
+
+    QFile scenarioFile(QDir::cleanPath(rootPath +
+                                       QDir::separator() +
+                                       scenarioPaths[scenarioIndex]));
     if (!scenarioFile.open(QIODevice::ReadOnly)) {
         qCritical() << "Scenario file was not found.";
         showMessage("Scenario file was not found.");
@@ -118,6 +126,9 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
     }
     FileLoadError result = FileLoadErrorNo;
     QTextStream in(&scenarioFile);
+    QFileInfo fileInfo(scenarioFile.fileName());
+    QString scenarioPath(fileInfo.path());
+    qDebug() << scenarioPath;
 
     /** Assume three types of line in file:
      * file <dance file path>
@@ -146,7 +157,9 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
         }
         QString command = items[0];
         if (command == "file") {
-            scenario->addDanceFile(items[1]);
+            scenario->addDanceFile(QDir::cleanPath(scenarioPath +
+                                                   QDir::separator() +
+                                                   items[1]));
         }
         else if (command == "role") {
             /** Assume following format of command
@@ -170,7 +183,9 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
             scenario->setRole(robotNum, danceNum);
         }
         else if (command == "music") {
-            scenario->setMusic(items[1]);
+            scenario->setMusic(QDir::cleanPath(scenarioPath +
+                                               QDir::separator() +
+                                               items[1]));
         }
         else {
             result = FileLoadErrorWrongFormat;
