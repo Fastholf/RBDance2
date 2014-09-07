@@ -29,8 +29,8 @@ bool Robot::connect()
 
     serialPort = new QSerialPort();
     serialPort->setPortName("COM" + QString::number(portNum));
-    serialPort->setDataBits(QSerialPort::Data8);
     if (serialPort->open(QIODevice::ReadWrite)) {
+        serialPort->setDataBits(QSerialPort::Data8);
         connected = true;
         rbController = new RBController(serialPort);
         qDebug() << "Robot " << name << " connected.";

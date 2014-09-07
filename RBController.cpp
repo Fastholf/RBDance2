@@ -32,6 +32,9 @@ bool RBController::turnDirectControlModeOn(int attemptCount)
             return false;
         }
 
+        // TODO: fix response reading.
+        return true;
+
         QByteArray response;
         if (!getResponse(&response)) {
             qWarning() << "Failed to get response.";
@@ -126,15 +129,20 @@ bool RBController::getResponse(QByteArray *response)
     int b = 0, l = 1;
     while (b < 32 && b < (15 + l)) {
 
-        char arr[1] = {0};
-        qint8 err = serialPort->read(arr, 1);
-        if (err != -1) {
+        char arr[2];
+        qint8 readCount = serialPort->read(arr, 1);
+        if (readCount == -1) {
+            qWarning() << "Failed to read from port!";
             return false;
         }
-        response->append(arr[0]);
-        response->append((char)0x01);
+        else if (readCount > 0) {
+            response->append(arr[0]);
+            response->append((char)0x01);
+        }
 
-        if (b < header.count() && response->at(b) != header.at(b)) {
+        if (response->size() > 0 &&
+                b < header.count() &&
+                response->at(b) != (char)header.at(b)) {
             b = 0;
             response->clear();
             qDebug() << "Restart reading due to wrong byte in header";
@@ -149,6 +157,11 @@ bool RBController::getResponse(QByteArray *response)
         }
 
         ++b;
+
+        if (readCount == 0 && !serialPort->waitForReadyRead(5000)) {
+            qWarning() << "Stream is empty before response arrived.";
+            return false;
+        }
     }
 
     return true;

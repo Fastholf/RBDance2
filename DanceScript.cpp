@@ -158,6 +158,7 @@ int DanceScript::interpolatedAngle(int startAngle,
 DanceScript::DanceScript()
 {
     clear();
+    reset();
 }
 
 void DanceScript::clear()
