@@ -47,7 +47,7 @@ void Choreographer::dancing()
                 scripts[danceNum].goToNextFrame();
             }
 
-            haveWorkToDo |= scripts[danceNum].isFinished();
+            haveWorkToDo |= !scripts[danceNum].isFinished();
         }
         finished |= !haveWorkToDo;
         if (finished) {
