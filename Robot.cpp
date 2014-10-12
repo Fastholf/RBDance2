@@ -3,16 +3,31 @@
 Robot::Robot()
 {
     portNum = -1;
-    connected = false;
-    DCModeOn = false;
+    _connected = false;
+    _DCModeOn = false;
 }
 
-Robot::Robot(int t_portNum, QString t_name)
+Robot::Robot(int index,
+             int t_portNum,
+             QString t_name,
+             SerialPortWorker *portWorker)
 {
+    _index = index;
     portNum = t_portNum;
     name = t_name;
-    connected = false;
-    DCModeOn = false;
+
+    _portWorker = portWorker;
+    connect(_portWorker, SIGNAL(connectTryFinished(int, bool)),
+            this, SLOT(onConnectTryFinished(int, bool)));
+    connect(_portWorker, SIGNAL(turnDCOnFinished(int,bool)),
+            this, SLOT(onTurnDCOnFinished(int,bool)));
+    connect(_portWorker, SIGNAL(turnDCOffFinished(int)),
+            this, SLOT(onTurnDCOffFinished(int)));
+    connect(_portWorker, SIGNAL(disconnected(int)),
+            this, SLOT(onDisconnected(int)));
+
+    _connected = false;
+    _DCModeOn = false;
 }
 
 QString Robot::getName()
@@ -20,72 +35,81 @@ QString Robot::getName()
     return name;
 }
 
-bool Robot::connect()
+void Robot::connectToRB()
 {
-    if (portNum == -1) {
-        qWarning() << "Robot::connect: port num is not specified.";
-        return false;
-    }
-
-    serialPort = new QSerialPort();
-    serialPort->setPortName("COM" + QString::number(portNum));
-    if (serialPort->open(QIODevice::ReadWrite)) {
-        serialPort->setDataBits(QSerialPort::Data8);
-        connected = true;
-        rbController = new RBController(serialPort);
-        qDebug() << "Robot " << name << " connected.";
-        return true;
-    }
-    else {
-        qDebug() << "Connection on port " << portNum << " failed.";
-        return false;
-    }
+    _portWorker->connectToRB(_index);
 }
 
 void Robot::basicPosture()
 {
-    if (isConnected() && !isDCModeOn()) {
-        rbController->runBasicPosture();
-    }
+    _portWorker->basicPosture(_index);
 }
 
-bool Robot::turnDCOn()
+void Robot::turnDCOn()
 {
-    if (isConnected()) {
-        DCModeOn = rbController->turnDirectControlModeOn(10);
-    }
-
-    return DCModeOn;
-}
-
-void Robot::turnDCOff()
-{
-    if (isConnected()) {
-        rbController->turnDirectControlModeOff();
-        DCModeOn = false;
-    }
-}
-
-void Robot::disconnect()
-{
-    if (isConnected()) {
-        serialPort->close();
-        connected = false;
-        qDebug() << "Robot " << name << " disconnected.";
-    }
-}
-
-bool Robot::isConnected()
-{
-    return connected;
-}
-
-bool Robot::isDCModeOn()
-{
-    return DCModeOn;
+    _portWorker->turnDCOn(_index);
 }
 
 void Robot::setPose(QVector<int> servoAngles)
 {
-    rbController->setDirectPose(servoAngles);
+    _portWorker->setPose(_index, servoAngles);
+}
+
+void Robot::turnDCOff()
+{
+    _portWorker->turnDCOff(_index);
+}
+
+void Robot::disconnect()
+{
+    _portWorker->disconnect(_index);
+}
+
+void Robot::onConnectTryFinished(int index, bool connected)
+{
+    if (index != _index) {
+        return;
+    }
+    
+    _connected = connected;
+    emit connectTryFinished(index, connected);
+}
+
+void Robot::onTurnDCOnFinished(int index, bool result)
+{
+    if (index != _index) {
+        return;
+    }
+
+    _DCModeOn = result;
+    emit turnDCOnFinished(index, result);
+}
+
+void Robot::onTurnDCOffFinished(int index)
+{
+    if (index != _index) {
+        return;
+    }
+
+    _DCModeOn = false;
+    emit turnDCOffFinished(index);
+}
+
+void Robot::onDisconnected(int index)
+{
+    if (index != _index) {
+        return;
+    }
+
+    emit disconnected(index);
+}
+
+bool Robot::isConnected()
+{
+    return _connected;
+}
+
+bool Robot::isDCModeOn()
+{
+    return _DCModeOn;
 }

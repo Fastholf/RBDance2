@@ -5,6 +5,7 @@
 
 void Choreographer::run()
 {
+    qDebug() << "run: " << QThread::currentThread();
     dancing();
     musicPlayer = NULL;
 }
@@ -43,7 +44,7 @@ void Choreographer::dancing()
             if (scripts[danceNum].getCurrentFireTime()
                     == currentTime) {
                 Frame curFrame = scripts[danceNum].getCurrentFrame();
-                robots[robotNum].setPose(curFrame.servoAngles);
+                robots[robotNum]->setPose(curFrame.servoAngles);
                 scripts[danceNum].goToNextFrame();
             }
 
@@ -67,15 +68,25 @@ Choreographer::Choreographer()
 {
 }
 
-void Choreographer::startDance(QVector<Robot> t_robots, Scenario *t_scenario)
+void Choreographer::setRobots(QVector<Robot*> t_robots)
 {
     robots = t_robots;
+}
+
+void Choreographer::setScenario(Scenario *t_scenario)
+{
     scenario = t_scenario;
-    start();
+}
+
+void Choreographer::startDance()
+{
+    qDebug() << "startDance: " << QThread::currentThread();
+    run();
 }
 
 void Choreographer::pauseDance()
 {
+    qDebug() << "pauseDance: " << QThread::currentThread();
     paused = !paused;
     if (musicPlayer != NULL) {
         musicPlayer->pause();
@@ -84,6 +95,7 @@ void Choreographer::pauseDance()
 
 void Choreographer::stopDance()
 {
+    qDebug() << "stopDance: " << QThread::currentThread();
     finished = true;
     if (musicPlayer != NULL) {
         musicPlayer->stop();

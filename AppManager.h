@@ -7,6 +7,7 @@
 #include "Robot.h"
 #include "Scenario.h"
 #include "Choreographer.h"
+#include "SerialPortWorker.h"
 
 enum FileLoadError {
     FileLoadErrorNo = 0,
@@ -23,11 +24,13 @@ private:
     QString scenarioListFilePath;
     QString settingsFilePath;
     QString rootPath;
-    QVector<Robot> robots;
+    QVector<Robot*> robots;
     QVector<QString> scenarioPaths;
     bool musicPlaying;
     Scenario *scenario;
     Choreographer *choreographer;
+    SerialPortWorker *serialPortWorker;
+    QThread *serialPortThread;
 
     bool isRobotIndexOk(int index, QString methodName);
 
@@ -42,9 +45,9 @@ public:
     void setRobotRole(int robotNum, int danceNum);
     void setMusicPlaying(bool t_musicPlaying);
 
-    bool connectRobot(int index);
+    void connectRobot(int index);
     void robotBasicPosture(int index);
-    bool robotTurnDCOn(int index);
+    void robotTurnDCOn(int index);
     void robotTurnDCOff(int index);
     void robotDisconnect(int index);
     bool isDanceReady();
@@ -54,6 +57,10 @@ public:
 
 private slots:
     void onDanceFinished();
+    void onConnectTryFinished(int index, bool result);
+    void onTurnDCOnFinished(int index, bool result);
+    void onTurnDCOffFinished(int index);
+    void onDisconnected(int index);
 
 signals:
     void robotLoaded(int index, QString name, int port);
@@ -61,6 +68,10 @@ signals:
     void scenarioLoaded(QVector<QString> danceFileNames, QVector<Role> roles);
     void danceFinished();
     void showMessage(QString message);
+    void connectTryFinished(int index, bool result);
+    void turnDCOnFinished(int index, bool result);
+    void turnDCOffFinished(int index);
+    void disconnected(int index);
 };
 
 #endif // CONTROLLER_H

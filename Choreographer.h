@@ -7,7 +7,7 @@
 #include "Scenario.h"
 #include "MusicPlayer.h"
 
-class Choreographer : public QThread
+class Choreographer : public QObject
 {
     Q_OBJECT
 
@@ -17,16 +17,22 @@ protected:
 private:
     bool finished;
     bool paused;
-    QVector<Robot> robots;
+    QVector<Robot*> robots;
     Scenario *scenario;
     MusicPlayer *musicPlayer;
     void dancing();
 
 public:
     Choreographer();
-    void startDance(QVector<Robot> t_robots, Scenario *t_scenario);
+    void setRobots(QVector<Robot*> t_robots);
+    void setScenario(Scenario *t_scenario);
+public slots:
+    void startDance();
+public:
     void pauseDance();
     void stopDance();
+
+
 
 signals:
     void danceFinished();

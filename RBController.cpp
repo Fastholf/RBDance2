@@ -1,9 +1,13 @@
 #include "RBController.h"
 #include "inttypes.h"
 
-RBController::RBController(QSerialPort *t_serialPort)
+#define TURN_DC_ON_ATTEMPT_COUNT 6
+
+RBController::RBController(int portNum)
 {
-    serialPort = t_serialPort;
+    serialPort = new QSerialPort();
+    _portNum = portNum;
+    _connected = false;
     header.append(0xFF);
     header.append(0xFF);
     header.append(0xAA);
@@ -14,19 +18,38 @@ RBController::RBController(QSerialPort *t_serialPort)
     header.append(0xBA);
 }
 
+bool RBController::connectToRB()
+{
+    if (_portNum == -1) {
+        qWarning() << "Robot::connect: port num is not specified.";
+        return false;
+    }
+    
+    serialPort->setPortName("COM" + QString::number(_portNum));
+    if (serialPort->open(QIODevice::ReadWrite)) {
+        _connected = true;
+        qDebug() << "Connection on port " << _portNum << " succeeded.";
+    }
+    else {
+        _connected = false;
+        qDebug() << "Connection on port " << _portNum << " failed.";
+    }
+
+    return _connected;
+}
+
 void RBController::runBasicPosture()
 {
     runMotion(7);
 }
 
-
-bool RBController::turnDirectControlModeOn(int attemptCount)
+bool RBController::turnDirectControlModeOn()
 {
     if (!serialPort->isOpen()) {
         return false;
     }
 
-    for (int i = 0; i < attemptCount; ++i) {
+    for (int i = 0; i < TURN_DC_ON_ATTEMPT_COUNT; ++i) {
         if (!sendCommand(0x10, 0x01)) {
             qWarning() << "Failed to send command on port.";
             return false;
@@ -69,6 +92,13 @@ void RBController::turnDirectControlModeOff()
     } else {
         qWarning() << "Can't write to port.";
     }
+}
+
+void RBController::disconnect()
+{
+    serialPort->close();
+    _connected = false;
+    qDebug() << "Connection on port " << _portNum << " closed.";
 }
 
 void RBController::setDirectPose(QVector<int> servoAngles)
@@ -170,4 +200,9 @@ bool RBController::getResponse(QByteArray *response)
 void RBController::runMotion(qint8 motionNumber)
 {
     sendCommand(20, motionNumber);
+}
+
+RBController::RBController()
+{
+
 }

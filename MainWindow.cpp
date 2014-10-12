@@ -12,6 +12,13 @@ MainWindow::MainWindow(QWidget *parent) :
     fillUIArrays();
 
     appManager = new AppManager();
+    if (!appManager->init()) {
+        ui->dance_prepare_widget->setEnabled(false);
+        ui->start_pushButton->setEnabled(false);
+        ui->pause_pushButton->setEnabled(false);
+        ui->stop_pushButton->setEnabled(false);
+        return;
+    }
 
     connect(appManager, SIGNAL(robotLoaded(int, QString, int)),
             this, SLOT(updateRobotLabel(int, QString, int)));
@@ -30,12 +37,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(appManager, SIGNAL(showMessage(QString)),
             this, SLOT(showMessage(QString)));
 
-    if (!appManager->init()) {
-        ui->dance_prepare_widget->setEnabled(false);
-        ui->start_pushButton->setEnabled(false);
-        ui->pause_pushButton->setEnabled(false);
-        ui->stop_pushButton->setEnabled(false);
-    }
+    connect(appManager, SIGNAL(connectTryFinished(int, bool)),
+            this, SLOT(onConnectTryFinished(int, bool)));
+    connect(appManager, SIGNAL(turnDCOnFinished(int, bool)),
+            this, SLOT(onTurnDCOnFinished(int, bool)));
+    connect(appManager, SIGNAL(turnDCOffFinished(int)),
+            this, SLOT(onTurnDCOffFinished(int)));
+    connect(appManager, SIGNAL(disconnected(int)),
+            this, SLOT(onDisconnected(int)));
 }
 
 MainWindow::~MainWindow()
@@ -127,28 +136,24 @@ void MainWindow::onDanceStopped()
 
 void MainWindow::connectRobot(int index)
 {
-    if (appManager->connectRobot(index)) {
-        onRobotConnected(index);
-    }
+    connectButtons[index]->setEnabled(false);
+    appManager->connectRobot(index);
 }
 
 void MainWindow::turnDCOn(int index)
 {
-    if (appManager->robotTurnDCOn(index)) {
-        onDCModeTurnedOn(index);
-    }
+    dcOnButtons[index]->setEnabled(false);
+    appManager->robotTurnDCOn(index);
 }
 
 void MainWindow::turnDCOff(int index)
 {
     appManager->robotTurnDCOff(index);
-    onDCModeTurnedOff(index);
 }
 
 void MainWindow::disconnectRobot(int index)
 {
     appManager->robotDisconnect(index);
-    onRobotDisconnected(index);
 }
 
 void MainWindow::updateRobotLabel(int index, QString robotName, int portNum)
@@ -191,6 +196,36 @@ void MainWindow::updateFileNameComboBoxes(QVector<QString> danceFileNames,
             }
         }
     }
+}
+
+void MainWindow::onConnectTryFinished(int index, bool result)
+{
+    if (result) {
+        onRobotConnected(index);
+    }
+    else {
+        onRobotDisconnected(index);
+    }
+}
+
+void MainWindow::onTurnDCOnFinished(int index, bool result)
+{
+    if (result) {
+        onDCModeTurnedOn(index);
+    }
+    else {
+        onDCModeTurnedOff(index);
+    }
+}
+
+void MainWindow::onTurnDCOffFinished(int index)
+{
+    onDCModeTurnedOff(index);
+}
+
+void MainWindow::onDisconnected(int index)
+{
+    onDisconnected(index);
 }
 
 void MainWindow::onDanceFinished()

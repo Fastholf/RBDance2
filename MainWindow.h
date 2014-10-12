@@ -47,6 +47,12 @@ private slots:
     void updateDanceComboBox(QVector<QString> scenarioPaths);
     void updateFileNameComboBoxes(QVector<QString> danceFileNames,
                                   QVector<Role> roles);
+
+    void onConnectTryFinished(int index, bool result);
+    void onTurnDCOnFinished(int index, bool result);
+    void onTurnDCOffFinished(int index);
+    void onDisconnected(int index);
+
     void onDanceFinished();
 
     void showMessage(QString message);

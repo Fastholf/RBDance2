@@ -18,13 +18,25 @@ bool AppManager::init()
         showMessage("Settings file was not found.");
         return false;
     }
-    QTextStream in(&settingsFile);
 
+    serialPortThread = new QThread;
+    serialPortWorker = new SerialPortWorker;
+    serialPortWorker->moveToThread(serialPortThread);
+    connect(serialPortThread, SIGNAL(started()),
+            serialPortWorker, SLOT(runQueue()));
+    connect(serialPortWorker, SIGNAL(workFinished()),
+            serialPortThread, SLOT(quit()));
+    connect(serialPortWorker, SIGNAL(workFinished()),
+            serialPortWorker, SLOT(deleteLater()));
+    connect(serialPortThread, SIGNAL(finished()),
+            serialPortThread, SLOT(deleteLater()));
+    serialPortThread->start();
+
+    QTextStream in(&settingsFile);
     rootPath = in.readLine();
     robotsFilePath = QDir::cleanPath(rootPath +
                                      QDir::separator() +
                                      in.readLine());
-
     scenarioListFilePath = QDir::cleanPath(rootPath +
                                            QDir::separator() +
                                            in.readLine());
@@ -81,9 +93,18 @@ FileLoadError AppManager::loadRobotsFromFile()
             showMessage("File with robots description has wrong format.");
             break;
         }
-        Robot newRobot = Robot(portNum, robotName);
+        Robot *newRobot = new Robot(i, portNum, robotName, serialPortWorker);
+        connect(newRobot, SIGNAL(connectTryFinished(int, bool)),
+                this, SLOT(onConnectTryFinished(int, bool)));
+        connect(newRobot, SIGNAL(turnDCOnFinished(int,bool)),
+                this, SLOT(onTurnDCOnFinished(int,bool)));
+        connect(newRobot, SIGNAL(turnDCOffFinished(int)),
+                this, SLOT(onTurnDCOffFinished(int)));
+        connect(newRobot, SIGNAL(disconnected(int)),
+                this, SLOT(onDisconnected(int)));
         robots.push_back(newRobot);
-        robotLoaded(i, robotName, portNum);
+        serialPortWorker->addSerialPort(portNum);
+        emit robotLoaded(i, robotName, portNum);
         ++i;
     }
     robotsFile.close();
@@ -225,44 +246,38 @@ bool AppManager::isRobotIndexOk(int index, QString methodName)
     return true;
 }
 
-bool AppManager::connectRobot(int index)
+void AppManager::connectRobot(int index)
 {
     if (isRobotIndexOk(index, "Controller::connectRobot")) {
-        return robots[index].connect();
-    }
-    else {
-        return false;
+        robots[index]->connectToRB();
     }
 }
 
 void AppManager::robotBasicPosture(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotBasicPosture")) {
-        robots[index].basicPosture();
+        robots[index]->basicPosture();
     }
 }
 
-bool AppManager::robotTurnDCOn(int index)
+void AppManager::robotTurnDCOn(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotTurnDCOn")) {
-        return robots[index].turnDCOn();
-    }
-    else {
-        return false;
+        robots[index]->turnDCOn();
     }
 }
 
 void AppManager::robotTurnDCOff(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotTurnDCOff")) {
-        robots[index].turnDCOff();
+        robots[index]->turnDCOff();
     }
 }
 
 void AppManager::robotDisconnect(int index)
 {
     if (isRobotIndexOk(index, "Controller::robotDisconnect")) {
-        robots[index].disconnect();
+        robots[index]->disconnect();
     }
 }
 
@@ -287,17 +302,17 @@ bool AppManager::isDanceReady()
     QVector<int> involvedRobotNums = scenario->involvedRobotNums();
     for (int i = 0; i < involvedRobotNums.count(); ++i) {
         int rNum = involvedRobotNums[i];
-        if (!robots[rNum].isConnected()) {
-            qWarning() << "Robot " + robots[rNum].getName() +
+        if (!robots[rNum]->isConnected()) {
+            qWarning() << "Robot " + robots[rNum]->getName() +
                           " is not connected!";
-            showMessage("Robot " + robots[rNum].getName() +
+            showMessage("Robot " + robots[rNum]->getName() +
                         " is not connected!");
             return false;
         }
-        if (!robots[rNum].isDCModeOn()) {
-            qWarning() << "Robot " + robots[rNum].getName() +
+        if (!robots[rNum]->isDCModeOn()) {
+            qWarning() << "Robot " + robots[rNum]->getName() +
                           " is not in DC mode!";
-            showMessage("Robot " + robots[rNum].getName() +
+            showMessage("Robot " + robots[rNum]->getName() +
                         " is not DC mode!");
             return false;
         }
@@ -307,10 +322,17 @@ bool AppManager::isDanceReady()
 
 void AppManager::danceStart()
 {
+    qDebug() << "AppManager::danceStart: " << QThread::currentThread();
     choreographer = new Choreographer();
+
     connect(choreographer, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
-    choreographer->startDance(robots, scenario);
+    choreographer->moveToThread(serialPortThread);
+    choreographer->setRobots(robots);
+    choreographer->setScenario(scenario);
+    connect(serialPortThread, SIGNAL(started()),
+            choreographer, SLOT(startDance()));
+    serialPortThread->start();
 }
 
 void AppManager::dancePause()
@@ -327,17 +349,33 @@ void AppManager::danceStop()
         return;
     }
     choreographer->stopDance();
-    choreographer->wait();
-    delete choreographer;
-    choreographer = NULL;
 }
 
 void AppManager::onDanceFinished()
 {
     if (choreographer != NULL) {
-        choreographer->wait();
         delete choreographer;
         choreographer = NULL;
     }
     danceFinished();
+}
+
+void AppManager::onConnectTryFinished(int index, bool result)
+{
+    emit connectTryFinished(index, result);
+}
+
+void AppManager::onTurnDCOnFinished(int index, bool result)
+{
+    emit turnDCOnFinished(index, result);
+}
+
+void AppManager::onTurnDCOffFinished(int index)
+{
+    emit turnDCOffFinished(index);
+}
+
+void AppManager::onDisconnected(int index)
+{
+    emit disconnected(index);
 }
