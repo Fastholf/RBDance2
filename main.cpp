@@ -51,7 +51,7 @@ void myMessageOutput(QtMsgType type,
     QFile outFile("log");
     outFile.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream ts(&outFile);
-    ts << txt;
+    ts << txt << endl;
 }
 
 int main(int argc, char *argv[])
