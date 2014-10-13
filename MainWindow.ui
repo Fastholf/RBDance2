@@ -161,7 +161,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Robot1</string>
+      <string>ERROR1</string>
      </property>
     </widget>
     <widget class="QLabel" name="fileName2_label">
@@ -239,7 +239,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Robot2</string>
+      <string>ERROR2</string>
      </property>
     </widget>
     <widget class="QPushButton" name="DCOff2_pushButton">
@@ -423,7 +423,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Robot3</string>
+      <string>ERROR3</string>
      </property>
     </widget>
     <widget class="QPushButton" name="basicPosture3_pushButton">
@@ -474,35 +474,6 @@
       <string>Disconnect</string>
      </property>
     </widget>
-    <zorder>dance_comboBox</zorder>
-    <zorder>dance_comboBox</zorder>
-    <zorder>DCOff1_pushButton</zorder>
-    <zorder>connect3_pushButton</zorder>
-    <zorder>DCOn3_pushButton</zorder>
-    <zorder>dance_comboBox</zorder>
-    <zorder>robotName1_label</zorder>
-    <zorder>fileName2_label</zorder>
-    <zorder>fileName3_comboBox</zorder>
-    <zorder>disconnect1_pushButton</zorder>
-    <zorder>DCOff3_pushButton</zorder>
-    <zorder>fileName2_comboBox</zorder>
-    <zorder>robotName2_label</zorder>
-    <zorder>DCOff2_pushButton</zorder>
-    <zorder>connect1_pushButton</zorder>
-    <zorder>dance_label</zorder>
-    <zorder>connect2_pushButton</zorder>
-    <zorder>basicPosture1_pushButton</zorder>
-    <zorder>basicPosture2_pushButton</zorder>
-    <zorder>fileName1_comboBox</zorder>
-    <zorder>fileName1_label</zorder>
-    <zorder>DCOn2_pushButton</zorder>
-    <zorder>fileName3_label</zorder>
-    <zorder>DCOn1_pushButton</zorder>
-    <zorder>disconnect3_pushButton</zorder>
-    <zorder>robotName3_label</zorder>
-    <zorder>basicPosture3_pushButton</zorder>
-    <zorder>music_checkBox</zorder>
-    <zorder>disconnect2_pushButton</zorder>
    </widget>
    <zorder>dance_prepare_widget</zorder>
    <zorder>dance_horizontalSlider</zorder>

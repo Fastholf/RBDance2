@@ -30,7 +30,7 @@ bool AppManager::init()
             serialPortWorker, SLOT(deleteLater()));
     connect(serialPortThread, SIGNAL(finished()),
             serialPortThread, SLOT(deleteLater()));
-    serialPortThread->start();
+
 
     QTextStream in(&settingsFile);
     rootPath = in.readLine();
@@ -54,6 +54,8 @@ bool AppManager::init()
     if (error != FileLoadErrorNo) {
         return false;
     }
+
+    serialPortThread->start();
 
     return true;
 }
@@ -96,8 +98,8 @@ FileLoadError AppManager::loadRobotsFromFile()
         Robot *newRobot = new Robot(i, portNum, robotName, serialPortWorker);
         connect(newRobot, SIGNAL(connectTryFinished(int, bool)),
                 this, SLOT(onConnectTryFinished(int, bool)));
-        connect(newRobot, SIGNAL(turnDCOnFinished(int,bool)),
-                this, SLOT(onTurnDCOnFinished(int,bool)));
+        connect(newRobot, SIGNAL(turnDCOnFinished(int, bool)),
+                this, SLOT(onTurnDCOnFinished(int, bool)));
         connect(newRobot, SIGNAL(turnDCOffFinished(int)),
                 this, SLOT(onTurnDCOffFinished(int)));
         connect(newRobot, SIGNAL(disconnected(int)),

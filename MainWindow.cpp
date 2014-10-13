@@ -12,13 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fillUIArrays();
 
     appManager = new AppManager();
-    if (!appManager->init()) {
-        ui->dance_prepare_widget->setEnabled(false);
-        ui->start_pushButton->setEnabled(false);
-        ui->pause_pushButton->setEnabled(false);
-        ui->stop_pushButton->setEnabled(false);
-        return;
-    }
+
 
     connect(appManager, SIGNAL(robotLoaded(int, QString, int)),
             this, SLOT(updateRobotLabel(int, QString, int)));
@@ -45,6 +39,14 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(onTurnDCOffFinished(int)));
     connect(appManager, SIGNAL(disconnected(int)),
             this, SLOT(onDisconnected(int)));
+
+    if (!appManager->init()) {
+        ui->dance_prepare_widget->setEnabled(false);
+        ui->start_pushButton->setEnabled(false);
+        ui->pause_pushButton->setEnabled(false);
+        ui->stop_pushButton->setEnabled(false);
+        return;
+    }
 }
 
 MainWindow::~MainWindow()
