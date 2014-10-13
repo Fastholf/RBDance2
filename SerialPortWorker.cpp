@@ -168,6 +168,9 @@ void SerialPortWorker::runQueue()
             Command command = workingQueue.dequeue();
             processCommand(command);
         }
+        else {
+            QThread::msleep(1);
+        }
     }
     emit workFinished();
 }
