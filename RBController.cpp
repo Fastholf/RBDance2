@@ -5,6 +5,8 @@
 
 RBController::RBController(int portNum)
 {
+    qDebug() << "Method name";
+
     serialPort = new QSerialPort();
     _portNum = portNum;
     _connected = false;
@@ -20,6 +22,8 @@ RBController::RBController(int portNum)
 
 bool RBController::connectToRB()
 {
+    qDebug() << "Method name";
+
     if (_portNum == -1) {
         qWarning() << "Robot::connect: port num is not specified.";
         return false;
@@ -40,11 +44,15 @@ bool RBController::connectToRB()
 
 void RBController::runBasicPosture()
 {
+    qDebug() << "Method name";
+
     runMotion(7);
 }
 
 bool RBController::turnDirectControlModeOn()
 {
+    qDebug() << "Method name";
+
     if (!serialPort->isOpen()) {
         return false;
     }
@@ -75,6 +83,8 @@ bool RBController::turnDirectControlModeOn()
 
 void RBController::turnDirectControlModeOff()
 {
+    qDebug() << "Method name";
+
     if (!serialPort->isOpen()) {
         return;
     }
@@ -96,6 +106,8 @@ void RBController::turnDirectControlModeOff()
 
 void RBController::disconnect()
 {
+    qDebug() << "Method name";
+
     serialPort->close();
     _connected = false;
     qDebug() << "Connection on port " << _portNum << " closed.";
@@ -103,6 +115,8 @@ void RBController::disconnect()
 
 void RBController::setDirectPose(QVector<int> servoAngles)
 {
+    qDebug() << "Method name";
+
     int servoCount = servoAngles.count();
     QByteArray command;
 
@@ -128,6 +142,8 @@ void RBController::setDirectPose(QVector<int> servoAngles)
 
 bool RBController::sendCommand(qint8 type, qint8 commandContents)
 {
+    qDebug() << "Method name";
+
     QByteArray command;
 
     command.append(type);
@@ -156,6 +172,8 @@ bool RBController::sendCommand(qint8 type, qint8 commandContents)
 
 bool RBController::getResponse(QByteArray *response)
 {
+    qDebug() << "Method name";
+
     int b = 0, l = 1;
     while (b < 32 && b < (15 + l)) {
 
@@ -199,10 +217,12 @@ bool RBController::getResponse(QByteArray *response)
 
 void RBController::runMotion(qint8 motionNumber)
 {
+    qDebug() << "Method name";
+
     sendCommand(20, motionNumber);
 }
 
 RBController::RBController()
 {
-
+    qDebug() << "Method name";
 }

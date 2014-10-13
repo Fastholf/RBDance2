@@ -2,6 +2,8 @@
 
 Robot::Robot()
 {
+    qDebug() << "Method name";
+
     portNum = -1;
     _connected = false;
     _DCModeOn = false;
@@ -12,6 +14,8 @@ Robot::Robot(int index,
              QString t_name,
              SerialPortWorker *portWorker)
 {
+    qDebug() << "Method name";
+
     _index = index;
     portNum = t_portNum;
     name = t_name;
@@ -32,41 +36,57 @@ Robot::Robot(int index,
 
 QString Robot::getName()
 {
+    qDebug() << "Method name";
+
     return name;
 }
 
 void Robot::connectToRB()
 {
+    qDebug() << "Method name";
+
     _portWorker->connectToRB(_index);
 }
 
 void Robot::basicPosture()
 {
+    qDebug() << "Method name";
+
     _portWorker->basicPosture(_index);
 }
 
 void Robot::turnDCOn()
 {
+    qDebug() << "Method name";
+
     _portWorker->turnDCOn(_index);
 }
 
 void Robot::setPose(QVector<int> servoAngles)
 {
+    qDebug() << "Method name";
+
     _portWorker->setPose(_index, servoAngles);
 }
 
 void Robot::turnDCOff()
 {
+    qDebug() << "Method name";
+
     _portWorker->turnDCOff(_index);
 }
 
 void Robot::disconnect()
 {
+    qDebug() << "Method name";
+
     _portWorker->disconnect(_index);
 }
 
 void Robot::onConnectTryFinished(int index, bool connected)
 {
+    qDebug() << "Method name";
+
     if (index != _index) {
         return;
     }
@@ -77,6 +97,8 @@ void Robot::onConnectTryFinished(int index, bool connected)
 
 void Robot::onTurnDCOnFinished(int index, bool result)
 {
+    qDebug() << "Method name";
+
     if (index != _index) {
         return;
     }
@@ -87,6 +109,8 @@ void Robot::onTurnDCOnFinished(int index, bool result)
 
 void Robot::onTurnDCOffFinished(int index)
 {
+    qDebug() << "Method name";
+
     if (index != _index) {
         return;
     }
@@ -97,6 +121,8 @@ void Robot::onTurnDCOffFinished(int index)
 
 void Robot::onDisconnected(int index)
 {
+    qDebug() << "Method name";
+
     if (index != _index) {
         return;
     }
@@ -106,10 +132,14 @@ void Robot::onDisconnected(int index)
 
 bool Robot::isConnected()
 {
+    qDebug() << "Method name";
+
     return _connected;
 }
 
 bool Robot::isDCModeOn()
 {
+    qDebug() << "Method name";
+
     return _DCModeOn;
 }

@@ -6,11 +6,13 @@
 
 AppManager::AppManager()
 {
-
+    qDebug() << "Method name";
 }
 
 bool AppManager::init()
 {
+    qDebug() << "Method name";
+
     settingsFilePath = "settings.txt";
     QFile settingsFile(settingsFilePath);
     if (!settingsFile.open(QIODevice::ReadOnly)) {
@@ -62,6 +64,8 @@ bool AppManager::init()
 
 FileLoadError AppManager::loadRobotsFromFile()
 {
+    qDebug() << "Method name";
+
     QFile robotsFile(robotsFilePath);
     if (!robotsFile.open(QIODevice::ReadOnly)) {
         qCritical() << "File with robots description was not found.";
@@ -116,6 +120,8 @@ FileLoadError AppManager::loadRobotsFromFile()
 
 FileLoadError AppManager::loadScenarioListFromFile()
 {
+    qDebug() << "Method name";
+
     QFile scenarioListFile(scenarioListFilePath);
     if (!scenarioListFile.open(QIODevice::ReadOnly)) {
         qCritical() << "File with the list of scenarios was not found.";
@@ -138,6 +144,7 @@ FileLoadError AppManager::loadScenarioListFromFile()
 
 FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
 {
+    qDebug() << "Method name";
 
     QFile scenarioFile(QDir::cleanPath(rootPath +
                                        QDir::separator() +
@@ -228,11 +235,15 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
 
 void AppManager::setRobotRole(int robotNum, int danceNum)
 {
+    qDebug() << "Method name";
+
     scenario->setRole(robotNum, danceNum);
 }
 
 void AppManager::setMusicPlaying(bool t_musicPlaying)
 {
+    qDebug() << "Method name";
+
     if (scenario != NULL) {
         scenario->setMusicPlaying(t_musicPlaying);
     }
@@ -241,6 +252,8 @@ void AppManager::setMusicPlaying(bool t_musicPlaying)
 
 bool AppManager::isRobotIndexOk(int index, QString methodName)
 {
+    qDebug() << "Method name";
+
     if (index < 0 || index > robots.count()) {
         qWarning() << methodName << ": Robot index out of bounds.";
         return false;
@@ -250,6 +263,8 @@ bool AppManager::isRobotIndexOk(int index, QString methodName)
 
 void AppManager::connectRobot(int index)
 {
+    qDebug() << "Method name";
+
     if (isRobotIndexOk(index, "Controller::connectRobot")) {
         robots[index]->connectToRB();
     }
@@ -257,6 +272,8 @@ void AppManager::connectRobot(int index)
 
 void AppManager::robotBasicPosture(int index)
 {
+    qDebug() << "Method name";
+
     if (isRobotIndexOk(index, "Controller::robotBasicPosture")) {
         robots[index]->basicPosture();
     }
@@ -264,6 +281,8 @@ void AppManager::robotBasicPosture(int index)
 
 void AppManager::robotTurnDCOn(int index)
 {
+    qDebug() << "Method name";
+
     if (isRobotIndexOk(index, "Controller::robotTurnDCOn")) {
         robots[index]->turnDCOn();
     }
@@ -271,6 +290,8 @@ void AppManager::robotTurnDCOn(int index)
 
 void AppManager::robotTurnDCOff(int index)
 {
+    qDebug() << "Method name";
+
     if (isRobotIndexOk(index, "Controller::robotTurnDCOff")) {
         robots[index]->turnDCOff();
     }
@@ -278,6 +299,8 @@ void AppManager::robotTurnDCOff(int index)
 
 void AppManager::robotDisconnect(int index)
 {
+    qDebug() << "Method name";
+
     if (isRobotIndexOk(index, "Controller::robotDisconnect")) {
         robots[index]->disconnect();
     }
@@ -285,6 +308,8 @@ void AppManager::robotDisconnect(int index)
 
 bool AppManager::isDanceReady()
 {
+    qDebug() << "Method name";
+
     if (scenario == NULL) {
         qWarning() << "Scenario is not loaded";
         showMessage("Dance was not chosen.");
@@ -324,6 +349,8 @@ bool AppManager::isDanceReady()
 
 void AppManager::danceStart()
 {
+    qDebug() << "Method name";
+
     qDebug() << "AppManager::danceStart: " << QThread::currentThread();
     choreographer = new Choreographer();
 
@@ -339,6 +366,8 @@ void AppManager::danceStart()
 
 void AppManager::dancePause()
 {
+    qDebug() << "Method name";
+
     if (choreographer == NULL) {
         return;
     }
@@ -347,6 +376,8 @@ void AppManager::dancePause()
 
 void AppManager::danceStop()
 {
+    qDebug() << "Method name";
+
     if (choreographer == NULL) {
         return;
     }
@@ -355,6 +386,8 @@ void AppManager::danceStop()
 
 void AppManager::onDanceFinished()
 {
+    qDebug() << "Method name";
+
     if (choreographer != NULL) {
         delete choreographer;
         choreographer = NULL;
@@ -364,20 +397,28 @@ void AppManager::onDanceFinished()
 
 void AppManager::onConnectTryFinished(int index, bool result)
 {
+    qDebug() << "Method name";
+
     emit connectTryFinished(index, result);
 }
 
 void AppManager::onTurnDCOnFinished(int index, bool result)
 {
+    qDebug() << "Method name";
+
     emit turnDCOnFinished(index, result);
 }
 
 void AppManager::onTurnDCOffFinished(int index)
 {
+    qDebug() << "Method name";
+
     emit turnDCOffFinished(index);
 }
 
 void AppManager::onDisconnected(int index)
 {
+    qDebug() << "Method name";
+
     emit disconnected(index);
 }
