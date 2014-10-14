@@ -227,7 +227,7 @@ void MainWindow::onTurnDCOffFinished(int index)
 
 void MainWindow::onDisconnected(int index)
 {
-    onDisconnected(index);
+    onRobotDisconnected(index);
 }
 
 void MainWindow::onDanceFinished()
