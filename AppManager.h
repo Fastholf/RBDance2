@@ -31,6 +31,7 @@ private:
     Choreographer *choreographer;
     SerialPortWorker *serialPortWorker;
     QThread *serialPortThread;
+    QThread *choreographerPortThread;
 
     bool isRobotIndexOk(int index, QString methodName);
 

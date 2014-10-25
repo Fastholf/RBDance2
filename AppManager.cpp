@@ -356,12 +356,19 @@ void AppManager::danceStart()
 
     connect(choreographer, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
-    choreographer->moveToThread(serialPortThread);
     choreographer->setRobots(robots);
     choreographer->setScenario(scenario);
-    connect(serialPortThread, SIGNAL(started()),
+    choreographerPortThread = new QThread();
+    choreographer->moveToThread(choreographerPortThread);
+    connect(choreographerPortThread, SIGNAL(started()),
             choreographer, SLOT(startDance()));
-    serialPortThread->start();
+    connect(choreographer, SIGNAL(danceFinished()),
+            choreographerPortThread, SLOT(quit()));
+    connect(choreographer, SIGNAL(danceFinished()),
+            choreographer, SLOT(deleteLater()));
+    connect(choreographerPortThread, SIGNAL(finished()),
+            choreographerPortThread, SLOT(deleteLater()));
+    choreographerPortThread->start();
 }
 
 void AppManager::dancePause()
