@@ -2,6 +2,7 @@
 #include "inttypes.h"
 
 #define TURN_DC_ON_ATTEMPT_COUNT 6
+#define WRITE_WAIT_TIMEOUT 10
 
 RBController::RBController(int portNum)
 {
@@ -33,6 +34,7 @@ bool RBController::connectToRB()
     if (serialPort->open(QIODevice::ReadWrite)) {
         _connected = true;
         qDebug() << "Connection on port " << _portNum << " succeeded.";
+        serialPort->setDataBits(QSerialPort::Data8);
     }
     else {
         _connected = false;
@@ -97,7 +99,8 @@ void RBController::turnDirectControlModeOff()
     command.append((char)0x00);
     command.append((char)0x1A);
 
-    if (serialPort->write(command) != -1) {
+    serialPort->write(command);
+    if (serialPort->waitForBytesWritten(WRITE_WAIT_TIMEOUT)) {
         return;
     } else {
         qWarning() << "Can't write to port.";
@@ -133,9 +136,12 @@ void RBController::setDirectPose(QVector<int> servoAngles)
     checkSum = (uint8_t)(checkSum & 0x7f);
     command.append(checkSum);
 
-    if (serialPort->write(command) != -1) {
+    serialPort->write(command);
+    if (serialPort->waitForBytesWritten(100/*WRITE_WAIT_TIMEOUT*/)) {
+        qWarning() << "Pose set success.";
         return;
-    } else {
+    }
+    else {
         qWarning() << "Can't write to port.";
     }
 }
@@ -160,10 +166,14 @@ bool RBController::sendCommand(qint8 type, qint8 commandContents)
     command.append(commandContents); // checkSum
 
     qDebug() << "Command:  " << command;
-    if (serialPort->write(header) != -1 &&
-            serialPort->write(command) != -1) {
+    serialPort->write(header);
+    bool writeSuccess = serialPort->waitForBytesWritten(WRITE_WAIT_TIMEOUT);
+    serialPort->write(command);
+    writeSuccess &= serialPort->waitForBytesWritten(WRITE_WAIT_TIMEOUT);
+    if (writeSuccess) {
         return true;
-    } else {
+    }
+    else {
         qWarning() << "Can't write to port.";
     }
 
