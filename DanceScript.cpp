@@ -8,7 +8,7 @@ bool DanceScript::skipLinesWithString(QTextStream *in,
                                       int linesCount,
                                       QString stringToFind)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     int count = 0;
     while (true) {
@@ -27,7 +27,7 @@ bool DanceScript::skipLinesWithString(QTextStream *in,
 
 bool DanceScript::skipNLines(QTextStream *in, int linesCount)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     int count = 0;
     while (true) {
@@ -44,7 +44,7 @@ bool DanceScript::skipNLines(QTextStream *in, int linesCount)
 
 QVector<int> DanceScript::parseStringToInts(QString buffer)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     QRegExp rx("[^0-9,]");
     buffer.replace(rx, "");
@@ -61,7 +61,7 @@ QVector<int> DanceScript::parseStringToInts(QString buffer)
 
 bool DanceScript::loadPoseStepCounts(QTextStream *in)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     if (!skipLinesWithString(in, 5, "};")) {
         return false;
@@ -85,7 +85,7 @@ bool DanceScript::loadPoseStepCounts(QTextStream *in)
 
 bool DanceScript::loadPoseDurations(QTextStream *in)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     QString line = in->readLine();
     QString buffer = "";
@@ -106,7 +106,7 @@ bool DanceScript::loadPoseDurations(QTextStream *in)
 
 bool DanceScript::loadPoseServoAngles(QTextStream *in)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     if (!skipNLines(in, 3)) {
         return false;
@@ -130,7 +130,7 @@ bool DanceScript::loadPoseServoAngles(QTextStream *in)
 
 void DanceScript::precountFrames()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     int poseCount = poseStepCounts.count();
     int currentTime = 0;
@@ -164,7 +164,7 @@ int DanceScript::interpolatedAngle(int startAngle,
                                    int stepCount,
                                    int stepNum)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     int distance = endAngle - startAngle;
     double step = (double)distance / (double)stepCount;
@@ -173,7 +173,7 @@ int DanceScript::interpolatedAngle(int startAngle,
 
 DanceScript::DanceScript()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     clear();
     reset();
@@ -181,7 +181,7 @@ DanceScript::DanceScript()
 
 void DanceScript::clear()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     filePath = "";
     poseStepCounts.clear();
@@ -223,35 +223,35 @@ bool DanceScript::loadFromMotionBuilderFile(QString t_filePath)
 
 void DanceScript::reset()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     curIndex = 0;
 }
 
 int DanceScript::getCurrentFireTime()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return frames[curIndex].fireTime;
 }
 
 Frame DanceScript::getCurrentFrame()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return frames[curIndex];
 }
 
 bool DanceScript::isFinished()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return curIndex == frames.count();
 }
 
 void DanceScript::goToNextFrame()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     ++curIndex;
 }

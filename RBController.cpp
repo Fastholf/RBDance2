@@ -7,6 +7,7 @@
 RBController::RBController(int portNum)
 {
     qDebug() << "Method name";
+    qDebug() << "current thread:" << QThread::currentThreadId();
 
     serialPort = new QSerialPort();
     _portNum = portNum;
@@ -24,6 +25,7 @@ RBController::RBController(int portNum)
 bool RBController::connectToRB()
 {
     qDebug() << "Method name";
+    qDebug() << "current thread:" << QThread::currentThreadId();
 
     if (_portNum == -1) {
         qWarning() << "Robot::connect: port num is not specified.";
@@ -47,6 +49,7 @@ bool RBController::connectToRB()
 void RBController::runBasicPosture()
 {
     qDebug() << "Method name";
+    qDebug() << "current thread:" << QThread::currentThreadId();
 
     runMotion(7);
 }
@@ -54,6 +57,7 @@ void RBController::runBasicPosture()
 bool RBController::turnDirectControlModeOn()
 {
     qDebug() << "Method name";
+    qDebug() << "current thread:" << QThread::currentThreadId();
 
     if (!serialPort->isOpen()) {
         return false;
@@ -86,6 +90,7 @@ bool RBController::turnDirectControlModeOn()
 void RBController::turnDirectControlModeOff()
 {
     qDebug() << "Method name";
+    qDebug() << "current thread:" << QThread::currentThreadId();
 
     if (!serialPort->isOpen()) {
         return;
@@ -110,6 +115,7 @@ void RBController::turnDirectControlModeOff()
 void RBController::disconnect()
 {
     qDebug() << "Method name";
+    qDebug() << "current thread:" << QThread::currentThreadId();
 
     serialPort->close();
     _connected = false;
@@ -118,7 +124,8 @@ void RBController::disconnect()
 
 void RBController::setDirectPose(QVector<int> servoAngles)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
+//    qDebug() << "current thread:" << QThread::currentThreadId();
 
     int servoCount = servoAngles.count();
     QByteArray command;
@@ -148,7 +155,8 @@ void RBController::setDirectPose(QVector<int> servoAngles)
 
 bool RBController::sendCommand(qint8 type, qint8 commandContents)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
+//    qDebug() << "current thread:" << QThread::currentThreadId();
 
     QByteArray command;
 
@@ -182,7 +190,8 @@ bool RBController::sendCommand(qint8 type, qint8 commandContents)
 
 bool RBController::getResponse(QByteArray *response)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
+//    qDebug() << "current thread:" << QThread::currentThreadId();
 
     int b = 0, l = 1;
     while (b < 32 && b < (15 + l)) {
@@ -227,7 +236,8 @@ bool RBController::getResponse(QByteArray *response)
 
 void RBController::runMotion(qint8 motionNumber)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
+//    qDebug() << "current thread:" << QThread::currentThreadId();
 
     sendCommand(20, motionNumber);
 }
@@ -235,4 +245,5 @@ void RBController::runMotion(qint8 motionNumber)
 RBController::RBController()
 {
     qDebug() << "Method name";
+    qDebug() << "current thread:" << QThread::currentThreadId();
 }

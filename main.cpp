@@ -40,7 +40,8 @@ void myMessageOutput(QtMsgType type,
     }
 
     QDateTime dateTime = QDateTime::currentDateTime();
-    txt = QString("[%1]: %2").arg(dateTime.toString("yyyy-MM-dd hh:mm:ss"), txt);
+    txt = QString("[%1]: %2").arg(dateTime.toString("yyyy-MM-dd hh:mm:ss"),
+                                  txt);
 
 #ifndef WIN32
     fprintf(stderr, txt.toStdString().c_str());

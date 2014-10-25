@@ -34,7 +34,7 @@ void Scenario::setMusic(QString t_musicFilePath)
 
 void Scenario::setMusicPlaying(bool t_musicPlaying)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     musicPlaying = t_musicPlaying;
 }
@@ -76,7 +76,7 @@ bool Scenario::loadDanceScripts(QString *errorMessage)
 
 bool Scenario::isMusicPlaying()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return musicPlaying;
 }
@@ -111,21 +111,21 @@ QString Scenario::getMusicFilePath()
 
 QVector<Role> Scenario::getRoles()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return roles;
 }
 
 QVector<DanceScript> Scenario::getDanceScripts()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return danceScripts;
 }
 
 int Scenario::minFireTime()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     int result = std::numeric_limits<int>::max();
     for (int i = 0; i < roles.count(); ++i) {
@@ -140,7 +140,7 @@ int Scenario::minFireTime()
 
 QVector<int> Scenario::involvedRobotNums()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     QVector<int> result;
     for (int i = 0; i < roles.count(); ++i) {
@@ -153,7 +153,7 @@ QVector<int> Scenario::involvedRobotNums()
 
 bool Scenario::isMusicReady()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     if (!musicPlaying) {
         return true;

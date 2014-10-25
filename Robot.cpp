@@ -36,7 +36,7 @@ Robot::Robot(int index,
 
 QString Robot::getName()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return name;
 }
@@ -64,7 +64,7 @@ void Robot::turnDCOn()
 
 void Robot::setPose(QVector<int> servoAngles)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     _portWorker->setPose(_index, servoAngles);
 }
@@ -132,14 +132,14 @@ void Robot::onDisconnected(int index)
 
 bool Robot::isConnected()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return _connected;
 }
 
 bool Robot::isDCModeOn()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return _DCModeOn;
 }

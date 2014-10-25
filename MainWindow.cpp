@@ -138,6 +138,8 @@ void MainWindow::onDanceStopped()
 
 void MainWindow::connectRobot(int index)
 {
+    qDebug() << "currentThread gui:" << QThread::currentThreadId();
+
     connectButtons[index]->setEnabled(false);
     appManager->connectRobot(index);
 }

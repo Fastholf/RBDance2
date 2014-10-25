@@ -3,7 +3,7 @@
 
 void SerialPortWorker::processCommand(Command command)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     switch (command.type) {
 
@@ -75,7 +75,7 @@ void SerialPortWorker::processDCOn(int index)
 
 void SerialPortWorker::processSetPose(int index, QVector<int> servoAngles)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     rbControllers[index].setDirectPose(servoAngles);
 }
@@ -137,7 +137,7 @@ void SerialPortWorker::turnDCOn(int index)
 
 void SerialPortWorker::setPose(int index, QVector<int> servoAngles)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     Command command(CT_setPose, index, servoAngles);
     workingQueue.enqueue(command);
