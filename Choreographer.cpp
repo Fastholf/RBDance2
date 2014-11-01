@@ -1,6 +1,5 @@
 #include "Choreographer.h"
 #include <limits>
-#include "DanceScript.h"
 #include <QDebug>
 
 void Choreographer::run()
@@ -24,13 +23,15 @@ void Choreographer::dancing()
         musicPlayer->start();
     }
 
+    QVector<Role> roles = scenario->getRoles();
+    QVector<DanceScript> scripts = scenario->getDanceScripts();
+
     while (!finished) {
 
         while (paused) {
             QThread::msleep(1);
         }
 
-        QVector<Role> roles = scenario->getRoles();
         bool haveWorkToDo = false;
         for (int i = 0; i < roles.count(); ++i) {
 
@@ -39,7 +40,6 @@ void Choreographer::dancing()
                 continue;
             }
 
-            QVector<DanceScript> scripts = scenario->getDanceScripts();
             if (scripts[danceNum].isFinished()) {
                 continue;
             }
@@ -59,13 +59,29 @@ void Choreographer::dancing()
             break;
         }
 
-        int closestFireTime = scenario->minFireTime();
+        int closestFireTime = minFireTime(roles, scripts);
         while (currentTime < closestFireTime) {
             QThread::msleep(1);
             ++currentTime;
         }
     }
     danceFinished();
+}
+
+int Choreographer::minFireTime(QVector<Role> roles,
+                               QVector<DanceScript> scripts)
+{
+//    qDebug() << "Method name";
+
+    int result = std::numeric_limits<int>::max();
+    for (int i = 0; i < roles.count(); ++i) {
+        if (roles[i].danceNum != -1) {
+            int time = scripts[roles[i].danceNum].getCurrentFireTime();
+            result = std::min(result, time);
+        }
+    }
+
+    return result;
 }
 
 Choreographer::Choreographer()

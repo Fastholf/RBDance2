@@ -42,7 +42,6 @@ public:
     QVector<Role> getRoles();
     QVector<DanceScript> getDanceScripts();
 
-    int minFireTime();
     QVector<int> involvedRobotNums();
     bool isMusicReady();
 };

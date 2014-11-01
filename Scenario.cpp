@@ -123,21 +123,6 @@ QVector<DanceScript> Scenario::getDanceScripts()
     return danceScripts;
 }
 
-int Scenario::minFireTime()
-{
-//    qDebug() << "Method name";
-
-    int result = std::numeric_limits<int>::max();
-    for (int i = 0; i < roles.count(); ++i) {
-        if (roles[i].danceNum != -1) {
-            int time = danceScripts[roles[i].danceNum].getCurrentFireTime();
-            result = std::min(result, time);
-        }
-    }
-
-    return result;
-}
-
 QVector<int> Scenario::involvedRobotNums()
 {
 //    qDebug() << "Method name";

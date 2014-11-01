@@ -6,6 +6,7 @@
 #include "Robot.h"
 #include "Scenario.h"
 #include "MusicPlayer.h"
+#include "DanceScript.h"
 
 class Choreographer : public QObject
 {
@@ -21,6 +22,7 @@ private:
     Scenario *scenario;
     MusicPlayer *musicPlayer;
     void dancing();
+    int minFireTime(QVector<Role> roles, QVector<DanceScript> scripts);
 
 public:
     Choreographer();
