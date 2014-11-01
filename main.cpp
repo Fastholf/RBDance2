@@ -31,7 +31,7 @@ void myMessageOutput(QtMsgType type,
             txt = "[CRITICAL]:" + txt;
             break;
         case QtFatalMsg:
-            txt = "[FTATAL]:" + txt;
+            txt = "[FATAL]:" + txt;
     //        abort();
         }
 	}
