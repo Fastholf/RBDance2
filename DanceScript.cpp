@@ -136,26 +136,27 @@ void DanceScript::precountFrames()
     int currentTime = 0;
     frames.push_back(Frame(poseServoAngles[0], currentTime));
 
-    for (int i = 1; i < poseCount; ++i)
+    for (int i = 0; i < poseCount; ++i)
     {
         int sleepBetweenSteps = poseDurations[i] / poseStepCounts[i];
-        int servoCount = poseServoAngles[i].count();
-        for (int j = 0; j < poseStepCounts[i]; ++j)
+        int servoCount = poseServoAngles[i + 1].count();
+        for (int j = 1; j <= poseStepCounts[i]; ++j)
         {
             frames.push_back(Frame());
             int k = frames.count() - 1;
-            frames[k].fireTime = currentTime + sleepBetweenSteps * (j + 1);
+            frames[k].fireTime = currentTime + sleepBetweenSteps * j;
             for (int s = 0; s < servoCount; ++s)
             {
                 frames[k].servoAngles.push_back(
-                        interpolatedAngle(poseServoAngles[i - 1][s],
-                                          poseServoAngles[i][s],
+                        interpolatedAngle(poseServoAngles[i][s],
+                                          poseServoAngles[i + 1][s],
                                           poseStepCounts[i],
-                                          j + 1)
+                                          j)
                 );
             }
 
         }
+        currentTime += poseDurations[i];
     }
 }
 
