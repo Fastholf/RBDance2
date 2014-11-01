@@ -254,5 +254,8 @@ void DanceScript::goToNextFrame()
 {
 //    qDebug() << "Method name";
 
-    ++curIndex;
+    curIndex = curIndex + 1;
+    if (curIndex >= frames.count()) {
+        curIndex = frames.count() - 1;
+    }
 }
