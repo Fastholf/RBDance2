@@ -143,9 +143,11 @@ void RBController::setDirectPose(QVector<int> servoAngles)
     checkSum = (uint8_t)(checkSum & 0x7f);
     command.append(checkSum);
 
+    command.append((char)0x00);
+
     serialPort->write(command);
-    if (serialPort->waitForBytesWritten(100/*WRITE_WAIT_TIMEOUT*/)) {
-        qWarning() << "Pose set success.";
+    if (serialPort->waitForBytesWritten(WRITE_WAIT_TIMEOUT)) {
+//        qDebug() << "Pose set success.";
         return;
     }
     else {
