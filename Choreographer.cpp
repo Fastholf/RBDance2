@@ -8,7 +8,6 @@ void Choreographer::run()
 
     qDebug() << "run: " << QThread::currentThread();
     dancing();
-    musicPlayer = NULL;
 }
 
 void Choreographer::dancing()
@@ -31,6 +30,13 @@ void Choreographer::dancing()
         while (paused) {
             QThread::msleep(1);
         }
+
+//        For debug purpose only
+//        if (finished) {
+//            break;
+//        }
+//        QThread::msleep(1);
+//        continue;
 
         bool haveWorkToDo = false;
         for (int i = 0; i < roles.count(); ++i) {
@@ -65,6 +71,13 @@ void Choreographer::dancing()
             ++currentTime;
         }
     }
+
+    if (musicPlayer != NULL) {
+        musicPlayer->stop();
+        delete musicPlayer;
+        musicPlayer = NULL;
+    }
+
     danceFinished();
 }
 
@@ -87,6 +100,8 @@ int Choreographer::minFireTime(QVector<Role> roles,
 Choreographer::Choreographer()
 {
     qDebug() << "Method name";
+
+    musicPlayer = NULL;
 }
 
 void Choreographer::setRobots(QVector<Robot*> t_robots)
@@ -128,9 +143,4 @@ void Choreographer::stopDance()
 
     qDebug() << "stopDance: " << QThread::currentThread();
     finished = true;
-    if (musicPlayer != NULL) {
-        musicPlayer->stop();
-        delete musicPlayer;
-        musicPlayer = NULL;
-    }
 }

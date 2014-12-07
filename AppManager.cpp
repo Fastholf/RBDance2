@@ -326,6 +326,10 @@ bool AppManager::isDanceReady()
         showMessage("Music file was not found.");
         return false;
     }
+
+//    For debug purpose only
+//    return true;
+
     QVector<int> involvedRobotNums = scenario->involvedRobotNums();
     for (int i = 0; i < involvedRobotNums.count(); ++i) {
         int rNum = involvedRobotNums[i];
@@ -396,7 +400,6 @@ void AppManager::onDanceFinished()
     qDebug() << "Method name";
 
     if (choreographer != NULL) {
-        delete choreographer;
         choreographer = NULL;
     }
     danceFinished();
