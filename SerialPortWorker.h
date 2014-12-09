@@ -37,6 +37,7 @@ private:
     QVector<RBController> rbControllers;
     QQueue<Command> workingQueue;
     bool working;
+    QReadWriteLock queueLock;
 
     void processCommand(Command command);
     void processCreate(int portNum);
@@ -46,6 +47,7 @@ private:
     void processSetPose(int index, QVector<int> servoAngles);
     void processDCOff(int index);
     void processDisconnect(int index);
+    void addCommandSync(Command command);
 
 public:
     SerialPortWorker();

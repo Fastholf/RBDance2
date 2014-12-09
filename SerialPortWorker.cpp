@@ -96,6 +96,13 @@ void SerialPortWorker::processDisconnect(int index)
     emit disconnected(index);
 }
 
+void SerialPortWorker::addCommandSync(Command command)
+{
+    queueLock.lockForWrite();
+    workingQueue.enqueue(command);
+    queueLock.unlock();
+}
+
 SerialPortWorker::SerialPortWorker()
 {
     qDebug() << "Method name";
@@ -108,7 +115,7 @@ void SerialPortWorker::addSerialPort(int portNum)
     qDebug() << "Method name";
 
     Command command(CT_create, portNum);
-    workingQueue.enqueue(command);
+    addCommandSync(command);
 }
 
 void SerialPortWorker::connectToRB(int index)
@@ -116,7 +123,7 @@ void SerialPortWorker::connectToRB(int index)
     qDebug() << "Method name";
 
     Command command(CT_connect, index);
-    workingQueue.enqueue(command);
+    addCommandSync(command);
 }
 
 void SerialPortWorker::basicPosture(int index)
@@ -124,7 +131,7 @@ void SerialPortWorker::basicPosture(int index)
     qDebug() << "Method name";
 
     Command command(CT_basicPosture, index);
-    workingQueue.enqueue(command);
+    addCommandSync(command);
 }
 
 void SerialPortWorker::turnDCOn(int index)
@@ -132,7 +139,7 @@ void SerialPortWorker::turnDCOn(int index)
     qDebug() << "Method name";
 
     Command command(CT_DCOn, index);
-    workingQueue.enqueue(command);
+    addCommandSync(command);
 }
 
 void SerialPortWorker::setPose(int index, QVector<int> servoAngles)
@@ -140,7 +147,7 @@ void SerialPortWorker::setPose(int index, QVector<int> servoAngles)
 //    qDebug() << "Method name";
 
     Command command(CT_setPose, index, servoAngles);
-    workingQueue.enqueue(command);
+    addCommandSync(command);
 }
 
 void SerialPortWorker::turnDCOff(int index)
@@ -148,7 +155,7 @@ void SerialPortWorker::turnDCOff(int index)
     qDebug() << "Method name";
 
     Command command(CT_DCOff, index);
-    workingQueue.enqueue(command);
+    addCommandSync(command);
 }
 
 void SerialPortWorker::disconnect(int index)
@@ -156,7 +163,7 @@ void SerialPortWorker::disconnect(int index)
     qDebug() << "Method name";
 
     Command command(CT_disconnect, index);
-    workingQueue.enqueue(command);
+    addCommandSync(command);
 }
 
 void SerialPortWorker::runQueue()
@@ -165,7 +172,9 @@ void SerialPortWorker::runQueue()
 
     while (working) {
         if (!workingQueue.empty()) {
+            queueLock.lockForRead();
             Command command = workingQueue.dequeue();
+            queueLock.unlock();
             processCommand(command);
         }
         else {
