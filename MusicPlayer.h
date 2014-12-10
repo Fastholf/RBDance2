@@ -15,6 +15,7 @@ public:
     MusicPlayer(QString t_musicPath);
     bool start();
     bool pause();
+    bool isPaused();
     bool stop();
 };
 

@@ -6,7 +6,6 @@ void Choreographer::run()
 {
     qDebug() << "Method name";
 
-    qDebug() << "run: " << QThread::currentThread();
     dancing();
 }
 
@@ -16,7 +15,7 @@ void Choreographer::dancing()
 
     finished = false;
     paused = false;
-    int currentTime = 0;
+    currentTime = 0;
     if (scenario->isMusicPlaying()) {
         musicPlayer = new MusicPlayer(scenario->getMusicFilePath());
         musicPlayer->start();
@@ -27,8 +26,18 @@ void Choreographer::dancing()
 
     while (!finished) {
 
+        if (paused) {
+            if (musicPlayer != NULL) {
+                musicPlayer->pause();
+            }
+        }
         while (paused) {
             QThread::msleep(1);
+        }
+        if (musicPlayer != NULL) {
+            if (musicPlayer->isPaused()) {
+                musicPlayer->pause();
+            }
         }
 
 //        For debug purpose only
@@ -84,8 +93,6 @@ void Choreographer::dancing()
 int Choreographer::minFireTime(QVector<Role> roles,
                                QVector<DanceScript> scripts)
 {
-//    qDebug() << "Method name";
-
     int result = std::numeric_limits<int>::max();
     for (int i = 0; i < roles.count(); ++i) {
         if (roles[i].danceNum != -1) {
@@ -122,7 +129,6 @@ void Choreographer::startDance()
 {
     qDebug() << "Method name";
 
-    qDebug() << "startDance: " << QThread::currentThread();
     run();
 }
 
@@ -130,17 +136,12 @@ void Choreographer::pauseDance()
 {
     qDebug() << "Method name";
 
-    qDebug() << "pauseDance: " << QThread::currentThread();
     paused = !paused;
-    if (musicPlayer != NULL) {
-        musicPlayer->pause();
-    }
 }
 
 void Choreographer::stopDance()
 {
     qDebug() << "Method name";
 
-    qDebug() << "stopDance: " << QThread::currentThread();
     finished = true;
 }

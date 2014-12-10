@@ -34,6 +34,11 @@ bool MusicPlayer::pause()
     return true;
 }
 
+bool MusicPlayer::isPaused()
+{
+    return paused;
+}
+
 bool MusicPlayer::stop()
 {
     qDebug() << "Method name";
