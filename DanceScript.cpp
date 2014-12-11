@@ -233,6 +233,9 @@ int DanceScript::getCurrentFireTime()
 {
 //    qDebug() << "Method name";
 
+    if (curIndex >= frames.count()) {
+        return frames[frames.count() - 1].fireTime;
+    }
     return frames[curIndex].fireTime;
 }
 
@@ -240,6 +243,9 @@ Frame DanceScript::getCurrentFrame()
 {
 //    qDebug() << "Method name";
 
+    if (curIndex >= frames.count()) {
+        return frames[frames.count() - 1];
+    }
     return frames[curIndex];
 }
 
@@ -255,7 +261,4 @@ void DanceScript::goToNextFrame()
 //    qDebug() << "Method name";
 
     curIndex = curIndex + 1;
-    if (curIndex >= frames.count()) {
-        curIndex = frames.count() - 1;
-    }
 }
