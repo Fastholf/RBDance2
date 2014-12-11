@@ -247,7 +247,7 @@ bool DanceScript::isFinished()
 {
 //    qDebug() << "Method name";
 
-    return curIndex == frames.count();
+    return curIndex >= frames.count();
 }
 
 void DanceScript::goToNextFrame()

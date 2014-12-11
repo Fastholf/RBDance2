@@ -23,7 +23,8 @@ SOURCES +=\
     DanceScript.cpp \
     Choreographer.cpp \
     MusicPlayer.cpp \
-    SerialPortWorker.cpp
+    SerialPortWorker.cpp \
+    StopWatch.cpp
 
 HEADERS  += MainWindow.h \
     Robot.h \
@@ -33,6 +34,7 @@ HEADERS  += MainWindow.h \
     DanceScript.h \
     Choreographer.h \
     MusicPlayer.h \
-    SerialPortWorker.h
+    SerialPortWorker.h \
+    StopWatch.h
 
 FORMS    += MainWindow.ui

@@ -1,6 +1,7 @@
 #include "Choreographer.h"
 #include <limits>
 #include <QDebug>
+#include "StopWatch.h"
 
 void Choreographer::run()
 {
@@ -15,7 +16,6 @@ void Choreographer::dancing()
 
     finished = false;
     paused = false;
-    currentTime = 0;
     if (scenario->isMusicPlaying()) {
         musicPlayer = new MusicPlayer(scenario->getMusicFilePath());
         musicPlayer->start();
@@ -24,15 +24,22 @@ void Choreographer::dancing()
     QVector<Role> roles = scenario->getRoles();
     QVector<DanceScript> scripts = scenario->getDanceScripts();
 
+    StopWatch *timer = new StopWatch();
+    timer->start();
+
     while (!finished) {
 
         if (paused) {
             if (musicPlayer != NULL) {
                 musicPlayer->pause();
             }
+            timer->pause();
         }
         while (paused) {
             QThread::msleep(1);
+        }
+        if (timer->state == StopWatch::STATE_PAUSED) {
+            timer->pause();
         }
         if (musicPlayer != NULL) {
             if (musicPlayer->isPaused()) {
@@ -61,7 +68,7 @@ void Choreographer::dancing()
 
             int robotNum = roles[i].robotNum;
             if (scripts[danceNum].getCurrentFireTime()
-                    == currentTime) {
+                    <= timer->elapsedMilliseconds()) {
                 Frame curFrame = scripts[danceNum].getCurrentFrame();
                 robots[robotNum]->setPose(curFrame.servoAngles);
                 scripts[danceNum].goToNextFrame();
@@ -69,15 +76,15 @@ void Choreographer::dancing()
 
             haveWorkToDo |= !scripts[danceNum].isFinished();
         }
+
         finished |= !haveWorkToDo;
         if (finished) {
             break;
         }
 
         int closestFireTime = minFireTime(roles, scripts);
-        while (currentTime < closestFireTime) {
+        while (timer->elapsedMilliseconds() < closestFireTime) {
             QThread::msleep(1);
-            ++currentTime;
         }
     }
 
@@ -86,6 +93,8 @@ void Choreographer::dancing()
         delete musicPlayer;
         musicPlayer = NULL;
     }
+
+    delete timer;
 
     danceFinished();
 }

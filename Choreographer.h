@@ -23,7 +23,6 @@ private:
     MusicPlayer *musicPlayer;
     void dancing();
     int minFireTime(QVector<Role> roles, QVector<DanceScript> scripts);
-    int currentTime;
 
 public:
     Choreographer();
