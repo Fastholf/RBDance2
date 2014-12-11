@@ -3,6 +3,7 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QRegExp>
+#include <algorithm>
 
 bool DanceScript::skipLinesWithString(QTextStream *in,
                                       int linesCount,
@@ -138,7 +139,7 @@ void DanceScript::precountFrames()
 
     for (int i = 0; i < poseCount; ++i)
     {
-        int sleepBetweenSteps = poseDurations[i] / poseStepCounts[i];
+        int sleepBetweenSteps = std::max(poseDurations[i] / poseStepCounts[i], 25);
         int servoCount = poseServoAngles[i + 1].count();
         for (int j = 1; j <= poseStepCounts[i]; ++j)
         {
