@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QRegExp>
 #include <algorithm>
+#include <limits>
 
 bool DanceScript::skipLinesWithString(QTextStream *in,
                                       int linesCount,
@@ -235,7 +236,7 @@ int DanceScript::getCurrentFireTime()
 //    qDebug() << "Method name";
 
     if (curIndex >= frames.count()) {
-        return frames[frames.count() - 1].fireTime;
+        return std::numeric_limits<int>::max();
     }
     return frames[curIndex].fireTime;
 }

@@ -362,6 +362,7 @@ void AppManager::danceStart()
             this, SLOT(onDanceFinished()));
     choreographer->setRobots(robots);
     choreographer->setScenario(scenario);
+    choreographer->init();
     choreographerPortThread = new QThread();
     choreographer->moveToThread(choreographerPortThread);
     connect(choreographerPortThread, SIGNAL(started()),

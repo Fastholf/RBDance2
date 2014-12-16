@@ -24,7 +24,8 @@ SOURCES +=\
     Choreographer.cpp \
     MusicPlayer.cpp \
     SerialPortWorker.cpp \
-    StopWatch.cpp
+    StopWatch.cpp \
+    ScriptPlayer.cpp
 
 HEADERS  += MainWindow.h \
     Robot.h \
@@ -35,6 +36,7 @@ HEADERS  += MainWindow.h \
     Choreographer.h \
     MusicPlayer.h \
     SerialPortWorker.h \
-    StopWatch.h
+    StopWatch.h \
+    ScriptPlayer.h
 
 FORMS    += MainWindow.ui

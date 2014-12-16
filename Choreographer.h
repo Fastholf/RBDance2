@@ -7,6 +7,7 @@
 #include "Scenario.h"
 #include "MusicPlayer.h"
 #include "DanceScript.h"
+#include "ScriptPlayer.h"
 
 class Choreographer : public QObject
 {
@@ -20,22 +21,21 @@ private:
     bool paused;
     QVector<Robot*> robots;
     Scenario *scenario;
+    QVector<ScriptPlayer*> scriptPlayers;
     MusicPlayer *musicPlayer;
     void dancing();
-    int minFireTime(QVector<Role> roles, QVector<DanceScript> scripts);
+    int minFireTime();
 
 public:
     Choreographer();
     void setRobots(QVector<Robot*> t_robots);
     void setScenario(Scenario *t_scenario);
+    void init();
 public slots:
     void startDance();
 public:
     void pauseDance();
     void stopDance();
-
-
-
 signals:
     void danceFinished();
 };

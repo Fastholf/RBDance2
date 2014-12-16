@@ -21,9 +21,6 @@ void Choreographer::dancing()
         musicPlayer->start();
     }
 
-    QVector<Role> roles = scenario->getRoles();
-    QVector<DanceScript> scripts = scenario->getDanceScripts();
-
     StopWatch *timer = new StopWatch();
     timer->start();
 
@@ -55,26 +52,17 @@ void Choreographer::dancing()
 //        continue;
 
         bool haveWorkToDo = false;
-        for (int i = 0; i < roles.count(); ++i) {
-
-            int danceNum = roles[i].danceNum;
-            if (danceNum == -1) {
+        int elapsedMilliseconds = timer->elapsedMilliseconds();
+        for (int i = 0; i < scriptPlayers.count(); ++i) {
+            if (scriptPlayers[i]->isFinished()) {
                 continue;
             }
 
-            if (scripts[danceNum].isFinished()) {
-                continue;
+            if (scriptPlayers[i]->getCurrentFireTime() <= elapsedMilliseconds) {
+                scriptPlayers[i]->setNextFrame();
             }
 
-            int robotNum = roles[i].robotNum;
-            if (scripts[danceNum].getCurrentFireTime()
-                    <= timer->elapsedMilliseconds()) {
-                Frame curFrame = scripts[danceNum].getCurrentFrame();
-                robots[robotNum]->setPose(curFrame.servoAngles);
-                scripts[danceNum].goToNextFrame();
-            }
-
-            haveWorkToDo |= !scripts[danceNum].isFinished();
+            haveWorkToDo |= !scriptPlayers[i]->isFinished();
         }
 
         finished |= !haveWorkToDo;
@@ -82,7 +70,7 @@ void Choreographer::dancing()
             break;
         }
 
-        int closestFireTime = minFireTime(roles, scripts);
+        int closestFireTime = minFireTime();
         while (timer->elapsedMilliseconds() < closestFireTime) {
             QThread::msleep(1);
         }
@@ -99,15 +87,12 @@ void Choreographer::dancing()
     danceFinished();
 }
 
-int Choreographer::minFireTime(QVector<Role> roles,
-                               QVector<DanceScript> scripts)
+int Choreographer::minFireTime()
 {
     int result = std::numeric_limits<int>::max();
-    for (int i = 0; i < roles.count(); ++i) {
-        if (roles[i].danceNum != -1) {
-            int time = scripts[roles[i].danceNum].getCurrentFireTime();
-            result = std::min(result, time);
-        }
+    for (int i = 0; i < scriptPlayers.count(); ++i) {
+        int time = scriptPlayers[i]->getCurrentFireTime();
+        result = std::min(result, time);
     }
 
     return result;
@@ -132,6 +117,26 @@ void Choreographer::setScenario(Scenario *t_scenario)
     qDebug() << "Method name";
 
     scenario = t_scenario;
+}
+
+void Choreographer::init()
+{
+    QVector<Role> roles = scenario->getRoles();
+    QVector<DanceScript> scripts = scenario->getDanceScripts();
+    for (int i = 0; i < roles.count(); ++i) {
+        if (roles[i].danceNum != -1) {
+            int danceNum = roles[i].danceNum;
+            QVector<Robot*> t_robots;
+            DanceScript script = scripts[roles[i].danceNum];
+            for (int j = i; j < roles.count(); ++j) {
+                if (danceNum == roles[j].danceNum) {
+                    t_robots.push_back(robots[roles[j].robotNum]);
+                    roles[j].danceNum = -1;
+                }
+            }
+            scriptPlayers.push_back(new ScriptPlayer(t_robots, script));
+        }
+    }
 }
 
 void Choreographer::startDance()

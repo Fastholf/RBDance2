@@ -127,7 +127,7 @@ void RBController::setDirectPose(QVector<int> servoAngles)
 //    qDebug() << "Method name";
 //    qDebug() << "current thread:" << QThread::currentThreadId();
 
-//    For debug puproses only
+//    For debug purpose only
 //    return;
 
     int servoCount = servoAngles.count();
