@@ -28,3 +28,18 @@ int ScriptPlayer::getCurrentFireTime()
 {
     return script.getCurrentFireTime();
 }
+
+int ScriptPlayer::getTimeLength()
+{
+    return script.getTimeLength();
+}
+
+int ScriptPlayer::getCurrentIndex()
+{
+    return script.getCurrentIndex();
+}
+
+int ScriptPlayer::getMaxIndex()
+{
+    return script.getMaxIndex();
+}

@@ -25,6 +25,7 @@ private:
     MusicPlayer *musicPlayer;
     void dancing();
     int minFireTime();
+    int longestScriptIndex;
 
 public:
     Choreographer();
@@ -38,6 +39,8 @@ public:
     void stopDance();
 signals:
     void danceFinished();
+    void danceLoaded(int maxIndex);
+    void currentFrameChanged(int index);
 };
 
 #endif // CHOREOGRAPHER_H

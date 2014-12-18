@@ -360,9 +360,15 @@ void AppManager::danceStart()
 
     connect(choreographer, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
+    connect(choreographer, SIGNAL(danceLoaded(int)),
+            this, SLOT(onDanceLoaded(int)));
+    connect(choreographer, SIGNAL(currentFrameChanged(int)),
+            this, SLOT(onCurrentFrameChanged(int)));
+
     choreographer->setRobots(robots);
     choreographer->setScenario(scenario);
     choreographer->init();
+
     choreographerPortThread = new QThread();
     choreographer->moveToThread(choreographerPortThread);
     connect(choreographerPortThread, SIGNAL(started()),
@@ -432,4 +438,16 @@ void AppManager::onDisconnected(int index)
     qDebug() << "Method name";
 
     emit disconnected(index);
+}
+
+void AppManager::onDanceLoaded(int maxIndex)
+{
+    qDebug() << "Method name";
+
+    emit danceLoaded(maxIndex);
+}
+
+void AppManager::onCurrentFrameChanged(int index)
+{
+    emit currentFrameChanged(index);
 }

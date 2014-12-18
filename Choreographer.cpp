@@ -60,6 +60,9 @@ void Choreographer::dancing()
 
             if (scriptPlayers[i]->getCurrentFireTime() <= elapsedMilliseconds) {
                 scriptPlayers[i]->setNextFrame();
+                if (i == longestScriptIndex) {
+                    emit currentFrameChanged(scriptPlayers[i]->getCurrentIndex());
+                }
             }
 
             haveWorkToDo |= !scriptPlayers[i]->isFinished();
@@ -103,6 +106,7 @@ Choreographer::Choreographer()
     qDebug() << "Method name";
 
     musicPlayer = NULL;
+    longestScriptIndex = 0;
 }
 
 void Choreographer::setRobots(QVector<Robot*> t_robots)
@@ -137,6 +141,13 @@ void Choreographer::init()
             scriptPlayers.push_back(new ScriptPlayer(t_robots, script));
         }
     }
+    int longestTime = 0;
+    for (int i = 0; i < scriptPlayers.count(); ++i) {
+        if (scriptPlayers[i]->getTimeLength() > longestTime) {
+            longestScriptIndex = i;
+        }
+    }
+    emit danceLoaded(scriptPlayers[longestScriptIndex]->getMaxIndex());
 }
 
 void Choreographer::startDance()

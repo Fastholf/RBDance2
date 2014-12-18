@@ -25,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(updateFileNameComboBoxes(QVector<QString>,
                                                 QVector<Role>)));
 
+    connect(appManager, SIGNAL(danceLoaded(int)),
+            this, SLOT(onDanceLoaded(int)));
+    connect(appManager, SIGNAL(currentFrameChanged(int)),
+            this, SLOT(onCurrentFrameChanged(int)));
     connect(appManager, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
 
@@ -236,6 +240,18 @@ void MainWindow::onTurnDCOffFinished(int index)
 void MainWindow::onDisconnected(int index)
 {
     onRobotDisconnected(index);
+}
+
+void MainWindow::onDanceLoaded(int maxIndex)
+{
+    qDebug() << ui->dance_horizontalSlider->maximum();
+    ui->dance_horizontalSlider->setMaximum(maxIndex);
+    qDebug() << ui->dance_horizontalSlider->maximum();
+}
+
+void MainWindow::onCurrentFrameChanged(int index)
+{
+    ui->dance_horizontalSlider->setValue(index);
 }
 
 void MainWindow::onDanceFinished()

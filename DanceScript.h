@@ -51,6 +51,9 @@ public:
     Frame getCurrentFrame();
     bool isFinished();
     void goToNextFrame();
+    int getTimeLength();
+    int getCurrentIndex();
+    int getMaxIndex();
 };
 
 #endif // DANCESCRIPT_H

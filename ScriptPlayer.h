@@ -15,6 +15,9 @@ public:
     void setNextFrame();
     bool isFinished();
     int getCurrentFireTime();
+    int getTimeLength();
+    int getCurrentIndex();
+    int getMaxIndex();
 };
 
 #endif // SCRIPTPLAYER_H

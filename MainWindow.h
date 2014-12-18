@@ -52,6 +52,8 @@ private slots:
     void onTurnDCOnFinished(int index, bool result);
     void onTurnDCOffFinished(int index);
     void onDisconnected(int index);
+    void onDanceLoaded(int maxIndex);
+    void onCurrentFrameChanged(int index);
 
     void onDanceFinished();
 

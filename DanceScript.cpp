@@ -264,3 +264,18 @@ void DanceScript::goToNextFrame()
 
     curIndex = curIndex + 1;
 }
+
+int DanceScript::getTimeLength()
+{
+    return frames[frames.count() - 1].fireTime;
+}
+
+int DanceScript::getCurrentIndex()
+{
+    return curIndex;
+}
+
+int DanceScript::getMaxIndex()
+{
+    return frames.count() - 1;
+}
