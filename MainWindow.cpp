@@ -144,6 +144,7 @@ void MainWindow::onDanceStopped()
     ui->pause_pushButton->setEnabled(false);
     ui->stop_pushButton->setEnabled(false);
     ui->pause_pushButton->setText("Pause");
+    ui->dance_horizontalSlider->setValue(0);
 }
 
 void MainWindow::connectRobot(int index)
@@ -262,19 +263,6 @@ void MainWindow::showMessage(QString message)
     QMessageBox::warning(this, "Error", message);
 }
 
-void MainWindow::on_dance_comboBox_currentIndexChanged(int index)
-{
-    if (index > 0) {
-        FileLoadError error = appManager->loadScenarioFromFile(index - 1);
-        if (error != FileLoadErrorNo) {
-            clearFileNameComboboxes();
-        }
-    }
-    else {
-        clearFileNameComboboxes();
-    }
-}
-
 void MainWindow::on_connect1_pushButton_clicked()
 {
     connectRobot(0);
@@ -388,4 +376,17 @@ void MainWindow::on_stop_pushButton_clicked()
 void MainWindow::on_music_checkBox_stateChanged(int arg1)
 {
     appManager->setMusicPlaying(arg1);
+}
+
+void MainWindow::on_dance_comboBox_activated(int index)
+{
+    if (index > 0) {
+        FileLoadError error = appManager->loadScenarioFromFile(index - 1);
+        if (error != FileLoadErrorNo) {
+            clearFileNameComboboxes();
+        }
+    }
+    else {
+        clearFileNameComboboxes();
+    }
 }

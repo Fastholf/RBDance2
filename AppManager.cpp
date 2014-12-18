@@ -164,7 +164,26 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
      * file <dance file path>
      * music <music file path>
      * role <robot number> <dance number> */
+    if (scenario != NULL) {
+        delete scenario;
+        scenario = NULL;
+    }
     scenario = new Scenario(robots.count());
+    QVector<int> robotNums;
+    for (int i = 0; i < robots.count(); ++i) {
+        if (robots[i]->isConnected()) {
+            robotNums.push_back(i);
+        }
+    }
+    for (int i = 0; i < robots.count(); ++i) {
+        if (!robots[i]->isConnected()) {
+            robotNums.push_back(i);
+        }
+    }
+    for (int i = 0; i < robots.count(); ++i) {
+        qDebug() << i << robots[i]->isConnected();
+    }
+    qDebug() << robotNums;
     while (!in.atEnd()) {
         QString line = in.readLine();
         if (line[0] == '#') { // Comment
@@ -210,7 +229,7 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
             showMessage("Scenario file has wrong format.");
                 break;
             }
-            scenario->setRole(robotNum, danceNum);
+            scenario->setRole(robotNums[robotNum], danceNum);
         }
         else if (command == "music") {
             scenario->setMusic(QDir::cleanPath(scenarioPath +

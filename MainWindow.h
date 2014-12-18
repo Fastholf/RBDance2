@@ -59,7 +59,6 @@ private slots:
 
     void showMessage(QString message);
 
-    void on_dance_comboBox_currentIndexChanged(int index);
     void on_connect1_pushButton_clicked();
     void on_connect2_pushButton_clicked();
     void on_connect3_pushButton_clicked();
@@ -82,6 +81,7 @@ private slots:
     void on_pause_pushButton_clicked();
     void on_stop_pushButton_clicked();
     void on_music_checkBox_stateChanged(int arg1);
+    void on_dance_comboBox_activated(int index);
 };
 
 #endif // MAINWINDOW_H

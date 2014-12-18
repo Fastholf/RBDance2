@@ -25,6 +25,10 @@ bool RBController::connectToRB()
 {
 //    qDebug() << "Method name";
 
+//  For debug purpose only
+//    _connected = true;
+//    return true;
+
     if (_portNum == -1) {
         qWarning() << "Robot::connect: port num is not specified.";
         return false;
