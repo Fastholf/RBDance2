@@ -5,14 +5,14 @@
 
 void Choreographer::run()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     dancing();
 }
 
 void Choreographer::dancing()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     finished = false;
     paused = false;
@@ -103,7 +103,7 @@ int Choreographer::minFireTime()
 
 Choreographer::Choreographer()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     musicPlayer = NULL;
     longestScriptIndex = 0;
@@ -111,14 +111,14 @@ Choreographer::Choreographer()
 
 void Choreographer::setRobots(QVector<Robot*> t_robots)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     robots = t_robots;
 }
 
 void Choreographer::setScenario(Scenario *t_scenario)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     scenario = t_scenario;
 }
@@ -152,21 +152,21 @@ void Choreographer::init()
 
 void Choreographer::startDance()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     run();
 }
 
 void Choreographer::pauseDance()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     paused = !paused;
 }
 
 void Choreographer::stopDance()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     finished = true;
 }

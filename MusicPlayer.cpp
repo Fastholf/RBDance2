@@ -2,7 +2,7 @@
 
 MusicPlayer::MusicPlayer(QString t_musicPath)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     musicPath = t_musicPath;
     mediaPlayer = new QMediaPlayer();
@@ -13,7 +13,7 @@ MusicPlayer::MusicPlayer(QString t_musicPath)
 
 bool MusicPlayer::start()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     mediaPlayer->play();
     return true;
@@ -21,7 +21,7 @@ bool MusicPlayer::start()
 
 bool MusicPlayer::pause()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     if (!paused) {
         mediaPlayer->pause();
@@ -41,7 +41,7 @@ bool MusicPlayer::isPaused()
 
 bool MusicPlayer::stop()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     if (paused) {
         mediaPlayer->play();

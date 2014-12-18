@@ -195,7 +195,7 @@ void DanceScript::clear()
 
 bool DanceScript::loadFromMotionBuilderFile(QString t_filePath)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     filePath = t_filePath;
     QFile scripFile(filePath);

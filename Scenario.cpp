@@ -7,7 +7,7 @@
 
 Scenario::Scenario(int t_robotCount)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     robotCount = t_robotCount;
     for (int i = 0; i < robotCount; ++i) {
@@ -20,14 +20,14 @@ Scenario::Scenario(int t_robotCount)
 
 void Scenario::addDanceFile(QString danceFilePath)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     danceFilePaths.push_back(danceFilePath);
 }
 
 void Scenario::setMusic(QString t_musicFilePath)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     musicFilePath = t_musicFilePath;
 }
@@ -41,7 +41,7 @@ void Scenario::setMusicPlaying(bool t_musicPlaying)
 
 void Scenario::setRole(int robotNum, int danceNum)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     for (int i = 0; i < roles.count(); ++i) {
         if (roles[i].robotNum == robotNum) {
@@ -52,7 +52,7 @@ void Scenario::setRole(int robotNum, int danceNum)
 
 bool Scenario::loadDanceScripts(QString *errorMessage)
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     for (int i = 0; i < danceFilePaths.count(); ++i) {
         danceScripts[i].clear();
@@ -83,14 +83,14 @@ bool Scenario::isMusicPlaying()
 
 QVector<QString> Scenario::getDanceFilePaths()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return danceFilePaths;
 }
 
 QVector<QString> Scenario::getDanceFileNames()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     QVector<QString> danceFileNames;
     for (int i = 0; i < danceFilePaths.count(); ++i) {
@@ -104,7 +104,7 @@ QVector<QString> Scenario::getDanceFileNames()
 
 QString Scenario::getMusicFilePath()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return musicFilePath;
 }
@@ -118,7 +118,7 @@ QVector<Role> Scenario::getRoles()
 
 QVector<DanceScript> Scenario::getDanceScripts()
 {
-//    qDebug() << "Method name";
+    qDebug() << "Method name";
 
     return danceScripts;
 }
