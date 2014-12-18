@@ -125,7 +125,12 @@ void MainWindow::onDanceStarted()
 
 void MainWindow::onDancePaused()
 {
-
+    if (ui->pause_pushButton->text() == "Pause") {
+        ui->pause_pushButton->setText("Unpause");
+    }
+    else {
+        ui->pause_pushButton->setText("Pause");
+    }
 }
 
 void MainWindow::onDanceStopped()
@@ -134,6 +139,7 @@ void MainWindow::onDanceStopped()
     ui->start_pushButton->setEnabled(true);
     ui->pause_pushButton->setEnabled(false);
     ui->stop_pushButton->setEnabled(false);
+    ui->pause_pushButton->setText("Pause");
 }
 
 void MainWindow::connectRobot(int index)
