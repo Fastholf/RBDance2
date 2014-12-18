@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets serialport multimedia
 
-VERSION = 1.4.6
+VERSION = 1.5.0
 TARGET = RBDance2
 TEMPLATE = app
 
