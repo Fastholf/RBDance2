@@ -127,6 +127,7 @@ void Robot::onDisconnected(int index)
         return;
     }
 
+    _connected = false;
     emit disconnected(index);
 }
 
