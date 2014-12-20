@@ -145,6 +145,7 @@ void Choreographer::init()
     for (int i = 0; i < scriptPlayers.count(); ++i) {
         if (scriptPlayers[i]->getTimeLength() > longestTime) {
             longestScriptIndex = i;
+            longestTime = scriptPlayers[i]->getTimeLength();
         }
     }
     emit danceLoaded(scriptPlayers[longestScriptIndex]->getMaxIndex());
