@@ -42,6 +42,8 @@ private:
     void turnDCOff(int index);
     void disconnectRobot(int index);
 
+    bool isRobotConnected(int index);
+
 private slots:
     void updateRobotLabel(int index, QString robotName, int portNum);
     void updateDanceComboBox(QVector<QString> scenarioPaths);
@@ -62,18 +64,23 @@ private slots:
     void on_connect1_pushButton_clicked();
     void on_connect2_pushButton_clicked();
     void on_connect3_pushButton_clicked();
+    void on_connectAll_pushButton_clicked();
     void on_basicPosture1_pushButton_clicked();
     void on_basicPosture2_pushButton_clicked();
     void on_basicPosture3_pushButton_clicked();
+    void on_basicPostureAll_pushButton_clicked();
     void on_DCOn1_pushButton_clicked();
     void on_DCOn2_pushButton_clicked();
     void on_DCOn3_pushButton_clicked();
+    void on_DCOnAll_pushButton_clicked();
     void on_DCOff1_pushButton_clicked();
     void on_DCOff2_pushButton_clicked();
     void on_DCOff3_pushButton_clicked();
+    void on_DCOffAll_pushButton_clicked();
     void on_disconnect1_pushButton_clicked();
     void on_disconnect2_pushButton_clicked();
     void on_disconnect3_pushButton_clicked();
+    void on_disconnectAll_pushButton_clicked();
     void on_fileName1_comboBox_currentIndexChanged(int index);
     void on_fileName2_comboBox_currentIndexChanged(int index);
     void on_fileName3_comboBox_currentIndexChanged(int index);

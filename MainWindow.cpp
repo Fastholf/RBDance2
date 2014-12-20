@@ -169,6 +169,11 @@ void MainWindow::disconnectRobot(int index)
     appManager->robotDisconnect(index);
 }
 
+bool MainWindow::isRobotConnected(int index)
+{
+    return !connectButtons[index]->isEnabled();
+}
+
 void MainWindow::updateRobotLabel(int index, QString robotName, int portNum)
 {
     QLabel *robotLabel;
@@ -226,14 +231,16 @@ void MainWindow::onTurnDCOnFinished(int index, bool result)
     if (result) {
         onDCModeTurnedOn(index);
     }
-    else {
+    else if (isRobotConnected(index)){
         onDCModeTurnedOff(index);
     }
 }
 
 void MainWindow::onTurnDCOffFinished(int index)
 {
-    onDCModeTurnedOff(index);
+    if (isRobotConnected(index)) {
+        onDCModeTurnedOff(index);
+    }
 }
 
 void MainWindow::onDisconnected(int index)
@@ -278,6 +285,11 @@ void MainWindow::on_connect3_pushButton_clicked()
     connectRobot(2);
 }
 
+void MainWindow::on_connectAll_pushButton_clicked()
+{
+    appManager->connectAllRobots();
+}
+
 void MainWindow::on_basicPosture1_pushButton_clicked()
 {
     appManager->robotBasicPosture(0);
@@ -291,6 +303,11 @@ void MainWindow::on_basicPosture2_pushButton_clicked()
 void MainWindow::on_basicPosture3_pushButton_clicked()
 {
     appManager->robotBasicPosture(2);
+}
+
+void MainWindow::on_basicPostureAll_pushButton_clicked()
+{
+    appManager->robotBasicPostureAll();
 }
 
 void MainWindow::on_DCOn1_pushButton_clicked()
@@ -308,6 +325,11 @@ void MainWindow::on_DCOn3_pushButton_clicked()
     turnDCOn(2);
 }
 
+void MainWindow::on_DCOnAll_pushButton_clicked()
+{
+    appManager->robotTurnDCOnAll();
+}
+
 void MainWindow::on_DCOff1_pushButton_clicked()
 {
     turnDCOff(0);
@@ -323,6 +345,11 @@ void MainWindow::on_DCOff3_pushButton_clicked()
     turnDCOff(2);
 }
 
+void MainWindow::on_DCOffAll_pushButton_clicked()
+{
+    appManager->robotTurnDCOffAll();
+}
+
 void MainWindow::on_disconnect1_pushButton_clicked()
 {
     disconnectRobot(0);
@@ -336,6 +363,11 @@ void MainWindow::on_disconnect2_pushButton_clicked()
 void MainWindow::on_disconnect3_pushButton_clicked()
 {
     disconnectRobot(2);
+}
+
+void MainWindow::on_disconnectAll_pushButton_clicked()
+{
+    appManager->robotDisconnectAll();
 }
 
 void MainWindow::on_fileName1_comboBox_currentIndexChanged(int index)

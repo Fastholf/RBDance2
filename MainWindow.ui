@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>548</width>
-    <height>203</height>
+    <height>233</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>548</width>
-    <height>203</height>
+    <height>233</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>548</width>
-    <height>203</height>
+    <height>233</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>140</y>
+      <y>170</y>
       <width>521</width>
       <height>19</height>
      </rect>
@@ -46,7 +46,7 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>170</y>
+      <y>200</y>
       <width>41</width>
       <height>23</height>
      </rect>
@@ -62,7 +62,7 @@
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>170</y>
+      <y>200</y>
       <width>51</width>
       <height>23</height>
      </rect>
@@ -78,7 +78,7 @@
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>170</y>
+      <y>200</y>
       <width>41</width>
       <height>23</height>
      </rect>
@@ -93,7 +93,7 @@
       <x>10</x>
       <y>10</y>
       <width>531</width>
-      <height>131</height>
+      <height>161</height>
      </rect>
     </property>
     <widget class="QPushButton" name="DCOff1_pushButton">
@@ -474,12 +474,116 @@
       <string>Disconnect</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="disconnectAll_pushButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>310</x>
+       <y>130</y>
+       <width>71</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Disconnect</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="connectAll_pushButton">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>130</y>
+       <width>51</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>connect</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="basicPostureAll_pushButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>130</y>
+       <width>81</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Basic Posture</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="DCOnAll_pushButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>130</y>
+       <width>41</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>DC On</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="DCOffAll_pushButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>130</y>
+       <width>51</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>DC Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="robotNameAll_label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>135</y>
+       <width>20</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>All</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="Line" name="robotControls_line">
+    <property name="geometry">
+     <rect>
+      <x>15</x>
+      <y>135</y>
+      <width>515</width>
+      <height>3</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
    </widget>
    <zorder>dance_prepare_widget</zorder>
    <zorder>dance_horizontalSlider</zorder>
    <zorder>start_pushButton</zorder>
    <zorder>pause_pushButton</zorder>
    <zorder>stop_pushButton</zorder>
+   <zorder>robotControls_line</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

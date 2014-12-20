@@ -289,12 +289,26 @@ void AppManager::connectRobot(int index)
     }
 }
 
+void AppManager::connectAllRobots()
+{
+    for (int i = 0; i < robots.count(); ++i) {
+        robots[i]->connectToRB();
+    }
+}
+
 void AppManager::robotBasicPosture(int index)
 {
 //    qDebug() << "Method name";
 
     if (isRobotIndexOk(index, "Controller::robotBasicPosture")) {
         robots[index]->basicPosture();
+    }
+}
+
+void AppManager::robotBasicPostureAll()
+{
+    for (int i = 0; i < robots.count(); ++i) {
+        robots[i]->basicPosture();
     }
 }
 
@@ -307,6 +321,13 @@ void AppManager::robotTurnDCOn(int index)
     }
 }
 
+void AppManager::robotTurnDCOnAll()
+{
+    for (int i = 0; i < robots.count(); ++i) {
+        robots[i]->turnDCOn();
+    }
+}
+
 void AppManager::robotTurnDCOff(int index)
 {
 //    qDebug() << "Method name";
@@ -316,12 +337,26 @@ void AppManager::robotTurnDCOff(int index)
     }
 }
 
+void AppManager::robotTurnDCOffAll()
+{
+    for (int i = 0; i < robots.count(); ++i) {
+        robots[i]->turnDCOff();
+    }
+}
+
 void AppManager::robotDisconnect(int index)
 {
 //    qDebug() << "Method name";
 
     if (isRobotIndexOk(index, "Controller::robotDisconnect")) {
         robots[index]->disconnect();
+    }
+}
+
+void AppManager::robotDisconnectAll()
+{
+    for (int i = 0; i < robots.count(); ++i) {
+        robots[i]->disconnect();
     }
 }
 

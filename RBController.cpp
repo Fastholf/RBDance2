@@ -52,6 +52,10 @@ void RBController::runBasicPosture()
 {
 //    qDebug() << "Method name";
 
+    if (!serialPort->isOpen()) {
+        return;
+    }
+
     runMotion(7);
 }
 
@@ -114,6 +118,10 @@ void RBController::turnDirectControlModeOff()
 void RBController::disconnect()
 {
 //    qDebug() << "Method name";
+
+    if (!serialPort->isOpen()) {
+        return;
+    }
 
     serialPort->close();
     _connected = false;
