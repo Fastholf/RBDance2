@@ -109,22 +109,10 @@ Choreographer::Choreographer()
     longestScriptIndex = 0;
 }
 
-void Choreographer::setRobots(QVector<Robot*> t_robots)
+void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
 {
-//    qDebug() << "Method name";
-
-    robots = t_robots;
-}
-
-void Choreographer::setScenario(Scenario *t_scenario)
-{
-//    qDebug() << "Method name";
-
     scenario = t_scenario;
-}
-
-void Choreographer::init()
-{
+    QVector<Robot*> robots = t_robots;
     QVector<Role> roles = scenario->getRoles();
     QVector<DanceScript> scripts = scenario->getDanceScripts();
     for (int i = 0; i < roles.count(); ++i) {

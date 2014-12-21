@@ -19,7 +19,6 @@ protected:
 private:
     bool finished;
     bool paused;
-    QVector<Robot*> robots;
     Scenario *scenario;
     QVector<ScriptPlayer*> scriptPlayers;
     MusicPlayer *musicPlayer;
@@ -29,9 +28,7 @@ private:
 
 public:
     Choreographer();
-    void setRobots(QVector<Robot*> t_robots);
-    void setScenario(Scenario *t_scenario);
-    void init();
+    void load(Scenario *t_scenario, QVector<Robot*> t_robots);
 public slots:
     void startDance();
 public:
