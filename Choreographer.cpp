@@ -61,7 +61,8 @@ void Choreographer::dancing()
             if (scriptPlayers[i]->getCurrentFireTime() <= elapsedMilliseconds) {
                 scriptPlayers[i]->setNextFrame();
                 if (i == longestScriptIndex) {
-                    emit currentFrameChanged(scriptPlayers[i]->getCurrentIndex());
+                    int curIndex = scriptPlayers[i]->getCurrentIndex();
+                    emit currentFrameChanged(curIndex, elapsedMilliseconds);
                 }
             }
 
@@ -136,7 +137,8 @@ void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
             longestTime = scriptPlayers[i]->getTimeLength();
         }
     }
-    emit danceLoaded(scriptPlayers[longestScriptIndex]->getMaxIndex());
+    int maxIndex = scriptPlayers[longestScriptIndex]->getMaxIndex();
+    emit danceLoaded(maxIndex, longestTime);
 }
 
 void Choreographer::startDance()

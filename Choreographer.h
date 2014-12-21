@@ -36,8 +36,8 @@ public:
     void stopDance();
 signals:
     void danceFinished();
-    void danceLoaded(int maxIndex);
-    void currentFrameChanged(int index);
+    void danceLoaded(int maxIndex, int duration);
+    void currentFrameChanged(int index, int elapsedTime);
 };
 
 #endif // CHOREOGRAPHER_H

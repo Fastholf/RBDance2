@@ -34,7 +34,7 @@
      <rect>
       <x>10</x>
       <y>170</y>
-      <width>521</width>
+      <width>441</width>
       <height>19</height>
      </rect>
     </property>
@@ -578,12 +578,31 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
+   <widget class="QLabel" name="duration_label">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>170</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Lucida Console</family>
+     </font>
+    </property>
+    <property name="text">
+     <string>--:--/--:--</string>
+    </property>
+   </widget>
    <zorder>dance_prepare_widget</zorder>
    <zorder>dance_horizontalSlider</zorder>
    <zorder>start_pushButton</zorder>
    <zorder>pause_pushButton</zorder>
    <zorder>stop_pushButton</zorder>
    <zorder>robotControls_line</zorder>
+   <zorder>duration_label</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

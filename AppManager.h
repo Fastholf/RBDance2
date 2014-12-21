@@ -67,8 +67,8 @@ private slots:
     void onTurnDCOnFinished(int index, bool result);
     void onTurnDCOffFinished(int index);
     void onDisconnected(int index);
-    void onDanceLoaded(int maxIndex);
-    void onCurrentFrameChanged(int index);
+    void onDanceLoaded(int maxIndex, int duration);
+    void onCurrentFrameChanged(int index, int elapsedTime);
 
 signals:
     void robotLoaded(int index, QString name, int port);
@@ -80,8 +80,8 @@ signals:
     void turnDCOnFinished(int index, bool result);
     void turnDCOffFinished(int index);
     void disconnected(int index);
-    void danceLoaded(int maxIndex);
-    void currentFrameChanged(int index);
+    void danceLoaded(int maxIndex, int duration);
+    void currentFrameChanged(int index, int elapsedTime);
 };
 
 #endif // CONTROLLER_H

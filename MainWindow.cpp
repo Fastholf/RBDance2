@@ -25,10 +25,10 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(updateFileNameComboBoxes(QVector<QString>,
                                                 QVector<Role>)));
 
-    connect(appManager, SIGNAL(danceLoaded(int)),
-            this, SLOT(onDanceLoaded(int)));
-    connect(appManager, SIGNAL(currentFrameChanged(int)),
-            this, SLOT(onCurrentFrameChanged(int)));
+    connect(appManager, SIGNAL(danceLoaded(int, int)),
+            this, SLOT(onDanceLoaded(int, int)));
+    connect(appManager, SIGNAL(currentFrameChanged(int, int)),
+            this, SLOT(onCurrentFrameChanged(int, int)));
     connect(appManager, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
 
@@ -145,6 +145,7 @@ void MainWindow::onDanceStopped()
     ui->stop_pushButton->setEnabled(false);
     ui->pause_pushButton->setText("Pause");
     ui->dance_horizontalSlider->setValue(0);
+    ui->duration_label->setText("00:00/" + durationTime);
 }
 
 void MainWindow::connectRobot(int index)
@@ -248,16 +249,27 @@ void MainWindow::onDisconnected(int index)
     onRobotDisconnected(index);
 }
 
-void MainWindow::onDanceLoaded(int maxIndex)
+QString timeStringFromMilliseconds(int milliseconds)
 {
-    qDebug() << ui->dance_horizontalSlider->maximum();
-    ui->dance_horizontalSlider->setMaximum(maxIndex);
-    qDebug() << ui->dance_horizontalSlider->maximum();
+    int secs = milliseconds / 1000;
+    int mins = secs / 60;
+    secs = secs % 60;
+    QString sMins, sSecs;
+    return sMins.sprintf("%02d", mins) + ":" + sSecs.sprintf("%02d", secs);
 }
 
-void MainWindow::onCurrentFrameChanged(int index)
+void MainWindow::onDanceLoaded(int maxIndex, int duration)
+{
+    ui->dance_horizontalSlider->setMaximum(maxIndex);
+    durationTime = timeStringFromMilliseconds(duration);
+    ui->duration_label->setText("00:00/" + durationTime);
+}
+
+void MainWindow::onCurrentFrameChanged(int index, int elapsedTime)
 {
     ui->dance_horizontalSlider->setValue(index);
+    QString currentTime = timeStringFromMilliseconds(elapsedTime);
+    ui->duration_label->setText(currentTime + "/" + durationTime);
 }
 
 void MainWindow::onDanceFinished()

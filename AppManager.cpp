@@ -180,10 +180,6 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
             robotNums.push_back(i);
         }
     }
-    for (int i = 0; i < robots.count(); ++i) {
-        qDebug() << i << robots[i]->isConnected();
-    }
-    qDebug() << robotNums;
     while (!in.atEnd()) {
         QString line = in.readLine();
         if (line[0] == '#') { // Comment
@@ -413,10 +409,10 @@ void AppManager::danceStart()
 
     connect(choreographer, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
-    connect(choreographer, SIGNAL(danceLoaded(int)),
-            this, SLOT(onDanceLoaded(int)));
-    connect(choreographer, SIGNAL(currentFrameChanged(int)),
-            this, SLOT(onCurrentFrameChanged(int)));
+    connect(choreographer, SIGNAL(danceLoaded(int, int)),
+            this, SLOT(onDanceLoaded(int, int)));
+    connect(choreographer, SIGNAL(currentFrameChanged(int, int)),
+            this, SLOT(onCurrentFrameChanged(int, int)));
 
     choreographer->load(scenario, robots);
 
@@ -491,16 +487,16 @@ void AppManager::onDisconnected(int index)
     emit disconnected(index);
 }
 
-void AppManager::onDanceLoaded(int maxIndex)
+void AppManager::onDanceLoaded(int maxIndex, int duration)
 {
 //    qDebug() << "Method name";
 
-    emit danceLoaded(maxIndex);
+    emit danceLoaded(maxIndex, duration);
 }
 
-void AppManager::onCurrentFrameChanged(int index)
+void AppManager::onCurrentFrameChanged(int index, int elapsedTime)
 {
 //    qDebug() << "Method name";
 
-    emit currentFrameChanged(index);
+    emit currentFrameChanged(index, elapsedTime);
 }

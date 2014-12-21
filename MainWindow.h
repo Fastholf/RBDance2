@@ -25,6 +25,7 @@ private:
     QVector<QPushButton*> dcOnButtons;
     QVector<QPushButton*> dcOffButtons;
     QVector<QPushButton*> disconnectButtons;
+    QString durationTime;
 
     void fillUIArrays();
     void clearFileNameComboboxes();
@@ -54,8 +55,8 @@ private slots:
     void onTurnDCOnFinished(int index, bool result);
     void onTurnDCOffFinished(int index);
     void onDisconnected(int index);
-    void onDanceLoaded(int maxIndex);
-    void onCurrentFrameChanged(int index);
+    void onDanceLoaded(int maxIndex, int duration);
+    void onCurrentFrameChanged(int index, int elapsedTime);
 
     void onDanceFinished();
 
