@@ -3,14 +3,14 @@
 #include <QDebug>
 #include "StopWatch.h"
 
-void Choreographer::run()
+void ChoreographerWorker::run()
 {
 //    qDebug() << "Method name";
 
     dancing();
 }
 
-void Choreographer::dancing()
+void ChoreographerWorker::dancing()
 {
 //    qDebug() << "Method name";
 
@@ -91,7 +91,7 @@ void Choreographer::dancing()
     danceFinished();
 }
 
-int Choreographer::minFireTime()
+int ChoreographerWorker::minFireTime()
 {
     int result = std::numeric_limits<int>::max();
     for (int i = 0; i < scriptPlayers.count(); ++i) {
@@ -102,7 +102,7 @@ int Choreographer::minFireTime()
     return result;
 }
 
-Choreographer::Choreographer()
+ChoreographerWorker::ChoreographerWorker()
 {
 //    qDebug() << "Method name";
 
@@ -110,7 +110,7 @@ Choreographer::Choreographer()
     longestScriptIndex = 0;
 }
 
-void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
+void ChoreographerWorker::load(Scenario *t_scenario, QVector<Robot *> t_robots)
 {
     scenario = t_scenario;
     QVector<Robot*> robots = t_robots;
@@ -141,21 +141,21 @@ void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
     emit danceLoaded(maxIndex, longestTime);
 }
 
-void Choreographer::startDance()
+void ChoreographerWorker::startDance()
 {
 //    qDebug() << "Method name";
 
     run();
 }
 
-void Choreographer::pauseDance()
+void ChoreographerWorker::pauseDance()
 {
 //    qDebug() << "Method name";
 
     paused = !paused;
 }
 
-void Choreographer::stopDance()
+void ChoreographerWorker::stopDance()
 {
 //    qDebug() << "Method name";
 

@@ -21,11 +21,11 @@ SOURCES +=\
     RBController.cpp \
     AppManager.cpp \
     DanceScript.cpp \
-    Choreographer.cpp \
     MusicPlayer.cpp \
     SerialPortWorker.cpp \
     StopWatch.cpp \
-    ScriptPlayer.cpp
+    ScriptPlayer.cpp \
+    ChoreographerWorker.cpp
 
 HEADERS  += MainWindow.h \
     Robot.h \
@@ -33,10 +33,10 @@ HEADERS  += MainWindow.h \
     RBController.h \
     AppManager.h \
     DanceScript.h \
-    Choreographer.h \
     MusicPlayer.h \
     SerialPortWorker.h \
     StopWatch.h \
-    ScriptPlayer.h
+    ScriptPlayer.h \
+    ChoreographerWorker.h
 
 FORMS    += MainWindow.ui

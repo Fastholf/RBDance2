@@ -28,10 +28,10 @@ private:
     QVector<QString> scenarioPaths;
     bool musicPlaying;
     Scenario *scenario;
-    Choreographer *choreographer;
+    ChoreographerWorker *choreographerWorker;
     SerialPortWorker *serialPortWorker;
     QThread *serialPortThread;
-    QThread *choreographerPortThread;
+    QThread *choreographerThread;
 
     bool isRobotIndexOk(int index, QString methodName);
 

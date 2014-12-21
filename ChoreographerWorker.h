@@ -9,7 +9,7 @@
 #include "DanceScript.h"
 #include "ScriptPlayer.h"
 
-class Choreographer : public QObject
+class ChoreographerWorker : public QObject
 {
     Q_OBJECT
 
@@ -27,7 +27,7 @@ private:
     int longestScriptIndex;
 
 public:
-    Choreographer();
+    ChoreographerWorker();
     void load(Scenario *t_scenario, QVector<Robot*> t_robots);
 public slots:
     void startDance();

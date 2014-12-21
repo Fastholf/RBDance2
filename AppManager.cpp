@@ -44,7 +44,7 @@ bool AppManager::init()
                                            in.readLine());
 
     scenario = NULL;
-    choreographer = NULL;
+    choreographerWorker = NULL;
     musicPlaying = true;
 
     FileLoadError error = loadRobotsFromFile();
@@ -405,56 +405,56 @@ void AppManager::danceStart()
 {
 //    qDebug() << "Method name";
 
-    choreographer = new Choreographer();
+    choreographerWorker = new ChoreographerWorker();
 
-    connect(choreographer, SIGNAL(danceFinished()),
+    connect(choreographerWorker, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
-    connect(choreographer, SIGNAL(danceLoaded(int, int)),
+    connect(choreographerWorker, SIGNAL(danceLoaded(int, int)),
             this, SLOT(onDanceLoaded(int, int)));
-    connect(choreographer, SIGNAL(currentFrameChanged(int, int)),
+    connect(choreographerWorker, SIGNAL(currentFrameChanged(int, int)),
             this, SLOT(onCurrentFrameChanged(int, int)));
 
-    choreographer->load(scenario, robots);
+    choreographerWorker->load(scenario, robots);
 
-    choreographerPortThread = new QThread();
-    choreographer->moveToThread(choreographerPortThread);
-    connect(choreographerPortThread, SIGNAL(started()),
-            choreographer, SLOT(startDance()));
-    connect(choreographer, SIGNAL(danceFinished()),
-            choreographerPortThread, SLOT(quit()));
-    connect(choreographer, SIGNAL(danceFinished()),
-            choreographer, SLOT(deleteLater()));
-    connect(choreographerPortThread, SIGNAL(finished()),
-            choreographerPortThread, SLOT(deleteLater()));
-    choreographerPortThread->start();
+    choreographerThread = new QThread();
+    choreographerWorker->moveToThread(choreographerThread);
+    connect(choreographerThread, SIGNAL(started()),
+            choreographerWorker, SLOT(startDance()));
+    connect(choreographerWorker, SIGNAL(danceFinished()),
+            choreographerThread, SLOT(quit()));
+    connect(choreographerWorker, SIGNAL(danceFinished()),
+            choreographerWorker, SLOT(deleteLater()));
+    connect(choreographerThread, SIGNAL(finished()),
+            choreographerThread, SLOT(deleteLater()));
+    choreographerThread->start();
 }
 
 void AppManager::dancePause()
 {
 //    qDebug() << "Method name";
 
-    if (choreographer == NULL) {
+    if (choreographerWorker == NULL) {
         return;
     }
-    choreographer->pauseDance();
+    choreographerWorker->pauseDance();
 }
 
 void AppManager::danceStop()
 {
 //    qDebug() << "Method name";
 
-    if (choreographer == NULL) {
+    if (choreographerWorker == NULL) {
         return;
     }
-    choreographer->stopDance();
+    choreographerWorker->stopDance();
 }
 
 void AppManager::onDanceFinished()
 {
 //    qDebug() << "Method name";
 
-    if (choreographer != NULL) {
-        choreographer = NULL;
+    if (choreographerWorker != NULL) {
+        choreographerWorker = NULL;
     }
     danceFinished();
 }
