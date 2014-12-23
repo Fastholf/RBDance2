@@ -16,6 +16,9 @@ Scenario::Scenario(int t_robotCount)
     for (int i = 0; i < robotCount; ++i) {
         danceScripts.push_back(DanceScript());
     }
+
+    errorMessage = "";
+    danceScriptsLoaded = false;
 }
 
 void Scenario::addDanceFile(QString danceFilePath)
@@ -50,7 +53,7 @@ void Scenario::setRole(int robotNum, int danceNum)
     }
 }
 
-bool Scenario::loadDanceScripts(QString *errorMessage)
+FileLoadError Scenario::loadDanceScripts(QString *t_errorMessage)
 {
 //    qDebug() << "Method name";
 
@@ -66,12 +69,21 @@ bool Scenario::loadDanceScripts(QString *errorMessage)
         if (!used) {
             continue;
         }
-        if (!danceScripts[i].loadFromMotionBuilderFile(danceFilePaths[i])) {
-            *errorMessage = "Can not load file " + danceFilePaths[i];
-            return false;
+        FileLoadError result = danceScripts[i].loadFromMotionBuilderFile(danceFilePaths[i]);
+        if (result != FileLoadErrorNo) {
+            if (result == FileLoadErrorNotFound) {
+                errorMessage = "Can not find file " + danceFilePaths[i];
+            }
+            else if (result == FileLoadErrorWrongFormat) {
+                errorMessage = "File " + danceFilePaths[i] + " has wrong format.";
+            }
+            *t_errorMessage = errorMessage;
+            danceScriptsLoaded = false;
+            return result;
         }
     }
-    return true;
+    danceScriptsLoaded = true;
+    return FileLoadErrorNo;
 }
 
 bool Scenario::isMusicPlaying()
@@ -79,6 +91,22 @@ bool Scenario::isMusicPlaying()
 //    qDebug() << "Method name";
 
     return musicPlaying;
+}
+
+bool Scenario::isReady(QString *t_errorMessage)
+{
+    if (!danceScriptsLoaded) {
+        *t_errorMessage = errorMessage;
+        return false;
+    }
+
+    if (!isMusicReady()) {
+        errorMessage = "Music file " + musicFilePath + " was not found.";
+        *t_errorMessage = errorMessage;
+        return false;
+    }
+
+    return true;
 }
 
 QVector<QString> Scenario::getDanceFilePaths()

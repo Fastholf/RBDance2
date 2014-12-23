@@ -244,7 +244,17 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
     scenario->setMusicPlaying(musicPlaying);
     scenarioFile.close();
 
-    scenarioLoaded(scenario->getDanceFileNames(), scenario->getRoles());
+    if (result == FileLoadErrorNo) {
+        QString errorMessage = NULL;
+        result = scenario->loadDanceScripts(&errorMessage);
+        if (result == FileLoadErrorNo) {
+            emit scenarioLoaded(scenario->getDanceFileNames(), scenario->getRoles());
+        }
+        else {
+            qWarning() << errorMessage;
+            showMessage(errorMessage);
+        }
+    }
 
     return result;
 }
@@ -367,14 +377,9 @@ bool AppManager::isDanceReady()
         return false;
     }
     QString errorMessage = NULL;
-    if (!scenario->loadDanceScripts(&errorMessage)) {
+    if (!scenario->isReady(&errorMessage)) {
         qWarning() << errorMessage;
         showMessage(errorMessage);
-        return false;
-    }
-    if (!scenario->isMusicReady()) {
-        qWarning() << "Music file was not found.";
-        showMessage("Music file was not found.");
         return false;
     }
 

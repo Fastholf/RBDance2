@@ -39,6 +39,7 @@ HEADERS  += MainWindow.h \
     StopWatch.h \
     ScriptPlayer.h \
     ChoreographerWorker.h \
-    Choreographer.h
+    Choreographer.h \
+    FileLoadError.h
 
 FORMS    += MainWindow.ui

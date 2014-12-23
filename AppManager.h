@@ -9,12 +9,7 @@
 #include "Choreographer.h"
 #include "ChoreographerWorker.h"
 #include "SerialPortWorker.h"
-
-enum FileLoadError {
-    FileLoadErrorNo = 0,
-    FileLoadErrorNotFound,
-    FileLoadErrorWrongFormat,
-};
+#include "FileLoadError.h"
 
 class AppManager : public QObject
 {

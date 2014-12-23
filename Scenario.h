@@ -4,6 +4,7 @@
 #include <QVector>
 #include <QString>
 #include "DanceScript.h"
+#include "FileLoadError.h"
 
 class Role
 {
@@ -26,6 +27,8 @@ private:
     QString musicFilePath;
     bool musicPlaying;
     int robotCount;
+    bool danceScriptsLoaded;
+    QString errorMessage;
 
 public:
     Scenario(int t_robotCount);
@@ -33,8 +36,9 @@ public:
     void setMusic(QString t_musicFilePath);
     void setMusicPlaying(bool t_musicPlaying);
     void setRole(int robotNum, int danceNum);
-    bool loadDanceScripts(QString *errorMessage);
+    FileLoadError loadDanceScripts(QString *t_errorMessage);
     bool isMusicPlaying();
+    bool isReady(QString *t_errorMessage);
 
     QVector<QString> getDanceFilePaths();
     QVector<QString> getDanceFileNames();

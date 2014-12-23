@@ -4,6 +4,7 @@
 #include <QVector>
 #include <QString>
 #include <QTextStream>
+#include "FileLoadError.h"
 
 class Frame
 {
@@ -45,7 +46,7 @@ private:
 public:
     DanceScript();
     void clear();
-    bool loadFromMotionBuilderFile(QString t_filePath);
+    FileLoadError loadFromMotionBuilderFile(QString t_filePath);
     void reset();
     int getCurrentFireTime();
     Frame getCurrentFrame();

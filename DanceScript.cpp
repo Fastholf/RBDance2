@@ -193,7 +193,7 @@ void DanceScript::clear()
     frames.clear();
 }
 
-bool DanceScript::loadFromMotionBuilderFile(QString t_filePath)
+FileLoadError DanceScript::loadFromMotionBuilderFile(QString t_filePath)
 {
 //    qDebug() << "Method name";
 
@@ -203,25 +203,25 @@ bool DanceScript::loadFromMotionBuilderFile(QString t_filePath)
         qCritical() << "File "
                     << filePath
                     << " with dance script was not found.";
-        return false;
+        return FileLoadErrorNotFound;
     }
     QTextStream in(&scripFile);
 
     if (!loadPoseStepCounts(&in)) {
-        return false;
+        return FileLoadErrorWrongFormat;
     }
 
     if (!loadPoseDurations(&in)) {
-        return false;
+        return FileLoadErrorWrongFormat;
     }
 
     if (!loadPoseServoAngles(&in)) {
-        return false;
+        return FileLoadErrorWrongFormat;
     }
 
     precountFrames();
 
-    return true;
+    return FileLoadErrorNo;
 }
 
 void DanceScript::reset()
