@@ -154,6 +154,7 @@ void MainWindow::onDanceStopped()
     ui->pause_pushButton->setText("Pause");
     ui->dance_horizontalSlider->setValue(0);
     ui->duration_label->setText("00:00/" + durationTime);
+    ui->index_label->setText("000000/" + maxIndex);
 }
 
 void MainWindow::connectRobot(int index)
@@ -262,7 +263,7 @@ void MainWindow::onDisconnected(int index)
     onRobotDisconnected(index);
 }
 
-QString timeStringFromMilliseconds(int milliseconds)
+QString timeString(int milliseconds)
 {
     int secs = milliseconds / 1000;
     int mins = secs / 60;
@@ -271,18 +272,27 @@ QString timeStringFromMilliseconds(int milliseconds)
     return sMins.sprintf("%02d", mins) + ":" + sSecs.sprintf("%02d", secs);
 }
 
-void MainWindow::onDanceLoaded(int maxIndex, int duration)
+QString indexString(int index)
 {
-    ui->dance_horizontalSlider->setMaximum(maxIndex);
-    durationTime = timeStringFromMilliseconds(duration);
+    QString sIndex;
+    return sIndex.sprintf("%06d", index);
+}
+
+void MainWindow::onDanceLoaded(int t_maxIndex, int duration)
+{
+    ui->dance_horizontalSlider->setMaximum(t_maxIndex);
+    durationTime = timeString(duration);
     ui->duration_label->setText("00:00/" + durationTime);
+    maxIndex = indexString(t_maxIndex);
+    ui->index_label->setText("000000/" + maxIndex);
 }
 
 void MainWindow::onCurrentFrameChanged(int index, int elapsedTime)
 {
     ui->dance_horizontalSlider->setValue(index);
-    QString currentTime = timeStringFromMilliseconds(elapsedTime);
+    QString currentTime = timeString(elapsedTime);
     ui->duration_label->setText(currentTime + "/" + durationTime);
+    ui->index_label->setText(indexString(index)+ "/" + maxIndex);
 }
 
 void MainWindow::onDanceFinished()

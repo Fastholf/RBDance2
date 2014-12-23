@@ -28,6 +28,7 @@ private:
     QVector<QPushButton*> disconnectButtons;
     QVector<QComboBox*> fileNameComboBoxes;
     QString durationTime;
+    QString maxIndex;
     bool scenarioLoading;
 
     void fillUIArrays();
