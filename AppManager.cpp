@@ -262,6 +262,11 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
     return result;
 }
 
+void AppManager::resetScenario()
+{
+    scenario->reset();
+}
+
 void AppManager::setRobotRole(int robotNum, int danceNum)
 {
 //    qDebug() << "Method name";

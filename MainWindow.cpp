@@ -454,6 +454,9 @@ void MainWindow::on_dance_comboBox_activated(int index)
         }
     }
     else {
+        appManager->resetScenario();
         clearFileNameComboboxes();
+        ui->duration_label->setText("--:--/--:--");
+        ui->index_label->setText("------/------");
     }
 }

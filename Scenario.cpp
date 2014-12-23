@@ -30,7 +30,7 @@ void Scenario::reset()
     musicFilePath = "";
     musicPlaying = false;
 
-    errorMessage = "";
+    errorMessage = "Scenario is not loaded";
     danceScriptsLoaded = false;
 }
 

@@ -39,6 +39,7 @@ public:
     FileLoadError loadRobotsFromFile();
     FileLoadError loadScenarioListFromFile();
     FileLoadError loadScenarioFromFile(int scenarioIndex);
+    void resetScenario();
 
     void setRobotRole(int robotNum, int danceNum);
     void setMusicPlaying(bool t_musicPlaying);
