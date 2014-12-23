@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->stop_pushButton->setEnabled(false);
         return;
     }
+
+    scenarioLoading = false;
 }
 
 MainWindow::~MainWindow()
@@ -79,13 +81,19 @@ void MainWindow::fillUIArrays()
     disconnectButtons.push_back(ui->disconnect1_pushButton);
     disconnectButtons.push_back(ui->disconnect2_pushButton);
     disconnectButtons.push_back(ui->disconnect3_pushButton);
+
+    fileNameComboBoxes.push_back(ui->fileName1_comboBox);
+    fileNameComboBoxes.push_back(ui->fileName2_comboBox);
+    fileNameComboBoxes.push_back(ui->fileName3_comboBox);
 }
 
 void MainWindow::clearFileNameComboboxes()
 {
-    ui->fileName1_comboBox->clear();
-    ui->fileName2_comboBox->clear();
-    ui->fileName3_comboBox->clear();
+    scenarioLoading = true;
+    for (int i = 0; i < fileNameComboBoxes.count(); ++i) {
+        fileNameComboBoxes[i]->clear();
+    }
+    scenarioLoading = false;
 }
 
 void MainWindow::onRobotConnected(int index)
@@ -170,6 +178,13 @@ void MainWindow::disconnectRobot(int index)
     appManager->robotDisconnect(index);
 }
 
+void MainWindow::setRobotRole(int index, int danceNum)
+{
+    if (!scenarioLoading) {
+        appManager->setRobotRole(index, danceNum);
+    }
+}
+
 bool MainWindow::isRobotConnected(int index)
 {
     return !connectButtons[index]->isEnabled();
@@ -199,22 +214,20 @@ void MainWindow::updateDanceComboBox(QVector<QString> scenarioPaths)
 void MainWindow::updateFileNameComboBoxes(QVector<QString> danceFileNames,
                                           QVector<Role> roles)
 {
-    QVector<QComboBox*> comboBoxes;
-    comboBoxes.push_back(ui->fileName1_comboBox);
-    comboBoxes.push_back(ui->fileName2_comboBox);
-    comboBoxes.push_back(ui->fileName3_comboBox);
-    for (int i = 0; i < comboBoxes.count(); ++i) {
-        comboBoxes[i]->clear();
-        comboBoxes[i]->addItem("None");
+    scenarioLoading = true;
+    for (int i = 0; i < fileNameComboBoxes.count(); ++i) {
+        fileNameComboBoxes[i]->clear();
+        fileNameComboBoxes[i]->addItem("None");
         for (int j = 0; j < danceFileNames.count(); ++j) {
-            comboBoxes[i]->addItem(danceFileNames[j]);
+            fileNameComboBoxes[i]->addItem(danceFileNames[j]);
         }
         for (int j = 0; j < roles.count(); ++j) {
             if (roles[j].robotNum == i) {
-                comboBoxes[i]->setCurrentIndex(roles[j].danceNum + 1);
+                fileNameComboBoxes[i]->setCurrentIndex(roles[j].danceNum + 1);
             }
         }
     }
+    scenarioLoading = false;
 }
 
 void MainWindow::onConnectTryFinished(int index, bool result)
@@ -384,17 +397,17 @@ void MainWindow::on_disconnectAll_pushButton_clicked()
 
 void MainWindow::on_fileName1_comboBox_currentIndexChanged(int index)
 {
-    appManager->setRobotRole(0, index - 1);
+    setRobotRole(0, index - 1);
 }
 
 void MainWindow::on_fileName2_comboBox_currentIndexChanged(int index)
 {
-    appManager->setRobotRole(1, index - 1);
+    setRobotRole(1, index - 1);
 }
 
 void MainWindow::on_fileName3_comboBox_currentIndexChanged(int index)
 {
-    appManager->setRobotRole(2, index - 1);
+    setRobotRole(2, index - 1);
 }
 
 void MainWindow::on_start_pushButton_clicked()

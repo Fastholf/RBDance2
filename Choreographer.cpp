@@ -12,6 +12,8 @@ void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
     QVector<Robot*> robots = t_robots;
     QVector<Role> roles = scenario->getRoles();
     QVector<DanceScript> scripts = scenario->getDanceScripts();
+    scriptPlayers.clear();
+    longestScriptIndex = -1;
     for (int i = 0; i < roles.count(); ++i) {
         if (roles[i].danceNum != -1) {
             int danceNum = roles[i].danceNum;
@@ -33,7 +35,10 @@ void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
             longestTime = scriptPlayers[i]->getTimeLength();
         }
     }
-    int maxIndex = scriptPlayers[longestScriptIndex]->getMaxIndex();
+    int maxIndex = 0;
+    if (longestScriptIndex != -1) {
+        maxIndex = scriptPlayers[longestScriptIndex]->getMaxIndex();
+    }
     emit danceLoaded(maxIndex, longestTime);
 }
 

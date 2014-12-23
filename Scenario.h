@@ -48,6 +48,8 @@ public:
 
     QVector<int> involvedRobotNums();
     bool isMusicReady();
+
+    void reset();
 };
 
 #endif // SCENARIO_H

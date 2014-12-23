@@ -59,7 +59,13 @@ bool AppManager::init()
 
     serialPortThread->start();
 
+    scenario = new Scenario(robots.count());
+
     choreographer = new Choreographer();
+    connect(choreographer, SIGNAL(danceLoaded(int, int)),
+            this, SLOT(onDanceLoaded(int, int)));
+    connect(choreographer, SIGNAL(currentFrameChanged(int, int)),
+            this, SLOT(onCurrentFrameChanged(int, int)));
 
     return true;
 }
@@ -165,11 +171,7 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
      * file <dance file path>
      * music <music file path>
      * role <robot number> <dance number> */
-    if (scenario != NULL) {
-        delete scenario;
-        scenario = NULL;
-    }
-    scenario = new Scenario(robots.count());
+    scenario->reset();
     QVector<int> robotNums;
     for (int i = 0; i < robots.count(); ++i) {
         if (robots[i]->isConnected()) {
@@ -249,6 +251,7 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
         result = scenario->loadDanceScripts(&errorMessage);
         if (result == FileLoadErrorNo) {
             emit scenarioLoaded(scenario->getDanceFileNames(), scenario->getRoles());
+            choreographer->load(scenario, robots);
         }
         else {
             qWarning() << errorMessage;
@@ -264,6 +267,7 @@ void AppManager::setRobotRole(int robotNum, int danceNum)
 //    qDebug() << "Method name";
 
     scenario->setRole(robotNum, danceNum);
+    choreographer->load(scenario, robots);
 }
 
 void AppManager::setMusicPlaying(bool t_musicPlaying)
@@ -415,12 +419,6 @@ void AppManager::danceStart()
 
     connect(choreographerWorker, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
-    connect(choreographer, SIGNAL(danceLoaded(int, int)),
-            this, SLOT(onDanceLoaded(int, int)));
-    connect(choreographer, SIGNAL(currentFrameChanged(int, int)),
-            this, SLOT(onCurrentFrameChanged(int, int)));
-
-    choreographer->load(scenario, robots);
 
     choreographerThread = new QThread();
     choreographerWorker->moveToThread(choreographerThread);

@@ -10,12 +10,25 @@ Scenario::Scenario(int t_robotCount)
 //    qDebug() << "Method name";
 
     robotCount = t_robotCount;
+
+    reset();
+}
+
+void Scenario::reset()
+{
+    roles.clear();
     for (int i = 0; i < robotCount; ++i) {
         roles.push_back(Role(i, -1));
     }
+
+    danceFilePaths.clear();
+    danceScripts.clear();
     for (int i = 0; i < robotCount; ++i) {
         danceScripts.push_back(DanceScript());
     }
+
+    musicFilePath = "";
+    musicPlaying = false;
 
     errorMessage = "";
     danceScriptsLoaded = false;

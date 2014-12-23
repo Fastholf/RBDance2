@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QComboBox>
 #include "AppManager.h"
 
 namespace Ui {
@@ -25,7 +26,9 @@ private:
     QVector<QPushButton*> dcOnButtons;
     QVector<QPushButton*> dcOffButtons;
     QVector<QPushButton*> disconnectButtons;
+    QVector<QComboBox*> fileNameComboBoxes;
     QString durationTime;
+    bool scenarioLoading;
 
     void fillUIArrays();
     void clearFileNameComboboxes();
@@ -42,6 +45,7 @@ private:
     void turnDCOn(int index);
     void turnDCOff(int index);
     void disconnectRobot(int index);
+    void setRobotRole(int index, int danceNum);
 
     bool isRobotConnected(int index);
 
