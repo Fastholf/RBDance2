@@ -7,6 +7,7 @@
 #include "Robot.h"
 #include "Scenario.h"
 #include "Choreographer.h"
+#include "ChoreographerWorker.h"
 #include "SerialPortWorker.h"
 
 enum FileLoadError {
@@ -29,6 +30,7 @@ private:
     bool musicPlaying;
     Scenario *scenario;
     ChoreographerWorker *choreographerWorker;
+    Choreographer *choreographer;
     SerialPortWorker *serialPortWorker;
     QThread *serialPortThread;
     QThread *choreographerThread;

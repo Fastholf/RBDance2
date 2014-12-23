@@ -118,7 +118,7 @@ QVector<Role> Scenario::getRoles()
 
 QVector<DanceScript> Scenario::getDanceScripts()
 {
-    qDebug() << "Method name";
+//    qDebug() << "Method name";
 
     return danceScripts;
 }

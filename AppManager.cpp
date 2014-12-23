@@ -59,6 +59,8 @@ bool AppManager::init()
 
     serialPortThread->start();
 
+    choreographer = new Choreographer();
+
     return true;
 }
 
@@ -158,7 +160,6 @@ FileLoadError AppManager::loadScenarioFromFile(int scenarioIndex)
     QTextStream in(&scenarioFile);
     QFileInfo fileInfo(scenarioFile.fileName());
     QString scenarioPath(fileInfo.path());
-    qDebug() << scenarioPath;
 
     /** Assume three types of line in file:
      * file <dance file path>
@@ -405,16 +406,16 @@ void AppManager::danceStart()
 {
 //    qDebug() << "Method name";
 
-    choreographerWorker = new ChoreographerWorker();
+    choreographerWorker = new ChoreographerWorker(choreographer);
 
     connect(choreographerWorker, SIGNAL(danceFinished()),
             this, SLOT(onDanceFinished()));
-    connect(choreographerWorker, SIGNAL(danceLoaded(int, int)),
+    connect(choreographer, SIGNAL(danceLoaded(int, int)),
             this, SLOT(onDanceLoaded(int, int)));
-    connect(choreographerWorker, SIGNAL(currentFrameChanged(int, int)),
+    connect(choreographer, SIGNAL(currentFrameChanged(int, int)),
             this, SLOT(onCurrentFrameChanged(int, int)));
 
-    choreographerWorker->load(scenario, robots);
+    choreographer->load(scenario, robots);
 
     choreographerThread = new QThread();
     choreographerWorker->moveToThread(choreographerThread);

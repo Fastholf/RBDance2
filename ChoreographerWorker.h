@@ -1,5 +1,5 @@
-#ifndef CHOREOGRAPHER_H
-#define CHOREOGRAPHER_H
+#ifndef CHOREOGRAPHER_WORKER_H
+#define CHOREOGRAPHER_WORKER_H
 
 #include <QVector>
 #include <QThread>
@@ -8,27 +8,21 @@
 #include "MusicPlayer.h"
 #include "DanceScript.h"
 #include "ScriptPlayer.h"
+#include "Choreographer.h"
 
 class ChoreographerWorker : public QObject
 {
     Q_OBJECT
 
-protected:
-    void run();
-
 private:
+    MusicPlayer *musicPlayer;
     bool finished;
     bool paused;
-    Scenario *scenario;
-    QVector<ScriptPlayer*> scriptPlayers;
-    MusicPlayer *musicPlayer;
     void dancing();
-    int minFireTime();
-    int longestScriptIndex;
+    Choreographer *choreographer;
 
 public:
-    ChoreographerWorker();
-    void load(Scenario *t_scenario, QVector<Robot*> t_robots);
+    ChoreographerWorker(Choreographer *t_choreographer);
 public slots:
     void startDance();
 public:
@@ -36,8 +30,6 @@ public:
     void stopDance();
 signals:
     void danceFinished();
-    void danceLoaded(int maxIndex, int duration);
-    void currentFrameChanged(int index, int elapsedTime);
 };
 
-#endif // CHOREOGRAPHER_H
+#endif // CHOREOGRAPHER_WORKER_H
