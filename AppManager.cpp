@@ -67,6 +67,8 @@ bool AppManager::init()
     connect(choreographer, SIGNAL(currentFrameChanged(int, int)),
             this, SLOT(onCurrentFrameChanged(int, int)));
 
+    isDancing = false;
+
     return true;
 }
 
