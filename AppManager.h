@@ -29,6 +29,7 @@ private:
     SerialPortWorker *serialPortWorker;
     QThread *serialPortThread;
     QThread *choreographerThread;
+    bool isDancing;
 
     bool isRobotIndexOk(int index, QString methodName);
 
@@ -55,9 +56,11 @@ public:
     void robotDisconnect(int index);
     void robotDisconnectAll();
     bool isDanceReady();
+    bool areRobotsReady();
     void danceStart();
     void dancePause();
     void danceStop();
+    bool setDanceIndex(int index);
 
 private slots:
     void onDanceFinished();

@@ -18,6 +18,9 @@ public:
     int getTimeLength();
     int getCurrentIndex();
     int getMaxIndex();
+    void goToNextIndex();
+    void reset();
+    void setFrameAtIndex(int index);
 };
 
 #endif // SCRIPTPLAYER_H

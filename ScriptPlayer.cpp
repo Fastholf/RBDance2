@@ -43,3 +43,20 @@ int ScriptPlayer::getMaxIndex()
 {
     return script.getMaxIndex();
 }
+
+void ScriptPlayer::goToNextIndex()
+{
+    script.goToNextFrame();
+}
+
+void ScriptPlayer::reset()
+{
+    script.reset();
+}
+
+void ScriptPlayer::setFrameAtIndex(int index)
+{
+    for (int i = 0; i < robots.count(); ++i) {
+        robots[i]->setPose(script.getFrameAtIndex(index).servoAngles);
+    }
+}

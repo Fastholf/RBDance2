@@ -395,6 +395,14 @@ bool AppManager::isDanceReady()
 //    For debug purpose only
 //    return true;
 
+    return areRobotsReady();
+}
+
+bool AppManager::areRobotsReady()
+{
+//    For debug purpose only
+//    return true;
+
     QVector<int> involvedRobotNums = scenario->involvedRobotNums();
     for (int i = 0; i < involvedRobotNums.count(); ++i) {
         int rNum = involvedRobotNums[i];
@@ -436,6 +444,7 @@ void AppManager::danceStart()
     connect(choreographerThread, SIGNAL(finished()),
             choreographerThread, SLOT(deleteLater()));
     choreographerThread->start();
+    isDancing = true;
 }
 
 void AppManager::dancePause()
@@ -456,6 +465,20 @@ void AppManager::danceStop()
         return;
     }
     choreographerWorker->stopDance();
+    isDancing = false;
+}
+
+bool AppManager::setDanceIndex(int index)
+{
+    if (isDancing) {
+        return false;
+    }
+
+    if (!areRobotsReady()) {
+        return false;
+    }
+
+    return choreographer->setPrecountedIndex(index);
 }
 
 void AppManager::onDanceFinished()

@@ -251,6 +251,11 @@ Frame DanceScript::getCurrentFrame()
     return frames[curIndex];
 }
 
+Frame DanceScript::getFrameAtIndex(int index)
+{
+    return frames[index];
+}
+
 bool DanceScript::isFinished()
 {
 //    qDebug() << "Method name";

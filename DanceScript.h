@@ -50,6 +50,7 @@ public:
     void reset();
     int getCurrentFireTime();
     Frame getCurrentFrame();
+    Frame getFrameAtIndex(int index);
     bool isFinished();
     void goToNextFrame();
     int getTimeLength();

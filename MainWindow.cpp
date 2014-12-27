@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     scenarioLoading = false;
+    resettingSlider = false;
 }
 
 MainWindow::~MainWindow()
@@ -133,6 +134,7 @@ void MainWindow::onDanceStarted()
     ui->start_pushButton->setEnabled(false);
     ui->pause_pushButton->setEnabled(true);
     ui->stop_pushButton->setEnabled(true);
+    ui->dance_horizontalSlider->setEnabled(false);
 }
 
 void MainWindow::onDancePaused()
@@ -155,6 +157,7 @@ void MainWindow::onDanceStopped()
     ui->dance_horizontalSlider->setValue(0);
     ui->duration_label->setText("00:00/" + durationTime);
     ui->index_label->setText("000000/" + maxIndex);
+    ui->dance_horizontalSlider->setEnabled(true);
 }
 
 void MainWindow::connectRobot(int index)
@@ -285,6 +288,12 @@ void MainWindow::onDanceLoaded(int t_maxIndex, int duration)
     ui->duration_label->setText("00:00/" + durationTime);
     maxIndex = indexString(t_maxIndex);
     ui->index_label->setText("000000/" + maxIndex);
+    if (duration > 0) {
+        ui->dance_horizontalSlider->setEnabled(true);
+    }
+    else {
+        ui->dance_horizontalSlider->setEnabled(false);
+    }
 }
 
 void MainWindow::onCurrentFrameChanged(int index, int elapsedTime)
@@ -458,5 +467,18 @@ void MainWindow::on_dance_comboBox_activated(int index)
         clearFileNameComboboxes();
         ui->duration_label->setText("--:--/--:--");
         ui->index_label->setText("------/------");
+        ui->dance_horizontalSlider->setEnabled(false);
+    }
+}
+
+void MainWindow::on_dance_horizontalSlider_sliderMoved(int position)
+{
+    if (resettingSlider) {
+        resettingSlider = false;
+        return;
+    }
+    if (!appManager->setDanceIndex(position)) {
+        resettingSlider = true;
+        ui->dance_horizontalSlider->setValue(0);
     }
 }
