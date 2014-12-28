@@ -39,16 +39,18 @@ private:
     Scenario *scenario;
     QVector<ScriptPlayer*> scriptPlayers;
     QVector<DanceFrame*> precountedDance;
-    int longestScriptIndex;
     void precountDance();
+    int curIndex;
 public:
     Choreographer();
     void load(Scenario *t_scenario, QVector<Robot*> t_robots);
-    bool setNextFrame(int elapsedMilliseconds);
+    void setNextFrame();
     int nextFireTime();
     bool shouldPlayMusic();
     QString getMusicFilePath();
     bool setPrecountedIndex(int index);
+    void reset();
+    bool isFinished();
 signals:
     void danceLoaded(int maxIndex, int duration);
     void currentFrameChanged(int index, int elapsedTime);

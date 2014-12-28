@@ -1,10 +1,6 @@
 #include "Choreographer.h"
 
-Choreographer::Choreographer()
-{
-    scenario = NULL;
-    longestScriptIndex = 0;
-}
+Choreographer::Choreographer() {}
 
 void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
 {
@@ -15,7 +11,6 @@ void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
     QVector<Role> roles = scenario->getRoles();
     QVector<DanceScript> scripts = scenario->getDanceScripts();
     scriptPlayers.clear();
-    longestScriptIndex = -1;
     for (int i = 0; i < roles.count(); ++i) {
         if (roles[i].danceNum != -1) {
             int danceNum = roles[i].danceNum;
@@ -73,39 +68,18 @@ void Choreographer::precountDance()
     for (int i = 0; i < scriptPlayers.count(); ++i) {
         scriptPlayers[i]->reset();
     }
+    curIndex = 0;
 }
 
-bool Choreographer::setNextFrame(int elapsedMilliseconds)
+void Choreographer::setNextFrame()
 {
-    bool haveWorkToDo = false;
-    for (int i = 0; i < scriptPlayers.count(); ++i) {
-        if (scriptPlayers[i]->isFinished()) {
-            continue;
-        }
-
-        if (scriptPlayers[i]->getCurrentFireTime() <= elapsedMilliseconds) {
-            scriptPlayers[i]->setNextFrame();
-            if (i == longestScriptIndex) {
-                int curIndex = scriptPlayers[i]->getCurrentIndex();
-                emit currentFrameChanged(curIndex, elapsedMilliseconds);
-            }
-        }
-
-        haveWorkToDo |= !scriptPlayers[i]->isFinished();
-    }
-
-    return !haveWorkToDo;
+    setPrecountedIndex(curIndex);
+    ++curIndex;
 }
 
 int Choreographer::nextFireTime()
 {
-    int result = std::numeric_limits<int>::max();
-    for (int i = 0; i < scriptPlayers.count(); ++i) {
-        int time = scriptPlayers[i]->getCurrentFireTime();
-        result = std::min(result, time);
-    }
-
-    return result;
+    return precountedDance[curIndex]->fireTime;
 }
 
 bool Choreographer::shouldPlayMusic()
@@ -133,4 +107,14 @@ bool Choreographer::setPrecountedIndex(int index)
     }
     emit currentFrameChanged(index, fireTime);
     return true;
+}
+
+void Choreographer::reset()
+{
+    curIndex = 0;
+}
+
+bool Choreographer::isFinished()
+{
+    return curIndex >= precountedDance.count();
 }

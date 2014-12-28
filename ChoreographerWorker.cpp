@@ -15,6 +15,7 @@ void ChoreographerWorker::dancing()
 
     finished = false;
     paused = false;
+    choreographer->reset();
     if (choreographer->shouldPlayMusic()) {
         musicPlayer = new MusicPlayer(choreographer->getMusicFilePath());
         musicPlayer->start();
@@ -50,8 +51,8 @@ void ChoreographerWorker::dancing()
 //        QThread::msleep(1);
 //        continue;
 
-        finished |= choreographer->setNextFrame(timer->elapsedMilliseconds());
-        if (finished) {
+        choreographer->setNextFrame();
+        if (choreographer->isFinished()) {
             break;
         }
 
