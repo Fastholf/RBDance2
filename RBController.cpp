@@ -37,12 +37,11 @@ bool RBController::connectToRB()
     serialPort->setPortName("COM" + QString::number(_portNum));
     if (serialPort->open(QIODevice::ReadWrite)) {
         _connected = true;
-        qDebug() << "Connection on port " << _portNum << " succeeded.";
         serialPort->setDataBits(QSerialPort::Data8);
     }
     else {
         _connected = false;
-        qDebug() << "Connection on port " << _portNum << " failed.";
+        qWarning() << "Connection on port " << _portNum << " failed.";
     }
 
     return _connected;
@@ -82,7 +81,6 @@ bool RBController::turnDirectControlModeOn()
             return false;
         }
 
-        qDebug() << "Response:  " << response;
         if (response.at(14) == 0x01 && response.at(8) == 0x10) {
             return true;
         }
@@ -125,7 +123,6 @@ void RBController::disconnect()
 
     serialPort->close();
     _connected = false;
-    qDebug() << "Connection on port " << _portNum << " closed.";
 }
 
 void RBController::setDirectPose(QVector<int> servoAngles)
@@ -182,7 +179,6 @@ bool RBController::sendCommand(qint8 type, qint8 commandContents)
 
     command.append(commandContents); // checkSum
 
-    qDebug() << "Command:  " << command;
     serialPort->write(header);
     bool writeSuccess = serialPort->waitForBytesWritten(WRITE_WAIT_TIMEOUT);
     serialPort->write(command);
@@ -220,7 +216,6 @@ bool RBController::getResponse(QByteArray *response)
                 response->at(b) != (char)header.at(b)) {
             b = 0;
             response->clear();
-            qDebug() << "Restart reading due to wrong byte in header";
             continue;
         }
 

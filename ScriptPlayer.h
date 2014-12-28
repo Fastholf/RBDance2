@@ -10,14 +10,13 @@ class ScriptPlayer
 private:
     QVector<Robot*> robots;
     DanceScript script;
+    int curIndex;
 public:
     ScriptPlayer(QVector<Robot*> t_robots, DanceScript t_script);
     void setNextFrame();
     bool isFinished();
     int getCurrentFireTime();
-    int getTimeLength();
     int getCurrentIndex();
-    int getMaxIndex();
     void goToNextIndex();
     void reset();
     void setFrameAtIndex(int index);

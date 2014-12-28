@@ -1,57 +1,53 @@
 #include "ScriptPlayer.h"
 #include <QDebug>
+#include <limits>
 
 ScriptPlayer::ScriptPlayer(QVector<Robot*> t_robots, DanceScript t_script)
 {
     robots = t_robots;
     script = t_script;
+    reset();
 }
 
 void ScriptPlayer::setNextFrame()
 {
-    if (script.isFinished()) {
+    if (isFinished()) {
         return;
     }
 
     for (int i = 0; i < robots.count(); ++i) {
-        robots[i]->setPose(script.getCurrentFrame().servoAngles);
+        robots[i]->setPose(script.getFrameAtIndex(curIndex).servoAngles);
     }
-    script.goToNextFrame();
+    ++curIndex;
 }
 
 bool ScriptPlayer::isFinished()
 {
-    return script.isFinished();
+    return script.getFramesCount() < curIndex;
 }
 
 int ScriptPlayer::getCurrentFireTime()
 {
-    return script.getCurrentFireTime();
-}
+    if (isFinished()) {
+        return std::numeric_limits<int>::max();
+    }
 
-int ScriptPlayer::getTimeLength()
-{
-    return script.getTimeLength();
+    return script.getFireTimeAtIndex(curIndex);
 }
 
 int ScriptPlayer::getCurrentIndex()
 {
-    return script.getCurrentIndex();
-}
-
-int ScriptPlayer::getMaxIndex()
-{
-    return script.getMaxIndex();
+    return curIndex;
 }
 
 void ScriptPlayer::goToNextIndex()
 {
-    script.goToNextFrame();
+    ++curIndex;
 }
 
 void ScriptPlayer::reset()
 {
-    script.reset();
+    curIndex = 0;
 }
 
 void ScriptPlayer::setFrameAtIndex(int index)

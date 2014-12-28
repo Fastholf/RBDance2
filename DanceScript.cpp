@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QRegExp>
 #include <algorithm>
-#include <limits>
 
 bool DanceScript::skipLinesWithString(QTextStream *in,
                                       int linesCount,
@@ -179,7 +178,6 @@ DanceScript::DanceScript()
 //    qDebug() << "Method name";
 
     clear();
-    reset();
 }
 
 void DanceScript::clear()
@@ -224,31 +222,9 @@ FileLoadError DanceScript::loadFromMotionBuilderFile(QString t_filePath)
     return FileLoadErrorNo;
 }
 
-void DanceScript::reset()
+int DanceScript::getFramesCount()
 {
-//    qDebug() << "Method name";
-
-    curIndex = 0;
-}
-
-int DanceScript::getCurrentFireTime()
-{
-//    qDebug() << "Method name";
-
-    if (curIndex >= frames.count()) {
-        return std::numeric_limits<int>::max();
-    }
-    return frames[curIndex].fireTime;
-}
-
-Frame DanceScript::getCurrentFrame()
-{
-//    qDebug() << "Method name";
-
-    if (curIndex >= frames.count()) {
-        return frames[frames.count() - 1];
-    }
-    return frames[curIndex];
+    return frames.count();
 }
 
 Frame DanceScript::getFrameAtIndex(int index)
@@ -256,31 +232,7 @@ Frame DanceScript::getFrameAtIndex(int index)
     return frames[index];
 }
 
-bool DanceScript::isFinished()
+int DanceScript::getFireTimeAtIndex(int index)
 {
-//    qDebug() << "Method name";
-
-    return curIndex >= frames.count();
-}
-
-void DanceScript::goToNextFrame()
-{
-//    qDebug() << "Method name";
-
-    curIndex = curIndex + 1;
-}
-
-int DanceScript::getTimeLength()
-{
-    return frames[frames.count() - 1].fireTime;
-}
-
-int DanceScript::getCurrentIndex()
-{
-    return curIndex;
-}
-
-int DanceScript::getMaxIndex()
-{
-    return frames.count() - 1;
+    return frames[index].fireTime;
 }
