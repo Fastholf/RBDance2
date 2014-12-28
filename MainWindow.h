@@ -97,7 +97,7 @@ private slots:
     void on_stop_pushButton_clicked();
     void on_music_checkBox_stateChanged(int arg1);
     void on_dance_comboBox_activated(int index);
-    void on_dance_horizontalSlider_sliderMoved(int position);
+    void on_dance_horizontalSlider_sliderReleased();
 };
 
 #endif // MAINWINDOW_H

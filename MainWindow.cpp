@@ -486,14 +486,9 @@ void MainWindow::on_dance_comboBox_activated(int index)
     }
 }
 
-void MainWindow::on_dance_horizontalSlider_sliderMoved(int position)
+void MainWindow::on_dance_horizontalSlider_sliderReleased()
 {
-    if (resettingSlider) {
-        resettingSlider = false;
-        return;
-    }
-    if (!appManager->setDanceIndex(position)) {
-        resettingSlider = true;
+    if (!appManager->setDanceIndex(ui->dance_horizontalSlider->value())) {
         ui->dance_horizontalSlider->setValue(0);
     }
 }
