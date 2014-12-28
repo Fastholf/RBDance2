@@ -46,15 +46,10 @@ public:
     void setMusicPlaying(bool t_musicPlaying);
 
     void connectRobot(int index);
-    void connectAllRobots();
     void robotBasicPosture(int index);
-    void robotBasicPostureAll();
     void robotTurnDCOn(int index);
-    void robotTurnDCOnAll();
     void robotTurnDCOff(int index);
-    void robotTurnDCOffAll();
     void robotDisconnect(int index);
-    void robotDisconnectAll();
     bool isDanceReady();
     bool areRobotsReady();
     void danceStart();

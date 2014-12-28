@@ -166,6 +166,11 @@ void MainWindow::connectRobot(int index)
     appManager->connectRobot(index);
 }
 
+void MainWindow::robotBasicPosture(int index)
+{
+    appManager->robotBasicPosture(index);
+}
+
 void MainWindow::turnDCOn(int index)
 {
     dcOnButtons[index]->setEnabled(false);
@@ -331,27 +336,31 @@ void MainWindow::on_connect3_pushButton_clicked()
 
 void MainWindow::on_connectAll_pushButton_clicked()
 {
-    appManager->connectAllRobots();
+    for (int i = 0; i < connectButtons.count(); ++i) {
+        connectRobot(i);
+    }
 }
 
 void MainWindow::on_basicPosture1_pushButton_clicked()
 {
-    appManager->robotBasicPosture(0);
+    robotBasicPosture(0);
 }
 
 void MainWindow::on_basicPosture2_pushButton_clicked()
 {
-    appManager->robotBasicPosture(1);
+    robotBasicPosture(1);
 }
 
 void MainWindow::on_basicPosture3_pushButton_clicked()
 {
-    appManager->robotBasicPosture(2);
+    robotBasicPosture(2);
 }
 
 void MainWindow::on_basicPostureAll_pushButton_clicked()
 {
-    appManager->robotBasicPostureAll();
+    for (int i = 0; i < basicPustureButtons.count(); ++i) {
+        robotBasicPosture(i);
+    }
 }
 
 void MainWindow::on_DCOn1_pushButton_clicked()
@@ -371,7 +380,9 @@ void MainWindow::on_DCOn3_pushButton_clicked()
 
 void MainWindow::on_DCOnAll_pushButton_clicked()
 {
-    appManager->robotTurnDCOnAll();
+    for (int i = 0; i < dcOnButtons.count(); ++i) {
+        turnDCOn(i);
+    }
 }
 
 void MainWindow::on_DCOff1_pushButton_clicked()
@@ -391,7 +402,9 @@ void MainWindow::on_DCOff3_pushButton_clicked()
 
 void MainWindow::on_DCOffAll_pushButton_clicked()
 {
-    appManager->robotTurnDCOffAll();
+    for (int i = 0; i < dcOffButtons.count(); ++i) {
+        turnDCOff(i);
+    }
 }
 
 void MainWindow::on_disconnect1_pushButton_clicked()
@@ -411,7 +424,9 @@ void MainWindow::on_disconnect3_pushButton_clicked()
 
 void MainWindow::on_disconnectAll_pushButton_clicked()
 {
-    appManager->robotDisconnectAll();
+    for (int i = 0; i < disconnectButtons.count(); ++i) {
+        disconnectRobot(i);
+    }
 }
 
 void MainWindow::on_fileName1_comboBox_currentIndexChanged(int index)

@@ -44,6 +44,7 @@ private:
     void onDanceStopped();
 
     void connectRobot(int index);
+    void robotBasicPosture(int index);
     void turnDCOn(int index);
     void turnDCOff(int index);
     void disconnectRobot(int index);
