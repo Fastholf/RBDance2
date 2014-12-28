@@ -23,7 +23,7 @@ void ScriptPlayer::setNextFrame()
 
 bool ScriptPlayer::isFinished()
 {
-    return script.getFramesCount() < curIndex;
+    return script.getFramesCount() <= curIndex;
 }
 
 int ScriptPlayer::getCurrentFireTime()

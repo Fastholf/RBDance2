@@ -8,6 +8,8 @@ Choreographer::Choreographer()
 
 void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
 {
+    qDebug() << "Method name";
+
     scenario = t_scenario;
     QVector<Robot*> robots = t_robots;
     QVector<Role> roles = scenario->getRoles();
@@ -40,6 +42,8 @@ void Choreographer::load(Scenario *t_scenario, QVector<Robot *> t_robots)
 
 void Choreographer::precountDance()
 {
+    qDebug() << "Method name";
+
     precountedDance.clear();
     while (true) {
         bool notFinished = false;
